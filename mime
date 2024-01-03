@@ -614,8 +614,7 @@ model/vnd.gtw	.gtw
 model/vnd.mts	.mts
 model/vnd.vtu	.vtu
 model/vrml	.vrml, .wrl
-test/mimetype	.test	
-test/mimetype/test
+test/mimetype	.test
 text/calendar	.ics, .ifb
 text/css	.css
 text/csv	.csv
