@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Bind.hpp                                           :+:      :+:    :+:   */
+/*   Listen.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 09:51:23 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 10:35:01 by agimi            ###   ########.fr       */
+/*   Created: 2024/01/03 10:32:50 by agimi             #+#    #+#             */
+/*   Updated: 2024/01/03 10:41:40 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "SSocket.hpp"
+#include "Bind.hpp"
 
 namespace wbs
 {
-	class Bind : public SSocket
+	class Listen
 	{
+	private:
+		int blog;
+
 	public:
-		Bind(int, int, int, u_long);
-		int connect();
+		Listen(int, int, int, u_long, int);
 	};
 }

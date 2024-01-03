@@ -1,25 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Bind.hpp                                           :+:      :+:    :+:   */
+/*   Listen.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 09:51:23 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 10:35:01 by agimi            ###   ########.fr       */
+/*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
+/*   Updated: 2024/01/03 10:41:07 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include <Listen.hpp>
 
-#include "SSocket.hpp"
-
-namespace wbs
+wbs::Listen::Listen(int d, int s, int p, u_long i, int b)
 {
-	class Bind : public SSocket
-	{
-	public:
-		Bind(int, int, int, u_long);
-		int connect();
-	};
 }

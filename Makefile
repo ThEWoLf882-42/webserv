@@ -8,12 +8,14 @@ INCLUDES = -I$(HEADERS_DIRECTORY)
 HEADERS_DIRECTORY = ./include/
 HEADERS_LIST =	Bind.hpp \
 				SSocket.hpp \
+				Listen.hpp \
 
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./src/
 SOURCES_LIST =	Bind.cpp \
-				SSocket.cpp\
+				SSocket.cpp \
+				Listen.cpp \
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
