@@ -1,42 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   SSocket.cpp                                        :+:      :+:    :+:   */
+/*   webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 10:02:05 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 12:05:04 by agimi            ###   ########.fr       */
+/*   Created: 2024/01/03 11:44:51 by agimi             #+#    #+#             */
+/*   Updated: 2024/01/03 12:50:42 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::SSocket::SSocket(int d, int s, int pro, int por, u_long i)
+int main()
 {
-	add.sin_family = d;
-	add.sin_port = htons(por);
-	add.sin_addr.s_addr = htonl(i);
-
-	sfd = socket(d, s, pro);
-	c_test(sfd);
-}
-
-void wbs::SSocket::c_test(int tst)
-{
-	if (tst < 0)
-	{
-		perror("Connection Failed 😞");
-		exit(EXIT_FAILURE);
-	}
-}
-
-sockaddr_in wbs::SSocket::get_add()
-{
-	return add;
-}
-
-int wbs::SSocket::get_sfd()
-{
-	return sfd;
+	wbs::Server	s(AF_INET, SOCK_STREAM, 0, 80, INADDR_ANY, 10);
 }

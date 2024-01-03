@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 09:51:23 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 10:35:01 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 12:01:08 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ namespace wbs
 {
 	class Bind : public SSocket
 	{
+	private:
+		int	cfd;
 	public:
-		Bind(int, int, int, u_long);
+		Bind(int d, int s, int pro, int por, u_long i);
 		int connect();
 	};
 }

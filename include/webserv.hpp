@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Listen.hpp                                         :+:      :+:    :+:   */
+/*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 10:32:50 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 10:41:40 by agimi            ###   ########.fr       */
+/*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
+/*   Updated: 2024/01/03 13:21:06 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "Bind.hpp"
+#include "Socket/Bind.hpp"
+#include "Socket/Listen.hpp"
+#include "Socket/SSocket.hpp"
+#include "Server/Server.hpp"
 
-namespace wbs
+struct respond
 {
-	class Listen
-	{
-	private:
-		int blog;
-
-	public:
-		Listen(int, int, int, u_long, int);
-	};
-}
+	std::string ver;
+	std::string sta;
+	std::string stamsg;
+	std::string type;
+	std::string len_str;
+};

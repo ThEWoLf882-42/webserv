@@ -1,41 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   SSocket.hpp                                        :+:      :+:    :+:   */
+/*   Listen.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 10:02:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 10:16:05 by agimi            ###   ########.fr       */
+/*   Created: 2024/01/03 10:32:50 by agimi             #+#    #+#             */
+/*   Updated: 2024/01/03 12:58:36 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <stdint.h>
-#include <iostream>
+#include "Bind.hpp"
 
 namespace wbs
 {
-	class SSocket
+	class Listen : public Bind
 	{
 	private:
-		int sfd;
-		int cfd;
-		struct sockaddr_in add;
+		int blog;
+		int list;
 
 	public:
-		SSocket(int, int, int, u_long i);
-
-		virtual int connect() = 0;
-		void c_test(int);
-
-		sockaddr_in get_add();
-		int get_sfd();
-		int get_cfd();
-
-		void set_cfd(int);
+		Listen(int, int, int, int, u_long, int);
+		virtual ~Listen();
+		void listning();
 	};
 }

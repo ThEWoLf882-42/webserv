@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Bind.cpp                                           :+:      :+:    :+:   */
+/*   SSocket.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 10:10:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 12:01:26 by agimi            ###   ########.fr       */
+/*   Created: 2024/01/03 10:02:13 by agimi             #+#    #+#             */
+/*   Updated: 2024/01/03 12:37:36 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <webserv.hpp>
+#pragma once
 
-wbs::Bind::Bind(int d, int s, int pro, int por, u_long i) : SSocket(d, s, pro, por, i)
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <stdint.h>
+#include <iostream>
+#include <unistd.h>
+
+namespace wbs
 {
-	cfd = connect();
-	c_test(cfd);
-}
+	class SSocket
+	{
+	private:
+		int sfd;
+		struct sockaddr_in add;
 
-int wbs::Bind::connect()
-{
-	int sfd = get_sfd();
-	sockaddr_in add = get_add();
+	public:
+		SSocket(int, int, int, int, u_long);
 
-	return bind(sfd, (sockaddr *)&add, sizeof(add));
+		virtual int connect() = 0;
+		void c_test(int);
+
+		sockaddr_in get_add();
+		int get_sfd();
+
+		void set_cfd(int);
+	};
 }

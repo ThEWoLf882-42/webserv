@@ -1,27 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Bind.cpp                                           :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 10:10:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 12:01:26 by agimi            ###   ########.fr       */
+/*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
+/*   Updated: 2024/01/03 12:30:33 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <webserv.hpp>
+#pragma once
 
-wbs::Bind::Bind(int d, int s, int pro, int por, u_long i) : SSocket(d, s, pro, por, i)
+#include <Socket/Listen.hpp>
+
+namespace wbs
 {
-	cfd = connect();
-	c_test(cfd);
-}
+	class Server
+	{
+	private:
+		char	buff[30000];
+		int		nsocket;
+		Listen *sock;
+		void accepter();
+		void handler();
+		void responder();
+	public:
+		Server(int, int, int, int, u_long, int);
+		~Server();
 
-int wbs::Bind::connect()
-{
-	int sfd = get_sfd();
-	sockaddr_in add = get_add();
+		void set_sock(Listen *);
+		void lanch();
+		Listen	*get_sock();
+	};
 
-	return bind(sfd, (sockaddr *)&add, sizeof(add));
-}
+} // namespace wbs

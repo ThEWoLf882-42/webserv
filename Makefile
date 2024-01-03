@@ -6,9 +6,11 @@ FLAGS = -Wall -Wextra -Werror -std=c++98
 INCLUDES = -I$(HEADERS_DIRECTORY)
 
 HEADERS_DIRECTORY = ./include/
-HEADERS_LIST =	Bind.hpp \
-				SSocket.hpp \
-				Listen.hpp \
+HEADERS_LIST =	Socket/Bind.hpp \
+				Socket/SSocket.hpp \
+				Socket/Listen.hpp \
+				Server/Server.hpp \
+				webserv.hpp \
 
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
@@ -16,6 +18,8 @@ SOURCES_DIRECTORY = ./src/
 SOURCES_LIST =	Bind.cpp \
 				SSocket.cpp \
 				Listen.cpp \
+				Server.cpp \
+				webserv.cpp \
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
