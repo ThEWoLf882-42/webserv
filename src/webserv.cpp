@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:44:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 19:23:37 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 20:46:13 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void readfile(std::string &bo, const std::string path, respond &r)
 {
-	bo.clear();
 	std::ifstream file("." + path);
+	std::stringstream buf;
 
 	if (!file.is_open())
 	{
@@ -26,9 +26,8 @@ void readfile(std::string &bo, const std::string path, respond &r)
 		return;
 	}
 
-	std::string line;
-	while (std::getline(file, line))
-		bo += line;
+	buf << file.rdbuf();
+	bo = buf.str();
 
 	file.close();
 }

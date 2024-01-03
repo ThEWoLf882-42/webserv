@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 19:19:41 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 19:57:29 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,9 @@ void wbs::Server::responder()
 	else
 		ftype = ".text";
 	r.type = "content-type: " + mime.find(ftype)->second;
-	h += r.ver + r.sta + r.stamsg + r.type + "\r\n\r\n" + bo;
-	write(nsocket, h.c_str(), h.size());
+	h += r.ver + r.sta + r.stamsg + r.type + "\r\n\r\n";
+	send(nsocket, h.c_str(), h.size(), 0);
+	send(nsocket, bo.c_str(), bo.size(), 0);
 	close(nsocket);
 }
 
