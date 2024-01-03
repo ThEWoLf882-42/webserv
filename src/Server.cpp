@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 16:56:57 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 17:42:30 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,41 @@ void wbs::Server::handler()
 	path == "/" ? path = "./index.html" : path = "." + path;
 }
 
-void wbs::Server::responder()
+void	wbs::Server::set_res()
 {
 	r.ver = "HTTP/1.1 ";
 	r.sta = "200 ";
 	r.stamsg = "OK\n";
-	// r.type = "Content-Type: text/plain\n";
-	// r.type = "";
 	r.len_str = "Content-Length: ";
+}
 
+void wbs::Server::set_mime()
+{
+	std::string	dot;
+	std::string type;
+	std::ifstream file("./mime");
+	if (!file.is_open())
+	{
+		std::cerr << "mime are zooooot" << std::endl;
+		return;
+	}
+	std::string line;
+	while (std::getline(file, line))
+	{
+		std::stringstream s(line);
+		
+		s >> type >> dot;
+		mime.insert(std::pair<std::string, std::string>(dot, type));
+	}
+	std::cout << mime.find(".bin")->second << std::endl;
+}
+
+void wbs::Server::responder()
+{
+	set_res();
 	std::string bo;
 	std::string h;
 
-	// path == "./favicon.ico" ? r.type = "Content-Type: image/png\n" : r.type = "Content-Type: text/html\n";;
-	bo.clear();
 	readfile(bo, path, r);
 	h += r.ver + r.sta + r.stamsg + r.type + "\n\n" + bo;
 
@@ -78,6 +99,7 @@ void wbs::Server::responder()
 
 void wbs::Server::lanch()
 {
+	set_mime();
 	while (1)
 	{
 		std::cout << "==== Started ====" << std::endl;
