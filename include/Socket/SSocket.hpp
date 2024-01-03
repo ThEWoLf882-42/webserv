@@ -6,17 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:02:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 12:37:36 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 15:04:08 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <stdint.h>
-#include <iostream>
-#include <unistd.h>
+#include <webserv.hpp>
 
 namespace wbs
 {

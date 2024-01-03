@@ -6,13 +6,15 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 12:30:33 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 15:20:44 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <Socket/Listen.hpp>
+#include <webserv.hpp>
+
+struct respond;
 
 namespace wbs
 {
@@ -25,6 +27,8 @@ namespace wbs
 		void accepter();
 		void handler();
 		void responder();
+		respond r;
+		std::string	path;
 	public:
 		Server(int, int, int, int, u_long, int);
 		~Server();

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 13:47:24 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 16:56:57 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,34 @@ void wbs::Server::accepter()
 	sockaddr_in add = sock->get_add();
 	int addl = sizeof(add);
 	nsocket = accept(sock->get_sfd(), (sockaddr *)&add, (socklen_t *)&addl);
-	read(nsocket, buff, 30000);
+	recv(nsocket, buff, 30000, 0);
 }
 
 void wbs::Server::handler()
 {
+	std::stringstream	ss(buff);
+
+	ss >> path >> path;
 	std::cout << buff << std::endl;
+	path == "/" ? path = "./index.html" : path = "." + path;
 }
 
 void wbs::Server::responder()
 {
-	respond r;
-
 	r.ver = "HTTP/1.1 ";
 	r.sta = "200 ";
 	r.stamsg = "OK\n";
-	r.type = "Content-Type: text/plain\n";
+	// r.type = "Content-Type: text/plain\n";
+	// r.type = "";
 	r.len_str = "Content-Length: ";
-	
-	std::string bo("Server this");
+
+	std::string bo;
 	std::string h;
 
-	h += r.ver + r.sta + r.stamsg + r.type + r.len_str + "11" + "\n\n" + bo;
+	// path == "./favicon.ico" ? r.type = "Content-Type: image/png\n" : r.type = "Content-Type: text/html\n";;
+	bo.clear();
+	readfile(bo, path, r);
+	h += r.ver + r.sta + r.stamsg + r.type + "\n\n" + bo;
 
 	write(nsocket, h.c_str(), h.size());
 	close(nsocket);
