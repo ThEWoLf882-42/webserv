@@ -6,13 +6,11 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 17:42:30 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 19:19:41 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
-
-//(AF_INET, SOCK_STREAM, 0, 80, INADDR_ANY, 10)
 
 wbs::Server::Server(int d, int s, int pro, int por, u_long i, int b) : sock(NULL)
 {
@@ -48,24 +46,24 @@ void wbs::Server::accepter()
 
 void wbs::Server::handler()
 {
-	std::stringstream	ss(buff);
+	std::stringstream ss(buff);
 
 	ss >> path >> path;
 	std::cout << buff << std::endl;
-	path == "/" ? path = "./index.html" : path = "." + path;
+	path == "/" ? path = "/index.html" : path;
 }
 
-void	wbs::Server::set_res()
+void wbs::Server::set_res()
 {
 	r.ver = "HTTP/1.1 ";
 	r.sta = "200 ";
-	r.stamsg = "OK\n";
+	r.stamsg = "OK\r\n";
 	r.len_str = "Content-Length: ";
 }
 
 void wbs::Server::set_mime()
 {
-	std::string	dot;
+	std::string dot;
 	std::string type;
 	std::ifstream file("./mime");
 	if (!file.is_open())
@@ -77,11 +75,10 @@ void wbs::Server::set_mime()
 	while (std::getline(file, line))
 	{
 		std::stringstream s(line);
-		
+
 		s >> type >> dot;
 		mime.insert(std::pair<std::string, std::string>(dot, type));
 	}
-	std::cout << mime.find(".bin")->second << std::endl;
 }
 
 void wbs::Server::responder()
@@ -91,8 +88,13 @@ void wbs::Server::responder()
 	std::string h;
 
 	readfile(bo, path, r);
-	h += r.ver + r.sta + r.stamsg + r.type + "\n\n" + bo;
 
+	if (path.find('.') != std::string::npos)
+		ftype = path.substr(path.find('.'), path.size());
+	else
+		ftype = ".text";
+	r.type = "content-type: " + mime.find(ftype)->second;
+	h += r.ver + r.sta + r.stamsg + r.type + "\r\n\r\n" + bo;
 	write(nsocket, h.c_str(), h.size());
 	close(nsocket);
 }

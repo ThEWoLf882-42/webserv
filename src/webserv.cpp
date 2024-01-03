@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:44:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 17:29:59 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 19:23:37 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void readfile(std::string &bo, const std::string path, respond &r)
 {
 	bo.clear();
-	std::ifstream file(path);
+	std::ifstream file("." + path);
 
 	if (!file.is_open())
 	{
 		r.sta = "404 ";
 		r.stamsg = "Not Found ";
 		r.type = "";
-		readfile(bo, "./404.html", r);
+		readfile(bo, "/404.html", r);
 		return;
 	}
 

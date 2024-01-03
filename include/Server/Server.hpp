@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 17:26:16 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/03 17:52:39 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ namespace wbs
 		void responder();
 		respond r;
 		std::string path;
+		std::string ftype;
 		std::map<std::string, std::string> mime;
 
 	public:
