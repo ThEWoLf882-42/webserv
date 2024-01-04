@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/04 13:20:16 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/04 16:26:52 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <istream>
 #include <map>
 #include <sys/select.h>
+#include <csignal>
 
 struct respond
 {
@@ -37,4 +38,4 @@ struct respond
 #include "Socket/Listen.hpp"
 #include "Server/Server.hpp"
 
-void readfile(std::string &, const std::string, respond &);
+void signalHandler(int sig);

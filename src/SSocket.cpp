@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:02:05 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 12:05:04 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/04 15:05:36 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ wbs::SSocket::SSocket(int d, int s, int pro, int por, u_long i)
 
 	sfd = socket(d, s, pro);
 	c_test(sfd);
+}
+
+wbs::SSocket::~SSocket()
+{
+	close(sfd);
 }
 
 void wbs::SSocket::c_test(int tst)

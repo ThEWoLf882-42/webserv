@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:10:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 12:01:26 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/04 15:23:56 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ wbs::Bind::Bind(int d, int s, int pro, int por, u_long i) : SSocket(d, s, pro, p
 {
 	cfd = connect();
 	c_test(cfd);
+}
+
+wbs::Bind::~Bind()
+{
+	close(cfd);
 }
 
 int wbs::Bind::connect()

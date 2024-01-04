@@ -20,6 +20,7 @@ SOURCES_LIST =	Bind.cpp \
 				Listen.cpp \
 				Server.cpp \
 				webserv.cpp \
+				signal.cpp \
 
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 

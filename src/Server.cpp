@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 21:26:55 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/04 16:20:51 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void wbs::Server::handler()
 	std::stringstream ss(buff);
 
 	ss >> path >> path;
-	std::cout << buff << std::endl;
 	path == "/" ? path = "/index.html" : path;
 }
 
@@ -59,6 +58,15 @@ void wbs::Server::set_res()
 	r.sta = "200 ";
 	r.stamsg = "OK\r\n";
 	r.len_str = "Content-Length: ";
+
+	if (path.find('.') != std::string::npos)
+		ftype = path.substr(path.find('.'), path.size());
+	else
+		ftype = ".text";
+	if (mime.find(ftype) != mime.end())
+		r.type = "content-type: " + mime.find(ftype)->second;
+	else
+		r.type = "content-type: " + mime.find(".text")->second;
 }
 
 void wbs::Server::set_mime()
@@ -84,30 +92,46 @@ void wbs::Server::set_mime()
 void wbs::Server::responder()
 {
 	set_res();
+
 	std::string bo;
 	std::string h;
 
-	readfile(bo, path, r);
+	readfile(bo);
 
-	if (path.find('.') != std::string::npos)
-		ftype = path.substr(path.find('.'), path.size());
-	else
-		ftype = ".text";
-	r.type = "content-type: " + mime.find(ftype)->second;
-	h += r.ver + r.sta + r.stamsg + r.type + "\r\n\r\n" + bo;
+	h += r.ver + r.sta + r.stamsg + r.type + "\r\n\r\n";
 	send(nsocket, h.c_str(), h.size(), 0);
+	send(nsocket, bo.c_str(), bo.size(), 0);
 	close(nsocket);
 }
 
 void wbs::Server::lanch()
 {
 	set_mime();
-	while (1)
+	while (sigst)
 	{
-		std::cout << "==== Started ====" << std::endl;
 		accepter();
 		handler();
 		responder();
-		std::cout << "==== DONE ====" << std::endl;
 	}
+}
+
+void wbs::Server::readfile(std::string &bo)
+{
+	std::ifstream file("." + path);
+	std::stringstream buf;
+
+	if (!file.is_open())
+	{
+		r.sta = "404 ";
+		r.stamsg = "Not Found ";
+		r.type = "";
+		path = "/404.html";
+		readfile(bo);
+		return;
+	}
+
+	buf << file.rdbuf();
+	bo = buf.str();
+
+	file.close();
 }

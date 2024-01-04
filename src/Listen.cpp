@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/03 12:57:53 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/04 15:03:34 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ wbs::Listen::Listen(int d, int s, int pro, int por, u_long i, int b) : Bind(d, s
 
 wbs::Listen::~Listen()
 {
+	close(list);
 }
 
 void wbs::Listen::listning()
