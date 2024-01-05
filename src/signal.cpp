@@ -6,14 +6,14 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:20:19 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/04 16:21:16 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/05 09:20:29 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-void signalHandler(int sig)
+void signalHandler(int s)
 {
-	(void)sig;
-	sigst = 0;
+	(void)s;
+	wbs::Server::sig = 0;
 }

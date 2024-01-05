@@ -6,11 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/04 16:20:51 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/05 09:20:11 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
+
+int wbs::Server::sig = 1;
 
 wbs::Server::Server(int d, int s, int pro, int por, u_long i, int b) : sock(NULL)
 {
@@ -107,8 +109,9 @@ void wbs::Server::responder()
 void wbs::Server::lanch()
 {
 	set_mime();
-	while (sigst)
+	while (sig == 1)
 	{
+		std::cout << sig << std::endl;
 		accepter();
 		handler();
 		responder();

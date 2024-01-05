@@ -6,15 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/04 15:42:44 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/05 09:19:30 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <webserv.hpp>
-
-struct respond;
 
 namespace wbs
 {
@@ -37,6 +35,8 @@ namespace wbs
 	public:
 		Server(int, int, int, int, u_long, int);
 		~Server();
+
+		static int sig;
 
 		void set_sock(Listen *);
 		void set_mime();
