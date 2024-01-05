@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/05 09:20:11 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/05 09:22:53 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ void wbs::Server::lanch()
 	set_mime();
 	while (sig == 1)
 	{
-		std::cout << sig << std::endl;
 		accepter();
 		handler();
 		responder();
