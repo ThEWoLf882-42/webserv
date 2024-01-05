@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/05 10:57:44 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/05 12:12:19 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <sstream>
 #include <istream>
 #include <map>
+#include <vector>
 #include <sys/select.h>
 #include <csignal>
 #include <fcntl.h>

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/05 09:19:30 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/05 12:19:31 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ namespace wbs
 		void set_mime();
 		void lanch();
 		void set_res();
+		void set200();
+		void set400();
+		void set500();
 		Listen *get_sock();
 	};
 }

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/05 11:02:08 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/05 15:05:56 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,27 @@ wbs::Listen *wbs::Server::get_sock()
 	return sock;
 }
 
+void wbs::Server::set200()
+{
+	r.ver = "HTTP/1.1 ";
+	r.sta = "200 ";
+	r.stamsg = "OK\r\n";
+}
+
+void wbs::Server::set400()
+{
+	r.sta = "404 ";
+	r.stamsg = "Not Found\r\n";
+	r.type = "content-type: text/html";
+}
+
+void wbs::Server::set500()
+{
+	r.sta = "500 ";
+	r.stamsg = "Internal Server Error\r\n";
+	r.type = "content-type: text/html";
+}
+
 void wbs::Server::accepter()
 {
 	sockaddr_in add = sock->get_add();
@@ -61,10 +82,7 @@ void wbs::Server::handler()
 
 void wbs::Server::set_res()
 {
-	r.ver = "HTTP/1.1 ";
-	r.sta = "200 ";
-	r.stamsg = "OK\r\n";
-	r.len_str = "Content-Length: ";
+	set200();
 
 	if (path.find('.') != std::string::npos)
 		ftype = path.substr(path.find('.'), path.size());
@@ -105,9 +123,9 @@ void wbs::Server::responder()
 
 	readfile(bo);
 
-	h += r.ver + r.sta + r.stamsg + r.type + "\r\n\r\n";
+	h += r.ver + r.sta + r.stamsg + r.type + "\r\n\r\n" + bo;
 	send(nsocket, h.c_str(), h.size(), 0);
-	send(nsocket, bo.c_str(), bo.size(), 0);
+	bo.clear();
 	close(nsocket);
 }
 
@@ -124,21 +142,36 @@ void wbs::Server::lanch()
 
 void wbs::Server::readfile(std::string &bo)
 {
-	std::ifstream file("." + path);
-	std::stringstream buf;
+	std::ifstream file("." + path, std::ios::binary);
 
 	if (!file.is_open())
 	{
-		r.sta = "404 ";
-		r.stamsg = "Not Found ";
-		r.type = "";
+		set400();
 		path = "/404.html";
 		readfile(bo);
 		return;
 	}
 
-	buf << file.rdbuf();
-	bo = buf.str();
+	try
+	{
+		file.seekg(0, std::ios::end);
+		std::streampos fileSize = file.tellg();
+		file.seekg(0, std::ios::beg);
 
-	file.close();
+		bo.reserve(fileSize);
+
+		const size_t bufferSize = 1024 * 64;
+		std::vector<char> buffer(bufferSize);
+
+		while (!file.eof())
+		{
+			file.read(buffer.data(), bufferSize);
+			bo.append(buffer.data(), file.gcount());
+		}
+	}
+	catch (const std::exception &e)
+	{
+		set500();
+		return;
+	}
 }
