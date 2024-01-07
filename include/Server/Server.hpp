@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/05 12:19:31 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/07 12:42:51 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ namespace wbs
 		int nsocket;
 		Listen *sock;
 		respond r;
+
+		fd_set fset;
+		unsigned int fsize;
+		long fmax;
+
 		std::string path;
 		std::string ftype;
 		std::map<std::string, std::string> mime;
@@ -31,6 +36,7 @@ namespace wbs
 		void handler();
 		void responder();
 		void readfile(std::string &bo);
+		void nonblock();
 
 	public:
 		Server(int, int, int, int, u_long, int);

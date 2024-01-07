@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/05 15:05:56 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/07 17:02:02 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void wbs::Server::accepter()
 	sockaddr_in add = sock->get_add();
 	int addl = sizeof(add);
 	nsocket = accept(sock->get_sfd(), (sockaddr *)&add, (socklen_t *)&addl);
-	// int flags = fcntl(nsocket, F_GETFL, 0);
-	// fcntl(nsocket, F_SETFL, flags | O_NONBLOCK);
+	// nonblock();
+	// fcntl(nsocket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
 	recv(nsocket, buff, 30000, 0);
 	std::cout << "======REQ=====\n"
 			  << buff << "======REQ END=====" << std::endl;
@@ -84,8 +84,8 @@ void wbs::Server::set_res()
 {
 	set200();
 
-	if (path.find('.') != std::string::npos)
-		ftype = path.substr(path.find('.'), path.size());
+	if (path.find_last_of('.') != std::string::npos)
+		ftype = path.substr(path.find_last_of('.'), path.size());
 	else
 		ftype = ".text";
 	if (mime.find(ftype) != mime.end())
@@ -174,4 +174,14 @@ void wbs::Server::readfile(std::string &bo)
 		set500();
 		return;
 	}
+}
+
+void wbs::Server::nonblock()
+{
+	int o;
+
+	o = fcntl(nsocket, F_GETFL);
+	sock->c_test(o);
+	o = (o | O_NONBLOCK);
+	sock->c_test(fcntl(nsocket, F_SETFL, o));
 }
