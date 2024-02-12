@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/07 17:02:02 by agimi            ###   ########.fr       */
+/*   Updated: 2024/01/23 13:02:28 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int wbs::Server::sig = 1;
 wbs::Server::Server(int d, int s, int pro, int por, u_long i, int b) : sock(NULL)
 {
 	set_sock(new Listen(d, s, pro, por, i, b));
+	FD_ZERO(&fset);
+	FD_SET(sock->get_sfd(), &fset);
 	lanch();
 }
 
@@ -65,7 +67,7 @@ void wbs::Server::accepter()
 	int addl = sizeof(add);
 	nsocket = accept(sock->get_sfd(), (sockaddr *)&add, (socklen_t *)&addl);
 	// nonblock();
-	// fcntl(nsocket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
+	fcntl(nsocket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
 	recv(nsocket, buff, 30000, 0);
 	std::cout << "======REQ=====\n"
 			  << buff << "======REQ END=====" << std::endl;
@@ -131,9 +133,13 @@ void wbs::Server::responder()
 
 void wbs::Server::lanch()
 {
+	fd_set tfset;
+
 	set_mime();
-	while (sig == 1)
+	while (sig == 1)	
 	{
+		tfset = fset;
+		sock->c_test(select(FD_SETSIZE, &tfset, NULL, NULL, NULL));
 		accepter();
 		handler();
 		responder();

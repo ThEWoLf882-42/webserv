@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/07 12:42:51 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/12 10:33:25 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ namespace wbs
 		respond r;
 
 		fd_set fset;
-		unsigned int fsize;
-		long fmax;
+		// unsigned int fsize;
+		// long fmax;
 
 		std::string path;
 		std::string ftype;

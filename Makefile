@@ -1,35 +1,16 @@
 NAME = webserv
-
 CC = c++
 FLAGS = -Wall -Wextra -Werror -std=c++98 #-fsanitize=address -g
 
-INCLUDES = -I$(HEADERS_DIRECTORY)
+INCLUDES = -I./include
 
-HEADERS_DIRECTORY = ./include/
-HEADERS_LIST =	Socket/Bind.hpp \
-				Socket/SSocket.hpp \
-				Socket/Listen.hpp \
-				Server/Server.hpp \
-				webserv.hpp \
+HEADERS = $(wildcard ./include/**/*.hpp) $(wildcard ./include/*.hpp)
 
-HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
+SOURCES = $(wildcard ./src/**/*.cpp) $(wildcard ./src/*.cpp)
 
-SOURCES_DIRECTORY = ./src/
-SOURCES_LIST =	Bind.cpp \
-				SSocket.cpp \
-				Listen.cpp \
-				Server.cpp \
-				webserv.cpp \
-				signal.cpp \
-
-SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
-
-OBJECTS_DIRECTORY = objects/
-OBJECTS_LIST = $(patsubst %.cpp, %.o, $(SOURCES_LIST))
-OBJECTS	= $(addprefix $(OBJECTS_DIRECTORY), $(OBJECTS_LIST))
+OBJECTS = $(patsubst ./src/%.cpp, ./objects/%.o, $(SOURCES))
 
 # COLORS
-
 GREEN = \033[0;32m
 RED = \033[0;31m
 RESET = \033[0m
@@ -38,29 +19,22 @@ RESET = \033[0m
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS_DIRECTORY) $(OBJECTS)
-	@$(CC) $(FLAGS) $(INCLUDES) $(OBJECTS) -o $(NAME)
+./objects/%.o: ./src/%.cpp $(HEADERS)
+	@mkdir -p $(@D)
+	@$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
+	@echo "$(GREEN).$(RESET)\c"
+
+$(NAME): $(OBJECTS)
+	@$(CC) $(FLAGS) $(INCLUDES) $^ -o $@
 	@echo "\n$(NAME): $(GREEN)$(NAME) object files were created$(RESET)"
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
 
-$(OBJECTS_DIRECTORY):
-	@mkdir -p $(OBJECTS_DIRECTORY)
-	@echo "$(NAME): $(GREEN)$(OBJECTS_DIRECTORY) was created$(RESET)"
-
-$(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.cpp $(HEADERS)
-	@$(CC) $(FLAGS) -c $(INCLUDES) $< -o $@
-	@echo "$(GREEN).$(RESET)\c"
-
 clean:
-	@rm -rf $(OBJECTS_DIRECTORY)
-	@echo "$(NAME): $(RED)$(OBJECTS_DIRECTORY) was deleted$(RESET)"
+	@rm -rf ./objects
 	@echo "$(NAME): $(RED)object files were deleted$(RESET)"
 
 fclean: clean
-	@echo "$(NAME): $(RED)$(LIBFT) was deleted$(RESET)"
 	@rm -f $(NAME)
 	@echo "$(NAME): $(RED)$(NAME) was deleted$(RESET)"
 
-re:
-	@$(MAKE) fclean
-	@$(MAKE) all
+re: fclean all
