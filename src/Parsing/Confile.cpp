@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/13 16:54:58 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/13 17:39:05 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void wbs::Confile::parse()
 	infile.seekg(0, std::ios::beg);
 	while (std::getline(infile, input))
 	{
-		std::stringstream  ss(input);
+		std::stringstream ss(input);
 		ss >> key;
 		if (key == "server")
 		{
@@ -164,7 +164,7 @@ void wbs::Confile::parse()
 			{
 				if (input.empty() || only_spaces(input))
 					continue;
-				std::istringstream  ss(input);
+				std::istringstream ss(input);
 				ss >> key;
 				if (key != "location" && key != "}" && key != ";")
 				{
@@ -178,7 +178,7 @@ void wbs::Confile::parse()
 				}
 				else if (key == "location")
 				{
-					Location    ob_location;
+					Location ob_location;
 					ob_location.path = take_path(input, key);
 					std::getline(infile, input);
 					while (std::getline(infile, input))
@@ -190,7 +190,7 @@ void wbs::Confile::parse()
 						if (key == "}")
 						{
 							object.locations.push_back(ob_location);
-							break ;
+							break;
 						}
 						while (ss >> value)
 						{
@@ -204,7 +204,7 @@ void wbs::Confile::parse()
 				else if (key == "}")
 				{
 					servers.push_back(object);
-					break ;
+					break;
 				}
 			}
 		}

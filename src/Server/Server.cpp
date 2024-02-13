@@ -6,12 +6,11 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/13 17:34:42 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 17:37:21 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
-/*
 
 wbs::Server::Server() : c()
 {
@@ -31,8 +30,6 @@ wbs::Server::Server(std::string file) : c(file)
 
 wbs::Server::~Server()
 {
-	// if (sock)
-	// 	delete sock;
 }
 
 void wbs::Server::set_sock(Listen *so)
@@ -45,27 +42,6 @@ void wbs::Server::set_sock(Listen *so)
 wbs::Listen *wbs::Server::get_sock()
 {
 	return sock;
-}
-
-void wbs::Server::set200()
-{
-	r.ver = "HTTP/1.1 ";
-	r.sta = "200 ";
-	r.stamsg = "OK\r\n";
-}
-
-void wbs::Server::set400()
-{
-	r.sta = "404 ";
-	r.stamsg = "Not Found\r\n";
-	r.type = "content-type: text/html";
-}
-
-void wbs::Server::set500()
-{
-	r.sta = "500 ";
-	r.stamsg = "Internal Server Error\r\n";
-	r.type = "content-type: text/html";
 }
 
 void wbs::Server::accepter()
@@ -87,20 +63,6 @@ void wbs::Server::handler()
 	std::memset(buff, '\0', sizeof(buff));
 	ss >> path >> path;
 	path == "/" ? path = "/index.html" : path;
-}
-
-void wbs::Server::set_res()
-{
-	set200();
-
-	if (path.find_last_of('.') != std::string::npos)
-		ftype = path.substr(path.find_last_of('.'), path.size());
-	else
-		ftype = ".text";
-	if (mime.find(ftype) != mime.end())
-		r.type = "content-type: " + mime.find(ftype)->second;
-	else
-		r.type = "content-type: " + mime.find(".text")->second;
 }
 
 void wbs::Server::set_mime()
@@ -143,7 +105,7 @@ void wbs::Server::lanch()
 	fd_set tfset;
 
 	set_mime();
-	while (sig == 1)	
+	while (sig == 1)
 	{
 		tfset = fset;
 		// sock->c_test(select(FD_SETSIZE, &tfset, NULL, NULL, NULL));
@@ -197,4 +159,4 @@ void wbs::Server::nonblock()
 	sock->c_test(o);
 	o = (o | O_NONBLOCK);
 	sock->c_test(fcntl(nsocket, F_SETFL, o));
-}*/
+}

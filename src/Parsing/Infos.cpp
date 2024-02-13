@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/13 16:51:41 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/13 17:39:31 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,27 @@
 
 wbs::Infos::Infos()
 {
-    
 }
 
-wbs::Infos::Infos(const Infos& ob) : directives(ob.directives), locations(ob.locations)
+wbs::Infos::Infos(const Infos &ob) : directives(ob.directives), locations(ob.locations)
 {
-
 }
 
-wbs::Infos& wbs::Infos::operator=(const Infos& ob)
+wbs::Infos &wbs::Infos::operator=(const Infos &ob)
 {
-    if (this != &ob)
-    {
-        directives = ob.directives;
-        locations = ob.locations;
-    }
-    return (*this);
+	if (this != &ob)
+	{
+		directives = ob.directives;
+		locations = ob.locations;
+	}
+	return (*this);
 }
 
 wbs::Infos::~Infos()
 {
-
 }
 
-void    wbs::Infos::print_directives()
+void wbs::Infos::print_directives()
 {
 	static int i = 1;
 	std::cout << "------------ Server: " << i << " --------------" << std::endl;
@@ -55,7 +52,8 @@ void    wbs::Infos::print_directives()
 			std::cout << "Values: ";
 			for (; vec != it->second.end(); vec++)
 				std::cout << "[" << *vec << "] ";
-			std::cout << std::endl << std::endl;
+			std::cout << std::endl
+					  << std::endl;
 		}
 	}
 
@@ -78,12 +76,12 @@ void    wbs::Infos::print_directives()
 				std::cout << "Values: ";
 				for (; vec != mini->second.end(); vec++)
 					std::cout << "[" << *vec << "] ";
-				std::cout << std::endl << std::endl;
+				std::cout << std::endl
+						  << std::endl;
 			}
 		}
 	}
 }
-
 
 // void	Confile::check_semicolon()
 // {
@@ -98,12 +96,12 @@ void    wbs::Infos::print_directives()
 // 	}
 // }
 
-void    wbs::Infos::end_map(std::map<std::string, std::vector<std::string> >& map)
+void wbs::Infos::end_map(std::map<std::string, std::vector<std::string> > &map)
 {
 	std::map<std::string, std::vector<std::string> >::iterator it = map.begin();
 	for (; it != map.end(); it++)
 	{
 		if (it->second.back() != ";")
 			throw std::runtime_error("ERROR ;");
-	}	
+	}
 }
