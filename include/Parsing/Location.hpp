@@ -6,16 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:15:55 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/12 10:31:29 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 09:40:49 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LOCATION_HPP
-#define LOCATION_HPP
+#pragma once
 
-#include <iostream>
-#include <vector>
-#include <map>
+#include <webserv.hpp>
 
 class Location
 {
@@ -31,5 +28,3 @@ public:
 
     void end_map_location(std::map<std::string, std::vector<std::string> > &map);
 };
-
-#endif

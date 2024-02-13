@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/12 12:02:12 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 09:54:32 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 #include <fcntl.h>
 #include <cstring>
 
+#define DEF_CONF "./config/default.conf"
+
 struct respond
 {
 	std::string ver;
@@ -36,11 +38,9 @@ struct respond
 	std::string len_str;
 };
 
+#include "Parsing/Location.hpp"
+#include "Parsing/Confile.hpp"
 #include "Socket/SSocket.hpp"
 #include "Socket/Bind.hpp"
 #include "Socket/Listen.hpp"
 #include "Server/Server.hpp"
-#include "Parsing/Confile.hpp"
-#include "Parsing/Location.hpp"
-
-void signalHandler(int sig);

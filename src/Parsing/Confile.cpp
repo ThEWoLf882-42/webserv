@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/12 12:27:28 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 09:56:17 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@
 
 /********************** Orthodox Form ****************************************/
 
-Confile::Confile() {}
+Confile::Confile()
+{
+	infile.open(DEF_CONF);
+	if (!infile.is_open())
+		throw std::runtime_error("Error occured while opening the config file.");
+}
 
-Confile& Confile::operator=(const Confile& ob)
+Confile &Confile::operator=(const Confile &ob)
 {
 	if (this != &ob)
 	{
@@ -27,12 +32,14 @@ Confile& Confile::operator=(const Confile& ob)
 	return (*this);
 }
 
-Confile::Confile(const Confile& ob)
+Confile::Confile(const Confile &ob)
 {
 	*this = ob;
 }
 
-Confile::~Confile() {}
+Confile::~Confile()
+{
+}
 
 Confile::Confile(const std::string &file)
 {
@@ -43,28 +50,28 @@ Confile::Confile(const std::string &file)
 
 /********************** Main Parsing's functions *****************************/
 
-void    Confile::parsing()
+void Confile::parsing()
 {
 	closed_brackets();
 	syntax_error();
-	std::cout << "HEHE" << std::endl;
+	// std::cout << "HEHE" << std::endl;
 	std::vector<Confile> servers = parse();
 
 	check_semicolon(servers);
-	
-	for (std::vector<Confile>::iterator it = servers.begin(); it != servers.end(); it++)
-	{
-		it->print_directives();
-	}
+
+	// for (std::vector<Confile>::iterator it = servers.begin(); it != servers.end(); it++)
+	// {
+	// 	it->print_directives();
+	// }
 	// Syntax Error
 }
 
 /********************** Parsing's functions **********************************/
 
-void    Confile::closed_brackets()
+void Confile::closed_brackets()
 {
-	int               opened = 0;
-	int               closed = 0;
+	int opened = 0;
+	int closed = 0;
 
 	while (std::getline(infile, input))
 	{
@@ -85,7 +92,7 @@ void    Confile::closed_brackets()
 		throw std::runtime_error("Brackets are not closed.");
 }
 
-void    Confile::print_directives()
+void Confile::print_directives()
 {
 	static int i = 1;
 	std::cout << "------------ Server: " << i << " --------------" << std::endl;
@@ -103,7 +110,8 @@ void    Confile::print_directives()
 			std::cout << "Values: ";
 			for (; vec != it->second.end(); vec++)
 				std::cout << "[" << *vec << "] ";
-			std::cout << std::endl << std::endl;
+			std::cout << std::endl
+					  << std::endl;
 		}
 	}
 
@@ -126,22 +134,22 @@ void    Confile::print_directives()
 				std::cout << "Values: ";
 				for (; vec != mini->second.end(); vec++)
 					std::cout << "[" << *vec << "] ";
-				std::cout << std::endl << std::endl;
+				std::cout << std::endl
+						  << std::endl;
 			}
 		}
 	}
 }
 
-int only_spaces(const std::string& str)
+int only_spaces(const std::string &str)
 {
-	int i = 0;
-	for (; str[i] == ' '; i++) {}
-	if (str[i] == '\0')
-		return (1);
-	return (0);
+	for (size_t i = 0; i < str.length(); ++i)
+		if (str[i] != ' ')
+			return 0;
+	return 1;
 }
 
-std::vector<Confile>   Confile::parse()
+std::vector<Confile> Confile::parse()
 {
 	std::vector<Confile> servers;
 	std::string key;
@@ -152,7 +160,7 @@ std::vector<Confile>   Confile::parse()
 	infile.seekg(0, std::ios::beg);
 	while (std::getline(infile, input))
 	{
-		std::stringstream  ss(input);
+		std::stringstream ss(input);
 		ss >> key;
 		if (key == "server")
 		{
@@ -163,7 +171,7 @@ std::vector<Confile>   Confile::parse()
 			{
 				if (input.empty() || only_spaces(input))
 					continue;
-				std::istringstream  ss(input);
+				std::istringstream ss(input);
 				ss >> key;
 				if (key != "location" && key != "}" && key != ";")
 				{
@@ -177,7 +185,7 @@ std::vector<Confile>   Confile::parse()
 				}
 				else if (key == "location")
 				{
-					Location    ob_location;
+					Location ob_location;
 					ob_location.path = take_path(input, key);
 					std::getline(infile, input);
 					while (std::getline(infile, input))
@@ -189,7 +197,7 @@ std::vector<Confile>   Confile::parse()
 						if (key == "}")
 						{
 							object.locations.push_back(ob_location);
-							break ;
+							break;
 						}
 						while (ss >> value)
 						{
@@ -203,7 +211,7 @@ std::vector<Confile>   Confile::parse()
 				else if (key == "}")
 				{
 					servers.push_back(object);
-					break ;
+					break;
 				}
 			}
 		}
@@ -213,11 +221,11 @@ std::vector<Confile>   Confile::parse()
 	return (servers);
 }
 
-const std::string	Confile::take_path(const std::string& input, const std::string& key)
+const std::string Confile::take_path(const std::string &input, const std::string &key)
 {
-	std::stringstream	ss(input);
-	std::string			value;
-	int					count = 0;
+	std::stringstream ss(input);
+	std::string value;
+	int count = 0;
 
 	while (ss >> value)
 		count++;
@@ -226,47 +234,40 @@ const std::string	Confile::take_path(const std::string& input, const std::string
 		if (count != 2)
 			throw std::runtime_error("Location have more than one argument.");
 	}
-	else
-	{
-		if (count != 1)
-			throw std::runtime_error("Server shouldn't have an argument.");
-	}
+	else if (count != 1)
+		throw std::runtime_error("Server shouldn't have an argument.");
 	return (value);
 }
 
-void	Confile::check_semicolon(std::vector<Confile>& servers)
+void Confile::check_semicolon(std::vector<Confile> &servers)
 {
 	std::vector<Confile>::iterator it = servers.begin();
 	for (; it != servers.end(); it++)
 	{
 		it->end_map(it->directives);
 		for (std::vector<Location>::iterator loc = it->locations.begin(); loc != it->locations.end(); loc++)
-		{
 			loc->end_map_location(loc->params);
-		}
 	}
 }
 
-void    Confile::end_map(std::map<std::string, std::vector<std::string> >& map)
+void Confile::end_map(std::map<std::string, std::vector<std::string> > &map)
 {
 	std::map<std::string, std::vector<std::string> >::iterator it = map.begin();
 	for (; it != map.end(); it++)
-	{
 		if (it->second.back() != ";")
 			throw std::runtime_error("ERROR ;");
-	}	
 }
 
-void	Confile::syntax_error()
+void Confile::syntax_error()
 {
-	std::string	key;
-	std::string	value;
+	std::string key;
+	std::string value;
 
 	infile.clear();
 	infile.seekg(0, std::ios::beg);
 	while (std::getline(infile, input))
 	{
-		std::stringstream  ss(input);
+		std::stringstream ss(input);
 		ss >> key;
 		if (key == "server")
 		{
@@ -277,7 +278,7 @@ void	Confile::syntax_error()
 			{
 				if (input.empty() || only_spaces(input))
 					continue;
-				std::istringstream  ss(input);
+				std::istringstream ss(input);
 				ss >> key;
 				if (key != "location" && key != "}" && key != ";")
 					count_semicolons(input, 1);
@@ -296,7 +297,7 @@ void	Confile::syntax_error()
 						std::istringstream ss(input);
 						ss >> key;
 						if (key == "}")
-							break ;
+							break;
 						else if (key == ";")
 							throw std::runtime_error("; Should not be in a single line");
 						count_semicolons(input, 1);
@@ -305,19 +306,19 @@ void	Confile::syntax_error()
 				else if (key == ";")
 					throw std::runtime_error("; Should not be in a single line");
 				else if (key == "}")
-					break ;
+					break;
 			}
 		}
 		else if (input.empty() || only_spaces(input))
-					continue;
+			continue;
 		else
-			throw (std::runtime_error("Garbagge"));
+			throw(std::runtime_error("Garbagge"));
 	}
 }
 
-void	Confile::count_semicolons(const std::string& str, int i)
+void Confile::count_semicolons(const std::string &str, int i)
 {
-	int	count = std::count(str.begin(), str.end(), ';');
+	int count = std::count(str.begin(), str.end(), ';');
 	if (count != i)
 		throw std::runtime_error("It should have only one ;");
 }

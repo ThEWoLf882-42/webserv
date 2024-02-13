@@ -6,20 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:14 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/12 10:31:47 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 09:40:26 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONFILE_HPP
-#define CONFILE_HPP
+#pragma once
 
-#include <iostream>
-#include <fstream>
-#include <map>
-#include <vector>
-#include <sstream>
-
-#include "Location.hpp"
+#include <webserv.hpp>
 
 class Confile
 {
@@ -55,5 +48,3 @@ public:
     void end_map(std::map<std::string, std::vector<std::string> > &map);
     void count_semicolons(const std::string &str, int i);
 };
-
-#endif
