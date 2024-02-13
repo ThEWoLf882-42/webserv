@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/13 09:34:36 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 10:17:08 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,17 @@
 
 int wbs::Server::sig = 1;
 
-wbs::Server::Server(int d, int s, int pro, int por, u_long i, int b) : sock(NULL)
+wbs::Server::Server() : c()
 {
-	set_sock(new Listen(d, s, pro, por, i, b));
+	// set_sock(new Listen(d, s, pro, por, i, b));
+	FD_ZERO(&fset);
+	FD_SET(sock->get_sfd(), &fset);
+	lanch();
+}
+
+wbs::Server::Server(std::string file) : c(file)
+{
+	// set_sock(new Listen(d, s, pro, por, i, b));
 	FD_ZERO(&fset);
 	FD_SET(sock->get_sfd(), &fset);
 	lanch();
@@ -24,8 +32,8 @@ wbs::Server::Server(int d, int s, int pro, int por, u_long i, int b) : sock(NULL
 
 wbs::Server::~Server()
 {
-	if (sock)
-		delete sock;
+	// if (sock)
+	// 	delete sock;
 }
 
 void wbs::Server::set_sock(Listen *so)

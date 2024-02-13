@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/12 10:33:25 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 10:15:36 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ namespace wbs
 	class Server
 	{
 	private:
+		std::vector<Listen> sock;
+		Confile c;
 		char buff[30000];
 		int nsocket;
-		Listen *sock;
+		// Listen *sock;
 		respond r;
 
 		fd_set fset;
@@ -39,7 +41,8 @@ namespace wbs
 		void nonblock();
 
 	public:
-		Server(int, int, int, int, u_long, int);
+		Server();
+		Server(std::string)
 		~Server();
 
 		static int sig;
