@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/01/23 13:02:28 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 09:34:36 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void wbs::Server::set_mime()
 {
 	std::string dot;
 	std::string type;
-	std::ifstream file("./mime");
+	std::ifstream file("./config/mime");
 	if (!file.is_open())
 	{
 		std::cerr << "mime are zooooot" << std::endl;
