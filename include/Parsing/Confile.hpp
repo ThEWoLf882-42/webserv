@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:14 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/13 10:02:41 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 16:57:33 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <webserv.hpp>
+#include "Infos.hpp"
 
 namespace wbs
 {
     class Confile
     {
     private:
-        std::map<std::string, std::vector<std::string> > directives;
-        std::vector<Location> locations;
+        std::vector<Infos> servers;
 
         std::ifstream infile;
         std::string input;
@@ -38,16 +38,12 @@ namespace wbs
         // Main parsing' functions
         void closed_brackets();
 
-        // Print content of directives attribute
-        void print_directives();
-
         // Parse
-        std::vector<Confile> parse();
+        void parse();
         void syntax_error();
 
         const std::string take_path(const std::string &input, const std::string &key);
-        void check_semicolon(std::vector<Confile> &servers);
-        void end_map(std::map<std::string, std::vector<std::string> > &map);
+        void check_semicolon();
         void count_semicolons(const std::string &str, int i);
     };
 }

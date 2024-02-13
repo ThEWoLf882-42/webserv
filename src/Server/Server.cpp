@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/13 10:17:08 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 16:34:30 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
-
+/*
 int wbs::Server::sig = 1;
 
 wbs::Server::Server() : c()
@@ -147,7 +147,7 @@ void wbs::Server::lanch()
 	while (sig == 1)	
 	{
 		tfset = fset;
-		sock->c_test(select(FD_SETSIZE, &tfset, NULL, NULL, NULL));
+		// sock->c_test(select(FD_SETSIZE, &tfset, NULL, NULL, NULL));
 		accepter();
 		handler();
 		responder();
@@ -198,4 +198,4 @@ void wbs::Server::nonblock()
 	sock->c_test(o);
 	o = (o | O_NONBLOCK);
 	sock->c_test(fcntl(nsocket, F_SETFL, o));
-}
+}*/
