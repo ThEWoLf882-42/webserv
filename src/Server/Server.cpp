@@ -6,13 +6,11 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/13 10:17:08 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 11:39:33 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
-
-int wbs::Server::sig = 1;
 
 wbs::Server::Server() : c()
 {
