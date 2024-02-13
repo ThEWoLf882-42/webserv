@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Location.hpp                                       :+:      :+:    :+:   */
+/*   Infos.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/04 13:15:55 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/13 16:31:43 by mel-moun         ###   ########.fr       */
+/*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
+/*   Updated: 2024/02/13 16:57:23 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,19 @@
 
 namespace wbs
 {
-    class Location
+    class Infos
     {
     public:
-        std::string path;
-        std::map<std::string, std::vector<std::string> > params;
+        std::map<std::string, std::vector<std::string> > directives;
+        std::vector<Location> locations;
 
     public:
-        Location();
-        Location(const Location &ob);
-        Location &operator=(const Location &ob);
-        ~Location();
+        Infos();
+        Infos(const Infos& ob);
+        Infos& operator=(const Infos& ob);
+        ~Infos();
 
-        void end_map_location(std::map<std::string, std::vector<std::string> > &map);
+        void    print_directives();
+        void    end_map(std::map<std::string, std::vector<std::string> >& map);
     };
 }

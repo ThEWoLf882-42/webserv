@@ -6,11 +6,12 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/13 11:39:33 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 17:34:42 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
+/*
 
 wbs::Server::Server() : c()
 {
@@ -145,7 +146,7 @@ void wbs::Server::lanch()
 	while (sig == 1)	
 	{
 		tfset = fset;
-		sock->c_test(select(FD_SETSIZE, &tfset, NULL, NULL, NULL));
+		// sock->c_test(select(FD_SETSIZE, &tfset, NULL, NULL, NULL));
 		accepter();
 		handler();
 		responder();
@@ -196,4 +197,4 @@ void wbs::Server::nonblock()
 	sock->c_test(o);
 	o = (o | O_NONBLOCK);
 	sock->c_test(fcntl(nsocket, F_SETFL, o));
-}
+}*/

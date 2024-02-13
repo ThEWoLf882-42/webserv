@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/13 10:15:36 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/13 16:30:36 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace wbs
 
 	public:
 		Server();
-		Server(std::string)
+		Server(std::string);
 		~Server();
 
 		static int sig;
