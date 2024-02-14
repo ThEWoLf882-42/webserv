@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/13 17:51:03 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:54:14 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@
 #include <cstring>
 
 #define DEF_CONF "./config/default.conf"
+
+struct hopo
+{
+	unsigned int ho;
+	unsigned int po;
+};
 
 struct respond
 {

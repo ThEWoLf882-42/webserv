@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:14 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 11:56:14 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 14:00:32 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ namespace wbs
 	{
 	private:
 		std::vector<Infos> servers;
+		std::vector<hopo> hop;
 
 		std::ifstream infile;
 		std::string input;
@@ -31,6 +32,8 @@ namespace wbs
 		Confile(const Confile &);
 		~Confile();
 
+		std::vector<hopo> get_hop();
+		
 		// Main parsing
 		void parsing();
 
@@ -44,5 +47,7 @@ namespace wbs
 		const std::string take_path(const std::string &, const std::string &);
 		void check_semicolon();
 		void count_semicolons(const std::string &, int);
+
+		void the_list();
 	};
 }

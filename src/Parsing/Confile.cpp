@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 12:07:42 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 14:00:22 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ wbs::Confile::~Confile()
 {
 }
 
+std::vector<hopo> wbs::Confile::get_hop()
+{
+	return hop;
+}
+
 /********************** Main Parsing's functions *****************************/
 
 void wbs::Confile::parsing()
@@ -58,6 +63,7 @@ void wbs::Confile::parsing()
 	check_semicolon();
 	for (std::vector<Infos>::iterator it = servers.begin(); it != servers.end(); it++)
 		it->port_host_set();
+	the_list();
 }
 
 /********************** Parsing's functions **********************************/
@@ -315,4 +321,25 @@ void wbs::Confile::count_semicolons(const std::string &str, int i)
 	int count = std::count(str.begin(), str.end(), ';');
 	if (count != i)
 		throw std::runtime_error("It should have only one ;");
+}
+
+void wbs::Confile::the_list()
+{
+	for (std::vector<Infos>::iterator hoit = servers.begin(); hoit != servers.end(); hoit++)
+	{
+		for (std::vector<unsigned int>::iterator poit = hoit->ports.begin(); poit != hoit->ports.end(); poit++)
+		{
+			hopo hp;
+			hp.ho = hoit->host;
+			hp.po = *poit;
+			hop.push_back(hp);
+		}
+	}
+	int i = 0;
+	for (std::vector<hopo>::iterator it = hop.begin(); it != hop.end(); it++)
+	{
+		std::cout << "number: " << ++i << std::endl
+				  << "	host: " << it->ho << std::endl
+				  << "	port: " << it->po << std::endl;
+	}
 }
