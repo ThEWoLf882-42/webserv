@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 14:23:27 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 14:41:38 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,15 @@ wbs::Server::Server(const std::string &file) : c(file)
 
 wbs::Server::~Server()
 {
-	// for (std::vector<Listen *>::iterator it = sock.begin(); it != sock.end(); it++)
-	// 	delete it;
-		
+	for (std::vector<Listen *>::iterator it = sock.begin(); it != sock.end(); it++)
+		delete *it;
 }
 
-void	wbs::Server::set_socks(std::vector<hopo> hop)
+void wbs::Server::set_socks(std::vector<hopo> hop)
 {
 	nsocket = hop.size();
 	for (std::vector<hopo>::iterator it = hop.begin(); it != hop.end(); it++)
-		sock.push_back(new Listen(AF_INET, SOCK_STREAM, 0, it->po, it->ho, 10));
+		sock.push_back(new Listen(AF_INET, SOCK_STREAM, 0, it->po, it->ho, 1));
 }
 
 // void wbs::Server::accepter()
