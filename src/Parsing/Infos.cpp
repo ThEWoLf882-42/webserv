@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 13:15:35 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 14:49:01 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,9 @@ unsigned int wbs::Infos::stip(const std::string &str)
 			sep = str.length();
 
 		std::string octetStr = str.substr(start, sep - start);
-		int octetValue = atoi(octetStr.c_str());
-
-		if (octetValue < 0 || octetValue > 255)
+		std::istringstream iss(octetStr);
+		int octetValue;
+		if (!(iss >> octetValue) || octetValue < 0 || octetValue > 255)
 			throw std::invalid_argument("Invalid IP address");
 
 		ip |= (octetValue << ((3 - i) * 8));

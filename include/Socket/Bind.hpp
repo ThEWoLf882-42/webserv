@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 09:51:23 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 12:33:30 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 14:52:06 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace wbs
 
 	public:
 		~Bind();
-		Bind(int d, int s, int pro, int por, u_long i);
+		Bind(int d, int s, int pro, int por, unsigned int i);
 		int connect();
 	};
 }

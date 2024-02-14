@@ -6,13 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:10:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 12:33:35 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 15:04:55 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::Bind::Bind(int d, int s, int pro, int por, u_long i) : SSocket(d, s, pro, por, i)
+wbs::Bind::Bind(int d, int s, int pro, int por, unsigned int i) : SSocket(d, s, pro, por, i)
 {
 	cfd = connect();
 	c_test(cfd);

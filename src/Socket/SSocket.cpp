@@ -6,13 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:02:05 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 12:34:29 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 15:05:01 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::SSocket::SSocket(int d, int s, int pro, int por, u_long i)
+wbs::SSocket::SSocket(int d, int s, int pro, int por, unsigned int i)
 {
 	int reuse = 1;
 	add.sin_family = d;
