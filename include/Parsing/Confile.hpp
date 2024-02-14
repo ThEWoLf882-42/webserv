@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:14 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/13 17:42:45 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 11:56:14 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ namespace wbs
 
 	public:
 		Confile();
-		Confile(const std::string &file);
-		Confile &operator=(const Confile &ob);
-		Confile(const Confile &ob);
+		Confile(const std::string &);
+		Confile &operator=(const Confile &);
+		Confile(const Confile &);
 		~Confile();
 
 		// Main parsing
@@ -41,8 +41,8 @@ namespace wbs
 		void parse();
 		void syntax_error();
 
-		const std::string take_path(const std::string &input, const std::string &key);
+		const std::string take_path(const std::string &, const std::string &);
 		void check_semicolon();
-		void count_semicolons(const std::string &str, int i);
+		void count_semicolons(const std::string &, int);
 	};
 }

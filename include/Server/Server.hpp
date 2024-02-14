@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/13 16:30:36 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/14 12:10:19 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,23 @@ namespace wbs
 		void accepter();
 		void handler();
 		void responder();
-		void readfile(std::string &bo);
+		void readfile(std::string &);
 		void nonblock();
 
 	public:
 		Server();
-		Server(std::string);
+		Server(const std::string &);
+		Server(const Server &);
+		Server &operator=(const Server &);
 		~Server();
 
 		static int sig;
 
-		void set_sock(Listen *);
 		void set_mime();
 		void lanch();
 		void set_res();
 		void set200();
 		void set400();
 		void set500();
-		Listen *get_sock();
 	};
 }

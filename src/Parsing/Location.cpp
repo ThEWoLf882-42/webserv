@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:18:32 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/13 17:48:43 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:07:51 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ wbs::Location &wbs::Location::operator=(const Location &ob)
 		this->path = ob.path;
 		this->params = ob.params;
 	}
-	return (*this);
+	return *this;
 }
 
 void wbs::Location::end_map_location(std::map<std::string, std::vector<std::string> > &map)

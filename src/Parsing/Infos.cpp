@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 11:43:08 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:07:46 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ wbs::Infos &wbs::Infos::operator=(const Infos &ob)
 		directives = ob.directives;
 		locations = ob.locations;
 	}
-	return (*this);
+	return *this;
 }
 
 wbs::Infos::~Infos()
@@ -146,7 +146,7 @@ void wbs::Infos::port_host_set()
 		host = stip(it->second[0]);
 	else
 		host = INADDR_ANY;
-	std::cout << "host: " << host << std::endl;
+	// std::cout << "host: " << host << std::endl;
 
 	it = directives.find("listen");
 	if (it != directives.end())
@@ -158,7 +158,7 @@ void wbs::Infos::port_host_set()
 			std::stringstream s(*itv);
 
 			s >> por;
-			std::cout << "	port: " << por << std::endl;
+			// std::cout << "	port: " << por << std::endl;
 			ports.push_back(por);
 		}
 	}

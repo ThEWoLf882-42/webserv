@@ -6,43 +6,43 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 09:42:37 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:21:10 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-// wbs::Server::Server() : c()
-// {
-// 	// set_sock(new Listen(d, s, pro, por, i, b));
-// 	FD_ZERO(&fset);
-// 	FD_SET(sock->get_sfd(), &fset);
-// 	lanch();
-// }
+wbs::Server::Server() : c()
+{
+}
 
-// wbs::Server::Server(std::string file) : c(file)
-// {
-// 	// set_sock(new Listen(d, s, pro, por, i, b));
-// 	FD_ZERO(&fset);
-// 	FD_SET(sock->get_sfd(), &fset);
-// 	lanch();
-// }
+wbs::Server::Server(const std::string &file) : c(file)
+{
+}
 
-// wbs::Server::~Server()
-// {
-// }
+wbs::Server::Server(const Server &s)
+{
+	*this = s;
+}
 
-// void wbs::Server::set_sock(Listen *so)
-// {
-// 	if (sock)
-// 		delete sock;
-// 	sock = so;
-// }
+wbs::Server &wbs::Server::operator=(const Server &s)
+{
+	if (this != &s)
+	{
+		sock = s.sock;
+		c = s.c;
+		nsocket = s.nsocket;
+		r = s.r;
+		fset = s.fset;
+		ftype = s.ftype;
+		mime = s.mime;
+	}
+	return *this;
+}
 
-// wbs::Listen *wbs::Server::get_sock()
-// {
-// 	return sock;
-// }
+wbs::Server::~Server()
+{
+}
 
 // void wbs::Server::accepter()
 // {

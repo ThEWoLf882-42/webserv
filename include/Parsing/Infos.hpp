@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 11:32:39 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 11:56:00 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ namespace wbs
 
 	public:
 		Infos();
-		Infos(const Infos &ob);
-		Infos &operator=(const Infos &ob);
+		Infos(const Infos &);
+		Infos &operator=(const Infos &);
 		~Infos();
 
 		void print_directives();
-		void end_map(std::map<std::string, std::vector<std::string> > &map);
+		void end_map(std::map<std::string, std::vector<std::string> > &);
 		void port_host_set();
 		unsigned int stip(const std::string &);
 	};

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:02:05 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 11:23:53 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:18:36 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,21 @@ wbs::SSocket::SSocket(int d, int s, int pro, int por, u_long i)
 	sfd = socket(d, s, pro);
 	c_test(sfd);
 	c_test(setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)));
+}
+
+wbs::SSocket::SSocket(const SSocket &ss)
+{
+	*this = ss;
+}
+
+wbs::SSocket &wbs::SSocket::operator=(const SSocket &ss)
+{
+	if (this != &ss)
+	{
+		sfd = ss.sfd;
+		add = ss.add;
+	}
+	return *this;
 }
 
 wbs::SSocket::~SSocket()

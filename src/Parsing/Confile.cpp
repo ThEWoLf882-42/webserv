@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 10:31:17 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:07:42 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ wbs::Confile &wbs::Confile::operator=(const Confile &ob)
 	{
 		input = ob.input;
 	}
-	return (*this);
+	return *this;
 }
 
 wbs::Confile::Confile(const Confile &ob)
@@ -228,7 +228,7 @@ const std::string wbs::Confile::take_path(const std::string &input, const std::s
 	}
 	else if (count != 1)
 		throw std::runtime_error("Server shouldn't have an argument.");
-	return (value);
+	return value;
 }
 
 void wbs::Confile::check_semicolon()
