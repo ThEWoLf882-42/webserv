@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:44:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/13 17:38:46 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 10:19:02 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,21 @@
 
 int main(int ac, char **av)
 {
-	// if (2 == ac)
-	// 	wbs::Server s(av[1]);
-	// else
-	// 	wbs::Server s;
 	try
 	{
-		if (ac > 2)
-			throw std::runtime_error("It must be 2 arguments.");
-		wbs::Confile ob(av[1]);
-		ob.parsing();
+		if (ac != 2 && ac != 1)
+			throw std::runtime_error("Invalid number of arguments.");
+
+		if (ac == 2)
+			wbs::Confile ob(av[1]);
+		else
+			wbs::Confile ob;
 	}
 	catch (const std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
+		return 1;
 	}
+
+	return 0;
 }

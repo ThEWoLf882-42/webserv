@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/13 17:39:31 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 10:31:33 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,30 @@ void wbs::Infos::end_map(std::map<std::string, std::vector<std::string> > &map)
 	{
 		if (it->second.back() != ";")
 			throw std::runtime_error("ERROR ;");
+	}
+}
+
+void wbs::Infos::port_host_set()
+{
+	std::map<std::string, std::vector<std::string> >::iterator it = directives.find("server_name");
+	std::vector<std::string> d;
+
+	if (it != directives.end())
+		host = it->second[0];
+	// std::cout << "server_name: " << host << std::endl;
+
+	it = directives.find("listen");
+	if (it != directives.end())
+	{
+		d = it->second;
+		for (std::vector<std::string>::iterator itv = d.begin(); itv != d.end() - 1; itv++)
+		{
+			unsigned int por;
+			std::stringstream s(*itv);
+
+			s >> por;
+			// std::cout << "	port: " << por << std::endl;
+			ports.push_back(por);
+		}
 	}
 }

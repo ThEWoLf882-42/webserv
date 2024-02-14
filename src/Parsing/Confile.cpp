@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/13 17:39:05 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 10:31:17 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@ wbs::Confile::Confile()
 	infile.open(DEF_CONF);
 	if (!infile.is_open())
 		throw std::runtime_error("Error occured while opening the config file.");
+	parsing();
+}
+
+wbs::Confile::Confile(const std::string &file)
+{
+	infile.open(file);
+	if (!infile.is_open())
+		throw std::runtime_error("Error occured while opening the config file.");
+	parsing();
 }
 
 wbs::Confile &wbs::Confile::operator=(const Confile &ob)
@@ -39,13 +48,6 @@ wbs::Confile::~Confile()
 {
 }
 
-wbs::Confile::Confile(const std::string &file)
-{
-	infile.open(file);
-	if (!infile.is_open())
-		throw std::runtime_error("Error occured while opening the config file.");
-}
-
 /********************** Main Parsing's functions *****************************/
 
 void wbs::Confile::parsing()
@@ -55,9 +57,7 @@ void wbs::Confile::parsing()
 	parse();
 	check_semicolon();
 	for (std::vector<Infos>::iterator it = servers.begin(); it != servers.end(); it++)
-	{
-		it->print_directives();
-	}
+		it->port_host_set();
 }
 
 /********************** Parsing's functions **********************************/

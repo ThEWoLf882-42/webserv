@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/13 17:46:03 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 10:03:50 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ namespace wbs
 		std::map<std::string, std::vector<std::string> > directives;
 		std::vector<Location> locations;
 
+		std::string host;
+		std::vector<unsigned int> ports;
+
 	public:
 		Infos();
 		Infos(const Infos &ob);
@@ -30,5 +33,6 @@ namespace wbs
 
 		void print_directives();
 		void end_map(std::map<std::string, std::vector<std::string> > &map);
+		void port_host_set();
 	};
 }
