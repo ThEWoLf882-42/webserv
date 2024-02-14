@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 14:28:10 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 18:02:38 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,16 @@ namespace wbs
 	class Server
 	{
 	private:
-		std::vector<Listen *> sock;
+		std::vector<Listen *> serv;
 		std::map<std::string, std::string> mime;
 		Confile c;
-		respond r;
+		
 		fd_set fset;
-		char buff[30000];
-		int nsocket;
-
-		// unsigned int fsize;
-		// long fmax;
+		
+		unsigned int fdsize;
+		long fdmax;
 
 		void readfile(std::string &);
-
 
 		Server(const Server &);
 		Server &operator=(const Server &);
@@ -42,6 +39,7 @@ namespace wbs
 		~Server();
 
 		void set_socks(std::vector<hopo> hop);
+		void accept(fd_set &, fd_set &);
 
 		void set_mime();
 	};

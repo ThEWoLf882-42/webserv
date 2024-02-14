@@ -6,105 +6,86 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 14:58:27 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 18:02:19 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::Server::Server() : c()
+wbs::Server::Server() : c(), fdmax(0)
 {
 	set_socks(c.get_hop());
 }
 
-wbs::Server::Server(const std::string &file) : c(file)
+wbs::Server::Server(const std::string &file) : c(file), fdmax(0)
 {
 	set_socks(c.get_hop());
 }
 
 wbs::Server::~Server()
 {
-	for (std::vector<Listen *>::iterator it = sock.begin(); it != sock.end(); it++)
+	for (std::vector<Listen *>::iterator it = serv.begin(); it != serv.end(); it++)
 		delete *it;
 }
 
 void wbs::Server::set_socks(std::vector<hopo> hop)
 {
-	nsocket = hop.size();
+	FD_ZERO(&fset);
 	for (std::vector<hopo>::iterator it = hop.begin(); it != hop.end(); it++)
-		sock.push_back(new Listen(AF_INET, SOCK_STREAM, 0, it->po, it->ho, 5));
+		serv.push_back(new Listen(AF_INET, SOCK_STREAM, 0, it->po, it->ho, 10));
+	fdsize = hop.size();
+	for (std::vector<Listen *>::iterator it = serv.begin(); it != serv.end(); it++)
+	{
+		long fd = (*it)->get_sfd();
+		FD_SET(fd, &fset);
+		if (fd > fdmax)
+			fdmax = fd;
+	}
 }
 
-// void wbs::Server::accepter()
-// {
-// 	sockaddr_in add = sock->get_add();
-// 	int addl = sizeof(add);
-// 	nsocket = accept(sock->get_sfd(), (sockaddr *)&add, (socklen_t *)&addl);
-// 	// nonblock();
-// 	fcntl(nsocket, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
-// 	recv(nsocket, buff, 30000, 0);
-// 	std::cout << "======REQ=====\n"
-// 			  << buff << "======REQ END=====" << std::endl;
-// }
+void wbs::Server::accept(fd_set &reads, fd_set &writs)
+{
+	for (std::vector<Listen *>::iterator it = serv.begin(); it != serv.end(); it++)
+	{
+		long soc;
+		long fd = (*it)->get_sfd();
 
-// void wbs::Server::handler()
-// {
-// 	std::stringstream ss(buff);
+		if (FD_ISSET(fd, &reads))
+		{
+			soc = ::accept(fd, NULL, NULL);
+			if (soc == -1)
+				std::cerr << "Could not create socket. " << strerror(errno) << std::endl;
+			else
+			{
+				fcntl(soc, F_SETFL, O_NONBLOCK);
+				FD_SET(soc, &fset);
+				if (soc > fdmax)
+					fdmax = soc;
+			}
+			break;
+		}
+	}
+}
 
-// 	std::memset(buff, '\0', sizeof(buff));
-// 	ss >> path >> path;
-// 	path == "/" ? path = "/index.html" : path;
-// }
+void wbs::Server::set_mime()
+{
+	std::string dot;
+	std::string type;
+	std::ifstream file("./config/mime");
+	if (!file.is_open())
+	{
+		std::cerr << "mime are zooooot" << std::endl;
+		return;
+	}
+	std::string line;
+	while (std::getline(file, line))
+	{
+		std::stringstream s(line);
 
-// void wbs::Server::set_mime()
-// {
-// 	std::string dot;
-// 	std::string type;
-// 	std::ifstream file("./config/mime");
-// 	if (!file.is_open())
-// 	{
-// 		std::cerr << "mime are zooooot" << std::endl;
-// 		return;
-// 	}
-// 	std::string line;
-// 	while (std::getline(file, line))
-// 	{
-// 		std::stringstream s(line);
-
-// 		s >> type >> dot;
-// 		mime.insert(std::pair<std::string, std::string>(dot, type));
-// 	}
-// }
-
-// void wbs::Server::responder()
-// {
-// 	set_res();
-
-// 	std::string bo;
-// 	std::string h;
-
-// 	readfile(bo);
-
-// 	h += r.ver + r.sta + r.stamsg + r.type + "\r\n\r\n" + bo;
-// 	send(nsocket, h.c_str(), h.size(), 0);
-// 	bo.clear();
-// 	close(nsocket);
-// }
-
-// void wbs::Server::lanch()
-// {
-// 	fd_set tfset;
-
-// 	set_mime();
-// 	while (sig == 1)
-// 	{
-// 		tfset = fset;
-// 		// sock->c_test(select(FD_SETSIZE, &tfset, NULL, NULL, NULL));
-// 		accepter();
-// 		handler();
-// 		responder();
-// 	}
-// }
+		s >> type >> dot;
+		mime.insert(std::pair<std::string, std::string>(dot, type));
+	}
+}
 
 // void wbs::Server::readfile(std::string &bo)
 // {
@@ -140,14 +121,4 @@ void wbs::Server::set_socks(std::vector<hopo> hop)
 // 		set500();
 // 		return;
 // 	}
-// }
-
-// void wbs::Server::nonblock()
-// {
-// 	int o;
-
-// 	o = fcntl(nsocket, F_GETFL);
-// 	sock->c_test(o);
-// 	o = (o | O_NONBLOCK);
-// 	sock->c_test(fcntl(nsocket, F_SETFL, o));
 // }

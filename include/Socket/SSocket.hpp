@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:02:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 14:52:06 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 17:45:34 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ namespace wbs
 	class SSocket
 	{
 	private:
-		int sfd;
+		long sfd;
 		struct sockaddr_in add;
 		SSocket();
 		SSocket(const SSocket &);
@@ -33,6 +33,6 @@ namespace wbs
 		void c_test(int);
 
 		sockaddr_in get_add();
-		int get_sfd();
+		long get_sfd();
 	};
 }
