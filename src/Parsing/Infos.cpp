@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 10:31:33 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 11:43:08 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,47 @@ void wbs::Infos::end_map(std::map<std::string, std::vector<std::string> > &map)
 	}
 }
 
+unsigned int wbs::Infos::stip(const std::string &str)
+{
+	if (str == "localhost")
+		return 0x7F000001;
+
+	unsigned int ip = 0;
+	size_t start = 0;
+
+	for (size_t i = 0; i < 4; ++i)
+	{
+		size_t sep = str.find('.', start);
+		if (sep == std::string::npos)
+			sep = str.length();
+
+		std::string octetStr = str.substr(start, sep - start);
+		int octetValue = atoi(octetStr.c_str());
+
+		if (octetValue < 0 || octetValue > 255)
+			throw std::invalid_argument("Invalid IP address");
+
+		ip |= (octetValue << ((3 - i) * 8));
+
+		if (sep == str.length())
+			break;
+
+		start = sep + 1;
+	}
+
+	return ip;
+}
+
 void wbs::Infos::port_host_set()
 {
-	std::map<std::string, std::vector<std::string> >::iterator it = directives.find("server_name");
+	std::map<std::string, std::vector<std::string> >::iterator it = directives.find("host");
 	std::vector<std::string> d;
 
 	if (it != directives.end())
-		host = it->second[0];
-	// std::cout << "server_name: " << host << std::endl;
+		host = stip(it->second[0]);
+	else
+		host = INADDR_ANY;
+	std::cout << "host: " << host << std::endl;
 
 	it = directives.find("listen");
 	if (it != directives.end())
@@ -125,7 +158,7 @@ void wbs::Infos::port_host_set()
 			std::stringstream s(*itv);
 
 			s >> por;
-			// std::cout << "	port: " << por << std::endl;
+			std::cout << "	port: " << por << std::endl;
 			ports.push_back(por);
 		}
 	}
