@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 12:10:19 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:37:36 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,12 @@ namespace wbs
 		void readfile(std::string &);
 		void nonblock();
 
+		Server(const Server &);
+		Server &operator=(const Server &);
+
 	public:
 		Server();
 		Server(const std::string &);
-		Server(const Server &);
-		Server &operator=(const Server &);
 		~Server();
 
 		static int sig;

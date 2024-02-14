@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:02:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 12:19:55 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:34:16 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ namespace wbs
 		int sfd;
 		struct sockaddr_in add;
 		SSocket();
+		SSocket(const SSocket &);
+		SSocket &operator=(const SSocket &);
 
 	public:
 		SSocket(int, int, int, int, u_long);
-		SSocket(const SSocket &);
-		SSocket &operator=(const SSocket &);
 		~SSocket();
 
 		virtual int connect() = 0;

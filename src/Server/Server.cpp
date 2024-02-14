@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 12:21:10 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:37:47 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,6 @@ wbs::Server::Server() : c()
 
 wbs::Server::Server(const std::string &file) : c(file)
 {
-}
-
-wbs::Server::Server(const Server &s)
-{
-	*this = s;
-}
-
-wbs::Server &wbs::Server::operator=(const Server &s)
-{
-	if (this != &s)
-	{
-		sock = s.sock;
-		c = s.c;
-		nsocket = s.nsocket;
-		r = s.r;
-		fset = s.fset;
-		ftype = s.ftype;
-		mime = s.mime;
-	}
-	return *this;
 }
 
 wbs::Server::~Server()
