@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/14 18:02:38 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 10:40:50 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ namespace wbs
 	class Server
 	{
 	private:
-		std::vector<Listen *> serv;
+		std::map<long,Listen *> serv;
+		std::map<long,Listen *> sockets;
 		std::map<std::string, std::string> mime;
 		Confile c;
 		
@@ -40,6 +41,7 @@ namespace wbs
 
 		void set_socks(std::vector<hopo> hop);
 		void accept(fd_set &, fd_set &);
+		void recv(fd_set &, fd_set &);
 
 		void set_mime();
 	};

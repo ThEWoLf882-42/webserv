@@ -1,37 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Listen.hpp                                         :+:      :+:    :+:   */
+/*   Endcheck.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 10:32:50 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 10:51:11 by agimi            ###   ########.fr       */
+/*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
+/*   Updated: 2024/02/16 11:13:11 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-
 #include <webserv.hpp>
 
-namespace wbs
+int checkEnd(const std::string& str, const std::string& end)
 {
-	class Listen : public Bind
-	{
-	private:
-		std::map<long, std::string>	reqs;
-		int blog;
-		int list;
-		Listen();
-		Listen(const Listen &);
-		Listen &operator=(const Listen &);
+    if (str.size() < end.size())
+        return 1;
 
-	public:
-		void close(long);
-		void add_req(long);
-		int recv(long);
-		Listen(int, int, int, int, unsigned int, int);
-		virtual ~Listen();
-		void listning();
-	};
+    return str.compare(str.size() - end.size(), end.size(), end) != 0;
 }
