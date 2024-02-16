@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:02:05 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 12:10:04 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/16 12:15:56 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ sockaddr_in wbs::SSocket::get_add()
 	return add;
 }
 
-int wbs::SSocket::get_sfd()
+long wbs::SSocket::get_sfd()
 {
 	return sfd;
 }

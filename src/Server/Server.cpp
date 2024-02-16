@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 12:10:24 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/16 12:14:52 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void wbs::Server::set_socks(std::vector<hopo> hop)
 	fdsize = hop.size();
 }
 
-void wbs::Server::accept(fd_set &reads, fd_set &writs)
+void wbs::Server::accept(fd_set &reads)
 {
 	for (std::map<long, Listen *>::iterator it = serv.begin(); it != serv.end(); it++)
 	{
@@ -95,6 +95,28 @@ void wbs::Server::recv(fd_set &reads, fd_set &writs)
 				FD_CLR(soc, &writs);
 				sockets.erase(soc);
 				it = sockets.begin();
+			}
+			break;
+		}
+	}
+}
+
+void wbs::Server::send(fd_set &reads, fd_set &writs)
+{
+	for (std::vector<long>::iterator it = done.begin(); it != done.end(); it++)
+	{
+		if (FD_ISSET(*it, &writs))
+		{
+			long r = sockets[*it]->send(*it);
+
+			if (!r)
+				done.erase(it);
+			else if (r == -1)
+			{
+				FD_CLR(*it, &fset);
+				FD_CLR(*it, &reads);
+				sockets.erase(*it);
+				done.erase(it);
 			}
 			break;
 		}
