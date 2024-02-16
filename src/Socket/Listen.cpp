@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 11:19:30 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 11:24:52 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void wbs::Listen::add_req(long soc)
 
 void wbs::Listen::close(long soc)
 {
-	if (socket > 0)
+	if (soc > 0)
 		::close(soc);
 	reqs.erase(soc);
 }
@@ -72,7 +72,7 @@ int wbs::Listen::recv(long soc)
 
 		size_t pos = reqs[soc].find("Content-Length: ") + 16;
 		size_t len = std::atoi(reqs[soc].substr(pos, 10).c_str());
-		return reqs[socket].size() >= len + i + 4 ? 0 : 1;
+		return reqs[soc].size() >= len + i + 4 ? 0 : 1;
 	}
 
 	return 1;

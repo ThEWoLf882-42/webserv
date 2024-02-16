@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 11:20:33 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 11:22:54 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void wbs::Server::set_socks(std::vector<hopo> hop)
 	fdsize = hop.size();
 }
 
-void wbs::Server::accept(fd_set &reads, fd_set &writs)
+void wbs::Server::accept(fd_set &reads)
 {
 	for (std::map<long, Listen *>::iterator it = serv.begin(); it != serv.end(); it++)
 	{
