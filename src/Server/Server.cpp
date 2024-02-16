@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 10:43:43 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 11:20:33 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,20 @@ void wbs::Server::recv(fd_set &reads, fd_set &writs)
 
 		if (FD_ISSET(soc, &reads))
 		{
-			
+			long r = it->second->recv(soc);
+			if (!r)
+			{
+				// prosses here;
+				done.push_back(soc);
+			}
+			else if (r == -1)
+			{
+				FD_CLR(soc, &reads);
+				FD_CLR(soc, &writs);
+				sockets.erase(soc);
+				it = sockets.begin();
+			}
+			break;
 		}
 	}
 }

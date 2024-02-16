@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 10:40:50 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 11:19:59 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,16 @@ namespace wbs
 	class Server
 	{
 	private:
-		std::map<long,Listen *> serv;
-		std::map<long,Listen *> sockets;
+		std::map<long, Listen *> serv;
+		std::map<long, Listen *> sockets;
 		std::map<std::string, std::string> mime;
+		std::vector<long> done;
 		Confile c;
-		
+
 		fd_set fset;
-		
+
 		unsigned int fdsize;
 		long fdmax;
-
-		void readfile(std::string &);
 
 		Server(const Server &);
 		Server &operator=(const Server &);
