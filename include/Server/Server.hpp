@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 11:34:58 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 15:58:41 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ namespace wbs
 		Confile c;
 
 		fd_set fset;
-
 		unsigned int fdsize;
 		long fdmax;
 
