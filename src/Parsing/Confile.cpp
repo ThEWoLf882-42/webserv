@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 14:00:22 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 12:09:42 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void wbs::Confile::parsing()
 	syntax_error();
 	parse();
 	check_semicolon();
+	
 	for (std::vector<Infos>::iterator it = servers.begin(); it != servers.end(); it++)
 		it->port_host_set();
 	the_list();
@@ -91,55 +92,6 @@ void wbs::Confile::closed_brackets()
 	if (!(opened == 0 && closed == 0))
 		throw std::runtime_error("Brackets are not closed.");
 }
-
-// void wbs::Confile::print_directives()
-// {
-// 	static int i = 1;
-// 	std::cout << "------------ Server: " << i << " --------------" << std::endl;
-// 	i++;
-// 	std::cout << "Directives: ******** " << std::endl;
-// 	if (directives.empty())
-// 		std::cout << "Empty Directives" << std::endl;
-// 	else
-// 	{
-// 		std::map<std::string, std::vector<std::string> >::iterator it = directives.begin();
-// 		for (; it != directives.end(); it++)
-// 		{
-// 			std::cout << "Key: " << it->first << std::endl;
-// 			std::vector<std::string>::iterator vec = it->second.begin();
-// 			std::cout << "Values: ";
-// 			for (; vec != it->second.end(); vec++)
-// 				std::cout << "[" << *vec << "] ";
-// 			std::cout << std::endl
-// 					  << std::endl;
-// 		}
-// 	}
-
-// 	std::cout << "Locations: ********" << std::endl;
-// 	int j = 1;
-// 	if (locations.empty())
-// 		std::cout << "EMPTY\n";
-// 	else
-// 	{
-// 		std::vector<Location>::iterator loc = locations.begin();
-// 		for (; loc != locations.end(); loc++)
-// 		{
-// 			std::cout << "Location " << j++ << std::endl;
-// 			std::cout << "Path: " << loc->path << std::endl;
-// 			std::map<std::string, std::vector<std::string> >::iterator mini = loc->params.begin();
-// 			for (; mini != loc->params.end(); mini++)
-// 			{
-// 				std::cout << "Key: " << mini->first << std::endl;
-// 				std::vector<std::string>::iterator vec = mini->second.begin();
-// 				std::cout << "Values: ";
-// 				for (; vec != mini->second.end(); vec++)
-// 					std::cout << "[" << *vec << "] ";
-// 				std::cout << std::endl
-// 						  << std::endl;
-// 			}
-// 		}
-// 	}
-// }
 
 int only_spaces(const std::string &str)
 {
@@ -178,7 +130,8 @@ void wbs::Confile::parse()
 					{
 						values.push_back(value);
 					}
-					object.directives.insert(std::make_pair(key, values));
+					object.set_directives(key, values);
+					// object.directives.insert(std::make_pair(key, values));
 					values.clear();
 					ss.clear();
 				}
@@ -195,7 +148,8 @@ void wbs::Confile::parse()
 						ss >> key;
 						if (key == "}")
 						{
-							object.locations.push_back(ob_location);
+							object.set_locations(ob_location);
+							// object.locations.push_back(ob_location);
 							break;
 						}
 						while (ss >> value)
@@ -242,21 +196,13 @@ void wbs::Confile::check_semicolon()
 	std::vector<Infos>::iterator it = servers.begin();
 	for (; it != servers.end(); it++)
 	{
-		it->end_map(it->directives);
-		for (std::vector<Location>::iterator loc = it->locations.begin(); loc != it->locations.end(); loc++)
+		it->end_map(it->get_directives());
+		for (std::vector<Location>::iterator loc = it->get_locations().begin(); loc != it->get_locations().end(); loc++)
 		{
 			loc->end_map_location(loc->params);
 		}
 	}
 }
-
-// void wbs::Confile::end_map(std::map<std::string, std::vector<std::string> > &map)
-// {
-// 	std::map<std::string, std::vector<std::string> >::iterator it = map.begin();
-// 	for (; it != map.end(); it++)
-// 		if (it->second.back() != ";")
-// 			throw std::runtime_error("ERROR ;");
-// }
 
 void wbs::Confile::syntax_error()
 {

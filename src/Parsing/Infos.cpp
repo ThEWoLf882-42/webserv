@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 14:49:01 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 12:06:02 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,6 @@ void wbs::Infos::print_directives()
 	}
 }
 
-// void	Confile::check_semicolon()
-// {
-// 	std::vector<Infos>::iterator it = servers.begin();
-// 	for (; it != servers.end(); it++)
-// 	{
-// 		it->end_map(it->directives);
-// 		for (std::vector<Location>::iterator loc = it->locations.begin(); loc != it->locations.end(); loc++)
-// 		{
-// 			loc->end_map_location(loc->params);
-// 		}
-// 	}
-// }
-
 void wbs::Infos::end_map(std::map<std::string, std::vector<std::string> > &map)
 {
 	std::map<std::string, std::vector<std::string> >::iterator it = map.begin();
@@ -162,4 +149,24 @@ void wbs::Infos::port_host_set()
 			ports.push_back(por);
 		}
 	}
+}
+
+void	wbs::Infos::set_directives(const std::string& key, const std::vector<std::string>& array)
+{
+	this->directives.insert(std::make_pair(key, array));
+}
+
+void	wbs::Infos::set_locations(const Location& location)
+{
+	this->locations.push_back(location);
+}
+
+std::map<std::string, std::vector<std::string> >& wbs::Infos::get_directives()
+{
+	return this->directives;
+}
+
+std::vector<wbs::Location>& wbs::Infos::get_locations()
+{
+	return this->locations;
 }
