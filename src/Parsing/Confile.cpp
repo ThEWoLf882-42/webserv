@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/16 15:50:42 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 15:57:42 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ wbs::Confile::Confile(const std::string &file)
 wbs::Confile &wbs::Confile::operator=(const Confile &ob)
 {
 	if (this != &ob)
-	{
 		input = ob.input;
-	}
 	return *this;
 }
 
@@ -61,7 +59,7 @@ void wbs::Confile::parsing()
 	syntax_error();
 	parse();
 	check_semicolon();
-	
+
 	for (std::vector<Infos>::iterator it = servers.begin(); it != servers.end(); it++)
 		it->port_host_set();
 	the_list();
@@ -198,9 +196,7 @@ void wbs::Confile::check_semicolon()
 	{
 		it->end_map(it->get_directives());
 		for (std::vector<Location>::iterator loc = it->get_locations().begin(); loc != it->get_locations().end(); loc++)
-		{
 			loc->end_map_location(loc->params);
-		}
 	}
 }
 
