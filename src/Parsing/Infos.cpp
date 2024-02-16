@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/16 12:06:02 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/16 15:49:55 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,22 +151,32 @@ void wbs::Infos::port_host_set()
 	}
 }
 
-void	wbs::Infos::set_directives(const std::string& key, const std::vector<std::string>& array)
+void wbs::Infos::set_directives(const std::string &key, const std::vector<std::string> &array)
 {
 	this->directives.insert(std::make_pair(key, array));
 }
 
-void	wbs::Infos::set_locations(const Location& location)
+void wbs::Infos::set_locations(const Location &location)
 {
 	this->locations.push_back(location);
 }
 
-std::map<std::string, std::vector<std::string> >& wbs::Infos::get_directives()
+std::map<std::string, std::vector<std::string> > &wbs::Infos::get_directives()
 {
 	return this->directives;
 }
 
-std::vector<wbs::Location>& wbs::Infos::get_locations()
+std::vector<wbs::Location> &wbs::Infos::get_locations()
 {
 	return this->locations;
+}
+
+std::vector<unsigned int> wbs::Infos::get_ports()
+{
+	return ports;
+}
+
+unsigned int wbs::Infos::get_host()
+{
+	return host;
 }

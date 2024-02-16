@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/16 12:09:42 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/16 15:50:42 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,10 +273,10 @@ void wbs::Confile::the_list()
 {
 	for (std::vector<Infos>::iterator hoit = servers.begin(); hoit != servers.end(); hoit++)
 	{
-		for (std::vector<unsigned int>::iterator poit = hoit->ports.begin(); poit != hoit->ports.end(); poit++)
+		for (std::vector<unsigned int>::iterator poit = hoit->get_ports().begin(); poit != hoit->get_ports().end(); poit++)
 		{
 			hopo hp;
-			hp.ho = hoit->host;
+			hp.ho = hoit->get_host();
 			hp.po = *poit;
 			hop.push_back(hp);
 		}
