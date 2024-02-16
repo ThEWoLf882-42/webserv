@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 11:22:54 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 11:41:52 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,28 @@ void wbs::Server::recv(fd_set &reads, fd_set &writs)
 				FD_CLR(soc, &writs);
 				sockets.erase(soc);
 				it = sockets.begin();
+			}
+			break;
+		}
+	}
+}
+
+void wbs::Server::send(fd_set &reads, fd_set &writs)
+{
+	for (std::vector<long>::iterator it = done.begin(); it != done.end(); it++)
+	{
+		if (FD_ISSET(*it, &writs))
+		{
+			long r = sockets[*it]->send(*it);
+
+			if (!r)
+				done.erase(it);
+			else if (r == -1)
+			{
+				FD_CLR(*it, &fset);
+				FD_CLR(*it, &reads);
+				sockets.erase(*it);
+				done.erase(it);
 			}
 			break;
 		}

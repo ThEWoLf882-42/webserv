@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 11:24:52 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 11:38:20 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,9 @@ int wbs::Listen::recv(long soc)
 	}
 
 	return 1;
+}
+
+int wbs::Listen::send(long soc)
+{
+	
 }
