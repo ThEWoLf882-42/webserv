@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 15:58:41 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/17 14:51:58 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,14 @@ namespace wbs
 		Server(const std::string &);
 		~Server();
 
-		void set_socks(std::vector<hopo> hop);
-		void accept(fd_set &);
-		void recv(fd_set &, fd_set &);
-		void send(fd_set &, fd_set &);
-
+		void set_socks(std::vector<hopo>);
+		void accept(fd_set &, int &);
+		void recv(fd_set &, int &);
+		void send(fd_set &, fd_set &, int &);
+		void start();
+		void closesockets();
+		void resetfd();
+		
 		void set_mime();
 	};
 }

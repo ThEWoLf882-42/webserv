@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/16 15:49:55 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/16 17:29:53 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,12 +171,12 @@ std::vector<wbs::Location> &wbs::Infos::get_locations()
 	return this->locations;
 }
 
-std::vector<unsigned int> wbs::Infos::get_ports()
+std::vector<unsigned int> &wbs::Infos::get_ports()
 {
 	return ports;
 }
 
-unsigned int wbs::Infos::get_host()
+unsigned int &wbs::Infos::get_host()
 {
 	return host;
 }

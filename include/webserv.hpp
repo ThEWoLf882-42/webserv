@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 11:01:56 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/17 15:03:00 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <fstream>
 #include <sstream>
 #include <istream>
+#include <algorithm>
 #include <map>
 #include <vector>
 #include <sys/select.h>
@@ -29,6 +30,9 @@
 
 #define DEF_CONF "./config/default.conf"
 #define RSIZE 4096
+#define BLOG 1000
+#define OUTREQ 1
+#define OUTRES 0
 
 struct hopo
 {
