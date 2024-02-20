@@ -6,13 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 17:46:10 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 18:29:21 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::Request::Request(const std::string &req)
+wbs::Request::Request(const std::string &req) : code(200)
 {
 	std::stringstream ss(req);
 	std::string line;
@@ -21,21 +21,7 @@ wbs::Request::Request(const std::string &req)
 	std::stringstream fir(line);
 	fir >> meth >> loc >> ver;
 
-	while (std::getline(ss, line))
-	{
-		if (line == "\r")
-			continue;
-		std::stringstream sln(line);
-		std::string key;
-		std::string val;
-
-		sln >> key;
-		val = line.substr(key.size() + 1);
-		cleankey(key);
-		cleanval(val);
-
-		heads.insert(std::make_pair(key, val));
-	}
+	set_heads(ss, line);
 }
 
 wbs::Request::Request(const Request &r)
@@ -56,4 +42,23 @@ wbs::Request &wbs::Request::operator=(const Request &r)
 
 wbs::Request::~Request()
 {
+}
+
+void wbs::Request::set_heads(std::stringstream &ss, std::string &line)
+{
+	while (std::getline(ss, line))
+	{
+		if (line == "\r")
+			continue;
+		std::stringstream sln(line);
+		std::string key;
+		std::string val;
+
+		sln >> key;
+		val = line.substr(key.size() + 1);
+		cleankey(key);
+		cleanval(val);
+
+		heads.insert(std::make_pair(key, val));
+	}
 }

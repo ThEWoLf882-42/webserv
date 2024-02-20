@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 16:45:21 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 18:13:32 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,13 @@ namespace wbs
 		std::string meth;
 		std::string loc;
 		std::string ver;
+		int code;
+
 		Request();
+		void set_heads(std::stringstream &, std::string &);
+		void checkmeth();
+		void checkloc();
+		void checkver();
 
 	public:
 		Request(const std::string &);
