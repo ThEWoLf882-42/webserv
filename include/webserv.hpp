@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/17 15:03:00 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 11:02:16 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ struct respond
 #include "Parsing/Location.hpp"
 #include "Parsing/Infos.hpp"
 #include "Parsing/Confile.hpp"
+#include "CGI/CGI.hpp"
 #include "Socket/SSocket.hpp"
 #include "Socket/Bind.hpp"
 #include "Socket/Listen.hpp"
