@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:57 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/20 11:05:04 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:49:33 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 #include <webserv.hpp>
 
-class CGI
+namespace wbs
 {
-public:
-    CGI();
-    CGI(const CGI &ob);
-    CGI& operator=(const CGI &ob);
-    ~CGI();
-};
+	class CGI
+	{
+	public:
+		CGI();
+		CGI(const CGI &ob);
+		CGI &operator=(const CGI &ob);
+		~CGI();
+	};
+}
