@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/20 11:03:30 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:06:09 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ CGI& CGI::operator=(const CGI &ob)
 {
     if (this != &ob)
     {
-        
+        std::cout << "choofoonniii " << std::endl;
     }
     return (*this);
 }
