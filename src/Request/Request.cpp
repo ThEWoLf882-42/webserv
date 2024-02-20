@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 18:29:21 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 19:43:21 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ wbs::Request::Request(const std::string &req) : code(200)
 	fir >> meth >> loc >> ver;
 
 	set_heads(ss, line);
+	try
+	{
+		checkmeth();
+		checkloc();
+		checkver();
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
 }
 
 wbs::Request::Request(const Request &r)
@@ -60,5 +70,34 @@ void wbs::Request::set_heads(std::stringstream &ss, std::string &line)
 		cleanval(val);
 
 		heads.insert(std::make_pair(key, val));
+	}
+}
+
+void wbs::Request::checkmeth()
+{
+	std::string alme[] = {"GET", "POST", "DELETE"};
+	size_t i = 0;
+	for (; i < sizeof(alme) / sizeof(alme[0]); i++)
+	{
+		if (alme[i] == meth)
+			break;
+	}
+	if (i == sizeof(alme) / sizeof(alme[0]))
+	{
+		code = 405;
+		throw std::runtime_error("405 Method Not Allowed");
+	}
+}
+
+void wbs::Request::checkloc()
+{
+}
+
+void wbs::Request::checkver()
+{
+	if (ver != "HTTP/1.1" && ver != "HTTP/1.0")
+	{
+		code = 505;
+		throw std::runtime_error("505 HTTP Version Not Supported");
 	}
 }
