@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 17:48:09 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 20:02:34 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,14 @@
 #define OUTREQ 1
 #define OUTRES 0
 
+namespace wbs
+{
+	class Infos;
+}
+
 struct hopo
 {
+	wbs::Infos *inf;
 	unsigned int ho;
 	unsigned int po;
 };
@@ -59,6 +65,6 @@ struct respond
 #include "Socket/Listen.hpp"
 #include "Server/Server.hpp"
 
-int checkEnd(const std::string&, const std::string&);
+int checkEnd(const std::string &, const std::string &);
 void cleankey(std::string &);
 void cleanval(std::string &);

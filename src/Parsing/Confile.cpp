@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/16 17:32:45 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 20:00:56 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,7 @@ void wbs::Confile::the_list()
 		for (std::vector<unsigned int>::iterator poit = hoit->get_ports().begin(); poit != hoit->get_ports().end(); poit++)
 		{
 			hopo hp;
+			hp.inf = &(*hoit);
 			hp.ho = hoit->get_host();
 			hp.po = *poit;
 			hop.push_back(hp);

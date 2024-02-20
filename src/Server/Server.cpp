@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/17 14:57:50 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 20:03:54 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void wbs::Server::set_socks(std::vector<hopo> hop)
 	FD_ZERO(&fset);
 	for (std::vector<hopo>::iterator it = hop.begin(); it != hop.end(); it++)
 	{
-		l = new Listen(AF_INET, SOCK_STREAM, 0, it->po, it->ho, BLOG);
+		l = new Listen(AF_INET, SOCK_STREAM, 0, it->po, it->ho, BLOG, it->inf);
 		long fd = l->get_sfd();
 		FD_SET(fd, &fset);
 		serv.insert(std::make_pair(fd, l));
