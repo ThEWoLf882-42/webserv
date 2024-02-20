@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Endcheck.cpp                                       :+:      :+:    :+:   */
+/*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 17:53:03 by agimi            ###   ########.fr       */
+/*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
+/*   Updated: 2024/02/20 16:45:21 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
+
 #include <webserv.hpp>
 
-int checkEnd(const std::string &str, const std::string &end)
+namespace wbs
 {
-	if (str.size() < end.size())
-		return 1;
+	class Request
+	{
+	private:
+		std::map<std::string, std::string> heads;
+		std::string meth;
+		std::string loc;
+		std::string ver;
+		Request();
 
-	return str.compare(str.size() - end.size(), end.size(), end) != 0;
+	public:
+		Request(const std::string &);
+		Request(const Request &);
+		Request &operator=(const Request &);
+		~Request();
+	};
 }

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:18:32 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/14 12:07:51 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 16:24:08 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ wbs::Location &wbs::Location::operator=(const Location &ob)
 {
 	if (this != &ob)
 	{
-		this->path = ob.path;
-		this->params = ob.params;
+		path = ob.path;
+		params = ob.params;
 	}
 	return *this;
 }

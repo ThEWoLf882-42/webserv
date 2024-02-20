@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/17 15:03:00 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 17:38:41 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,12 @@ struct respond
 #include "Parsing/Location.hpp"
 #include "Parsing/Infos.hpp"
 #include "Parsing/Confile.hpp"
+#include "Request/Request.hpp"
 #include "Socket/SSocket.hpp"
 #include "Socket/Bind.hpp"
 #include "Socket/Listen.hpp"
 #include "Server/Server.hpp"
 
 int checkEnd(const std::string&, const std::string&);
+void cleankey(std::string &);
+void cleanval(std::string &);
