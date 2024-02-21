@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/21 11:25:17 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 12:42:00 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void wbs::Infos::print_directives()
 		for (; loc != locations.end(); loc++)
 		{
 			std::cout << "Location " << j++ << std::endl;
-			std::cout << "Path: " << loc->path << std::endl;
-			std::map<std::string, std::vector<std::string> >::iterator mini = loc->params.begin();
-			for (; mini != loc->params.end(); mini++)
+			std::cout << "Path: " << loc->get_path() << std::endl;
+			std::map<std::string, std::vector<std::string> >::iterator mini = loc->get_params().begin();
+			for (; mini != loc->get_params().end(); mini++)
 			{
 				std::cout << "Key: " << mini->first << std::endl;
 				std::vector<std::string>::iterator vec = mini->second.begin();
@@ -84,10 +84,10 @@ void wbs::Infos::print_directives()
 	}
 }
 
-void wbs::Infos::end_map(std::map<std::string, std::vector<std::string> > &map)
+void wbs::Infos::end_map()
 {
-	std::map<std::string, std::vector<std::string> >::iterator it = map.begin();
-	for (; it != map.end(); it++)
+	std::map<std::string, std::vector<std::string> >::iterator it = directives.begin();
+	for (; it != directives.end(); it++)
 	{
 		if (it->second.back() != ";")
 			throw std::runtime_error("ERROR ;");
@@ -161,7 +161,7 @@ void wbs::Infos::rootset()
 	else
 		root = "./";
 	for (std::vector<Location>::iterator lit = locations.begin(); lit != locations.end(); lit++)
-		it->rootset();
+		lit->rootset();
 }
 
 void wbs::Infos::set_directives(const std::string &key, const std::vector<std::string> &array)
@@ -187,6 +187,11 @@ std::vector<wbs::Location> &wbs::Infos::get_locations()
 std::vector<unsigned int> &wbs::Infos::get_ports()
 {
 	return ports;
+}
+
+std::string wbs::Infos::get_root()
+{
+	return root;
 }
 
 unsigned int &wbs::Infos::get_host()

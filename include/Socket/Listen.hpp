@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:32:50 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 20:04:18 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 12:22:33 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ namespace wbs
 	class Listen : public Bind
 	{
 	private:
-		Infos *inf;
+		Infos &inf;
 		std::map<long, std::string> reqs;
 		int blog;
 		int list;
@@ -28,10 +28,12 @@ namespace wbs
 		Listen &operator=(const Listen &);
 
 	public:
-		Listen(int, int, int, int, unsigned int, int, Infos *);
+		Listen(int, int, int, int, unsigned int, int,Infos &);
 		virtual ~Listen();
-		void listning();
 
+		Infos &get_inf();
+		
+		void listning();
 		void close(long);
 		long accept();
 		int recv(long);

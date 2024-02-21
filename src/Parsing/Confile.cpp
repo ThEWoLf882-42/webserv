@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/21 11:36:58 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 11:59:30 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,9 @@ void wbs::Confile::check_semicolon()
 	std::vector<Infos>::iterator it = servers.begin();
 	for (; it != servers.end(); it++)
 	{
-		it->end_map(it->get_directives());
+		it->end_map();
 		for (std::vector<Location>::iterator loc = it->get_locations().begin(); loc != it->get_locations().end(); loc++)
-			loc->end_map_location(loc->params);
+			loc->end_map_location();
 	}
 }
 

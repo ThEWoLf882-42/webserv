@@ -6,13 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 20:24:45 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 14:31:13 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::Request::Request(const std::string &req) : code(200)
+wbs::Request::Request(Listen &s, const std::string &req) : serv(s), code(200)
 {
 	std::stringstream ss(req);
 	std::string line;
@@ -34,7 +34,7 @@ wbs::Request::Request(const std::string &req) : code(200)
 	}
 }
 
-wbs::Request::Request(const Request &r)
+wbs::Request::Request(const Request &r) : serv(r.serv)
 {
 	*this = r;
 }
@@ -84,13 +84,44 @@ void wbs::Request::checkmeth()
 	}
 	if (i == sizeof(alme) / sizeof(alme[0]))
 	{
-		code = 405;
-		throw std::runtime_error("405 Method Not Allowed");
+		code = 501;
+		throw std::runtime_error("501 Not Implemented");
 	}
 }
 
 void wbs::Request::checkloc()
 {
+	std::string ro = serv.get_inf().get_root();
+	std::vector<Location> locs = serv.get_inf().get_locations();
+
+	if (loc == "/")
+		loc = ro;
+	else
+	{
+		size_t pos = loc.find('/');
+		if (pos != std::string::npos)
+			loc.replace(pos, 1, ro + "/");
+	}
+
+	for (std::vector<Location>::iterator it = locs.begin(); it != locs.end(); it++)
+	{
+		std::string lro = it->get_root() == "" ? it->get_path() : it->get_root();
+		size_t pos = loc.find(it->get_path());
+		if (pos != std::string::npos)
+		{
+			loc.replace(pos, lro.size(), lro);
+			break;
+		}
+	}
+
+	if (!opendir(loc.c_str()))
+	{
+		if (access(loc.c_str(), F_OK) == -1)
+		{
+			code = 404;
+			throw std::runtime_error("404 Not Found");
+		}
+	}
 }
 
 void wbs::Request::checkver()

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 19:53:00 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 12:41:05 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ namespace wbs
 	class Request
 	{
 	private:
+		Listen &serv;
 		std::map<std::string, std::string> heads;
 		std::string meth;
 		std::string loc;
@@ -32,7 +33,7 @@ namespace wbs
 		void checkver();
 
 	public:
-		Request(const std::string &);
+		Request(Listen &, const std::string &);
 		Request(const Request &);
 		Request &operator=(const Request &);
 		~Request();

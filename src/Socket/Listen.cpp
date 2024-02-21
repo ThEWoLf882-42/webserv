@@ -6,13 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 20:57:46 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 13:23:50 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::Listen::Listen(int d, int s, int pro, int por, unsigned int i, int b, Infos *inf) : Bind(d, s, pro, por, i), inf(inf), blog(b)
+wbs::Listen::Listen(int d, int s, int pro, int por, unsigned int i, int b, Infos &inf) : Bind(d, s, pro, por, i), inf(inf), blog(b)
 {
 	listning();
 	c_test(list);
@@ -21,6 +21,11 @@ wbs::Listen::Listen(int d, int s, int pro, int por, unsigned int i, int b, Infos
 wbs::Listen::~Listen()
 {
 	::close(list);
+}
+
+wbs::Infos &wbs::Listen::get_inf()
+{
+	return inf;
 }
 
 void wbs::Listen::listning()
@@ -132,21 +137,20 @@ void wbs::Listen::proc(long soc)
 	std::string str = "HTTP/1.1 200 OK\r\nContent-Type: image/x-icon\r\nContent-Length: ";
 	std::string body(readfile("./extra/favicon.ico"));
 	std::stringstream s;
-	
+
 	s << body.size();
 	std::string size = s.str();
-	std::cout << "size: " << size << std::endl;
 	str += size + "\r\n\r\n";
 	str += body;
 
 	if (reqs[soc] != "")
 	{
-		Request r(reqs[soc]);
+		Request r(*this, reqs[soc]);
 		if (OUTREQ)
 		{
-			std::string response = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc].substr(0, 1000) + "..." + reqs[soc].substr(reqs[soc].size() - 10, 15);
+			std::string req = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc].substr(0, 1000) + "..." + reqs[soc].substr(reqs[soc].size() - 10, 15);
 			std::cout << "\nRequest :" << std::endl
-					  << "[" << response << "]" << std::endl;
+					  << "[" << req << "]" << std::endl;
 		}
 		reqs.erase(soc);
 		reqs.insert(std::make_pair(soc, str));

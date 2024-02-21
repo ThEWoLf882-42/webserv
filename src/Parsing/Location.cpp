@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:18:32 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/21 11:51:06 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 15:13:37 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ wbs::Location &wbs::Location::operator=(const Location &ob)
 	{
 		path = ob.path;
 		params = ob.params;
+		root = ob.root;
 	}
 	return *this;
 }
@@ -50,15 +51,20 @@ std::string wbs::Location::get_path()
 	return path;
 }
 
+std::string wbs::Location::get_root()
+{
+	return root;
+}
+
 std::map<std::string, std::vector<std::string> > &wbs::Location::get_params()
 {
 	return params;
 }
 
-void wbs::Location::end_map_location(std::map<std::string, std::vector<std::string> > &map)
+void wbs::Location::end_map_location()
 {
-	std::map<std::string, std::vector<std::string> >::iterator it = map.begin();
-	for (; it != map.end(); it++)
+	std::map<std::string, std::vector<std::string> >::iterator it = params.begin();
+	for (; it != params.end(); it++)
 	{
 		if (it->second.back() != ";")
 			throw std::runtime_error("ERROR ;");

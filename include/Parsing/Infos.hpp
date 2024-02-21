@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/21 11:14:29 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 12:41:57 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@ namespace wbs
 		std::map<std::string, std::vector<std::string> > &get_directives();
 		std::vector<Location> &get_locations();
 		std::vector<unsigned int> &get_ports();
+		std::string get_root();
 		unsigned int &get_host();
 
-		void end_map(std::map<std::string, std::vector<std::string> > &);
+		void end_map();
 		void port_host_set();
 		void rootset();
 		unsigned int stip(const std::string &);
