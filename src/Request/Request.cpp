@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/21 14:31:13 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 15:36:35 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,19 +98,22 @@ void wbs::Request::checkloc()
 		loc = ro;
 	else
 	{
-		size_t pos = loc.find('/');
-		if (pos != std::string::npos)
-			loc.replace(pos, 1, ro + "/");
-	}
-
-	for (std::vector<Location>::iterator it = locs.begin(); it != locs.end(); it++)
-	{
-		std::string lro = it->get_root() == "" ? it->get_path() : it->get_root();
-		size_t pos = loc.find(it->get_path());
-		if (pos != std::string::npos)
+		std::vector<Location>::iterator it;
+		for (it = locs.begin(); it != locs.end(); it++)
 		{
-			loc.replace(pos, lro.size(), lro);
-			break;
+			std::string lro = it->get_root() == "" ? it->get_path() : it->get_root();
+			size_t pos = loc.find(it->get_path());
+			if (pos != std::string::npos)
+			{
+				loc.replace(pos, lro.size(), lro);
+				break;
+			}
+		}
+		if (it == locs.end())
+		{
+			size_t pos = loc.find('/');
+			if (pos != std::string::npos)
+				loc.replace(pos, 1, ro + "/");
 		}
 	}
 
