@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/21 15:36:35 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 15:50:32 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), code(200)
 	{
 		std::cerr << e.what() << std::endl;
 	}
+	set_body(req);
 }
 
 wbs::Request::Request(const Request &r) : serv(r.serv)
@@ -71,6 +72,17 @@ void wbs::Request::set_heads(std::stringstream &ss, std::string &line)
 
 		heads.insert(std::make_pair(key, val));
 	}
+}
+
+void wbs::Request::set_body(const std::string &req)
+{
+	size_t pos = req.find("\r\n\r\n") + 4;
+
+	body = req.substr(pos, req.size() - pos);
+
+	// std::cout << "This is body:" << std::endl;
+	// std::cout << "[" + body + "]" << std::endl
+	// 		  << std::endl;
 }
 
 void wbs::Request::checkmeth()
@@ -117,6 +129,8 @@ void wbs::Request::checkloc()
 		}
 	}
 
+	std::cout << "loc: " << loc <<std::endl;
+	
 	if (!opendir(loc.c_str()))
 	{
 		if (access(loc.c_str(), F_OK) == -1)
