@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 20:02:34 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 20:46:12 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,3 +68,4 @@ struct respond
 int checkEnd(const std::string &, const std::string &);
 void cleankey(std::string &);
 void cleanval(std::string &);
+std::string readfile(std::string);

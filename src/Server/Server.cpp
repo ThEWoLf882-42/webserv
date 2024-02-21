@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 20:03:54 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 20:41:07 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,39 +192,3 @@ void wbs::Server::set_mime()
 		mime.insert(std::pair<std::string, std::string>(dot, type));
 	}
 }
-
-// void wbs::Server::readfile(std::string &bo)
-// {
-// 	std::ifstream file("." + path, std::ios::binary);
-
-// 	if (!file.is_open())
-// 	{
-// 		set400();
-// 		path = "/404.html";
-// 		readfile(bo);
-// 		return;
-// 	}
-
-// 	try
-// 	{
-// 		file.seekg(0, std::ios::end);
-// 		std::streampos fileSize = file.tellg();
-// 		file.seekg(0, std::ios::beg);
-
-// 		bo.reserve(fileSize);
-
-// 		const size_t bufferSize = 1024 * 64;
-// 		std::vector<char> buffer(bufferSize);
-
-// 		while (!file.eof())
-// 		{
-// 			file.read(buffer.data(), bufferSize);
-// 			bo.append(buffer.data(), file.gcount());
-// 		}
-// 	}
-// 	catch (const std::exception &e)
-// 	{
-// 		set500();
-// 		return;
-// 	}
-// }

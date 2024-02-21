@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 20:05:28 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 20:57:46 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,15 @@ int wbs::Listen::send(long soc)
 
 void wbs::Listen::proc(long soc)
 {
-	std::string str = "HTTP/1.1 200 OK\r\nContent-Length: 26\r\nContent-Type: text/html\r\n\r\n<html><h1>Hello, World!</h1></html>";
+	std::string str = "HTTP/1.1 200 OK\r\nContent-Type: image/x-icon\r\nContent-Length: ";
+	std::string body(readfile("./extra/favicon.ico"));
+	std::stringstream s;
+	
+	s << body.size();
+	std::string size = s.str();
+	std::cout << "size: " << size << std::endl;
+	str += size + "\r\n\r\n";
+	str += body;
 
 	if (reqs[soc] != "")
 	{

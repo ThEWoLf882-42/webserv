@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 19:51:03 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/20 20:24:45 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void wbs::Request::set_heads(std::stringstream &ss, std::string &line)
 	while (std::getline(ss, line))
 	{
 		if (line == "\r")
-			continue;
+			break;
 		std::stringstream sln(line);
 		std::string key;
 		std::string val;
