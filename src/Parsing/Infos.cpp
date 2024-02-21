@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/16 17:29:53 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/21 11:25:17 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ wbs::Infos::Infos()
 {
 }
 
-wbs::Infos::Infos(const Infos &ob) : directives(ob.directives), locations(ob.locations)
+wbs::Infos::Infos(const Infos &ob)
 {
+	*this = ob;
 }
 
 wbs::Infos &wbs::Infos::operator=(const Infos &ob)
@@ -149,6 +150,18 @@ void wbs::Infos::port_host_set()
 			ports.push_back(por);
 		}
 	}
+}
+
+void wbs::Infos::rootset()
+{
+	std::map<std::string, std::vector<std::string> >::iterator it = directives.find("root");
+
+	if (it != directives.end())
+		root = it->second[0];
+	else
+		root = "./";
+	for (std::vector<Location>::iterator lit = locations.begin(); lit != locations.end(); lit++)
+		it->rootset();
 }
 
 void wbs::Infos::set_directives(const std::string &key, const std::vector<std::string> &array)

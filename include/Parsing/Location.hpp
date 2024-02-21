@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:15:55 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/16 11:59:44 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:50:30 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,23 @@ namespace wbs
 {
 	class Location
 	{
-	public:
-		std::string path;
+	private:
 		std::map<std::string, std::vector<std::string> > params;
+		std::string path;
+		std::string root;
 
 	public:
 		Location();
 		Location(const Location &);
 		Location &operator=(const Location &);
 		~Location();
-	
+
+		void insert(const std::pair<std::string, std::vector<std::string> > &);
+		void set_path(const std::string &);
+		std::string get_path();
+		std::map<std::string, std::vector<std::string> > &get_params();
+
 		void end_map_location(std::map<std::string, std::vector<std::string> > &);
+		void rootset();
 	};
 }
