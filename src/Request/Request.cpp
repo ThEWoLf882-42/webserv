@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/21 16:07:56 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/22 15:19:32 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ wbs::Request &wbs::Request::operator=(const Request &r)
 
 wbs::Request::~Request()
 {
+}
+
+std::string wbs::Request::get_loc()
+{
+	return loc;
 }
 
 void wbs::Request::set_heads(std::stringstream &ss, std::string &line)

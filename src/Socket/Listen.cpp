@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/21 13:23:50 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/22 15:23:59 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,18 +134,19 @@ int wbs::Listen::send(long soc)
 
 void wbs::Listen::proc(long soc)
 {
-	std::string str = "HTTP/1.1 200 OK\r\nContent-Type: image/x-icon\r\nContent-Length: ";
-	std::string body(readfile("./extra/favicon.ico"));
-	std::stringstream s;
-
-	s << body.size();
-	std::string size = s.str();
-	str += size + "\r\n\r\n";
-	str += body;
-
 	if (reqs[soc] != "")
 	{
 		Request r(*this, reqs[soc]);
+		std::string str = "HTTP/1.1 200 OK\r\nContent-Type: ";
+		str += get_mime(r.get_loc()) + "\r\nContent-Length: ";
+		std::string body = readfile(r.get_loc());
+		std::stringstream s;
+
+		s << body.size();
+		std::string size = s.str();
+		str += size + "\r\n\r\n";
+		str += body;
+
 		if (OUTREQ)
 		{
 			std::string req = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc].substr(0, 1000) + "..." + reqs[soc].substr(reqs[soc].size() - 10, 15);
