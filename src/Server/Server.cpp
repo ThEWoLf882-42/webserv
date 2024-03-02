@@ -6,11 +6,13 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:06:51 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/24 17:56:04 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/03/02 16:06:14 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
+
+const std::map<std::string, std::string> wbs::Server::mime = set_mime();
 
 wbs::Server::Server() : c(), fdmax(0)
 {
@@ -171,24 +173,4 @@ void wbs::Server::resetfd()
 	FD_ZERO(&fset);
 	for (std::map<long, Listen *>::iterator it = serv.begin(); it != serv.end(); it++)
 		FD_SET(it->first, &fset);
-}
-
-void wbs::Server::set_mime()
-{
-	std::string dot;
-	std::string type;
-	std::ifstream file("./config/mime");
-	if (!file.is_open())
-	{
-		std::cerr << "mime are zooooot" << std::endl;
-		return;
-	}
-	std::string line;
-	while (std::getline(file, line))
-	{
-		std::stringstream s(line);
-
-		s >> type >> dot;
-		mime.insert(std::pair<std::string, std::string>(dot, type));
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/25 16:23:09 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/03/02 16:05:06 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,3 +72,5 @@ int checkEnd(const std::string &, const std::string &);
 void cleankey(std::string &);
 void cleanval(std::string &);
 std::string readfile(std::string);
+std::map<std::string, std::string> set_mime();
+std::string get_mime(const std::string &pat);

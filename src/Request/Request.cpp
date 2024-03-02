@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/25 20:23:55 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/03/02 16:05:54 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ wbs::Request &wbs::Request::operator=(const Request &r)
 
 wbs::Request::~Request()
 {
+}
+
+std::string wbs::Request::get_loc()
+{
+	return loc;
 }
 
 void wbs::Request::set_heads(std::stringstream &ss, std::string &line)

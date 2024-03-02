@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 12:08:13 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/17 14:51:58 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/22 15:50:41 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ namespace wbs
 	private:
 		std::map<long, Listen *> serv;
 		std::map<long, Listen *> sockets;
-		std::map<std::string, std::string> mime;
 		std::vector<long> done;
 		Confile c;
 
@@ -33,6 +32,7 @@ namespace wbs
 		Server &operator=(const Server &);
 
 	public:
+		static const std::map<std::string, std::string> mime;
 		Server();
 		Server(const std::string &);
 		~Server();
@@ -44,7 +44,5 @@ namespace wbs
 		void start();
 		void closesockets();
 		void resetfd();
-		
-		void set_mime();
 	};
 }

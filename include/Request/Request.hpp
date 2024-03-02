@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/21 15:42:47 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/22 15:18:57 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,7 @@ namespace wbs
 		Request(const Request &);
 		Request &operator=(const Request &);
 		~Request();
+
+		std::string get_loc();
 	};
 }

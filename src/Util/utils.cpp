@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/20 20:47:48 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/22 15:52:46 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ std::string readfile(std::string path)
 
 	if (!file.is_open())
 	{
-		// set400();
-		// path = "/404.html";
-		// readfile(bo);
 		return NULL;
 	}
 
@@ -67,4 +64,40 @@ std::string readfile(std::string path)
 		return NULL;
 	}
 	return bo;
+}
+
+std::map<std::string, std::string> set_mime()
+{
+	std::map<std::string, std::string> mime;
+	std::string dot;
+	std::string type;
+	std::ifstream file("./config/mime");
+	if (!file.is_open())
+	{
+		std::cerr << "mime are zooooot" << std::endl;
+		return mime;
+	}
+	std::string line;
+	while (std::getline(file, line))
+	{
+		std::stringstream s(line);
+
+		s >> type >> dot;
+		mime.insert(std::pair<std::string, std::string>(dot, type));
+	}
+	return mime;
+}
+
+std::string get_mime(const std::string &pat)
+{
+	std::string type;
+	
+	if (pat.find_last_of('.') != std::string::npos)
+		type = pat.substr(pat.find_last_of('.'), pat.size());
+	else
+		type = ".text";
+	if (wbs::Server::mime.find(type) != wbs::Server::mime.end())
+		return wbs::Server::mime.find(type)->second;
+	else
+		return wbs::Server::mime.find(".text")->second;
 }
