@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/21 13:30:24 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/25 16:23:09 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ struct respond
 #include "Socket/Bind.hpp"
 #include "Socket/Listen.hpp"
 #include "Server/Server.hpp"
+#include "Response/Response.hpp"
 
 int checkEnd(const std::string &, const std::string &);
 void cleankey(std::string &);
