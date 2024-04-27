@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/22 15:52:46 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/29 15:20:11 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ std::string readfile(std::string path)
 
 	if (!file.is_open())
 	{
-		return NULL;
+		return "";
 	}
 
 	try
@@ -61,7 +61,7 @@ std::string readfile(std::string path)
 	}
 	catch (const std::exception &e)
 	{
-		return NULL;
+		return "";
 	}
 	return bo;
 }

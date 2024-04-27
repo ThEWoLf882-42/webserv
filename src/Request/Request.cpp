@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/22 15:19:32 by agimi            ###   ########.fr       */
+/*   Updated: 2024/02/29 15:45:50 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void wbs::Request::checkloc()
 		}
 	}
 
-	std::cout << "loc: " << loc << std::endl;
+	// std::cout << "loc: " << loc << std::endl;
 
 	if (!opendir(loc.c_str()))
 	{

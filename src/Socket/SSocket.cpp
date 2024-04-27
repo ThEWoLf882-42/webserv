@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SSocket.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:02:05 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/16 12:15:56 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:43:55 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void wbs::SSocket::c_test(int tst)
 	if (tst < 0)
 	{
 		perror("Connection Failed 😞");
-		exit(EXIT_FAILURE);
+		// exit(EXIT_FAILURE);
 	}
 }
 
