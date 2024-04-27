@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/27 10:52:04 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/27 14:48:12 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <array>
 #include <sys/select.h>
 #include <csignal>
 #include <fcntl.h>

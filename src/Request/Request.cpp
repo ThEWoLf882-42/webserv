@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/27 10:52:16 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/27 14:54:11 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,9 @@ void wbs::Request::set_body(const std::string &req)
 
 void wbs::Request::checkmeth()
 {
-	std::string alme[] = {"GET", "POST", "DELETE"};
-	size_t i = 0;
-	for (; i < sizeof(alme) / sizeof(alme[0]); i++)
-	{
-		if (alme[i] == meth)
-			break;
-	}
-	if (i == sizeof(alme) / sizeof(alme[0]))
+	std::array<std::string, 3> alme = {{"GET", "POST", "DELETE"}};
+
+	if (std::find(alme.begin(), alme.end(), meth) == alme.end())
 	{
 		code = 501;
 		throw std::runtime_error("501 Not Implemented");
