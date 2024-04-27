@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/29 15:21:07 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/27 10:52:04 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ struct respond
 #include "Socket/Bind.hpp"
 #include "Socket/Listen.hpp"
 #include "Server/Server.hpp"
+#include "Response/Response.hpp"
 
 int checkEnd(const std::string &, const std::string &);
 void cleankey(std::string &);
