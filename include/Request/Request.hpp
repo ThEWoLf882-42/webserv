@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/27 12:20:00 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/27 15:13:40 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ namespace wbs
 	{
 	private:
 		Listen &serv;
+		Location mloc;
 		std::map<std::string, std::string> heads;
 		std::string meth;
 		std::string loc;
@@ -33,6 +34,7 @@ namespace wbs
 		void checkmeth();
 		void checkloc();
 		void checkver();
+		void checkreturn();
 
 	public:
 		Request(Listen &, const std::string &);

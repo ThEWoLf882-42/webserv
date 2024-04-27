@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/27 14:54:11 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/27 15:34:11 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), code(200)
 		checkmeth();
 		checkloc();
 		checkver();
+		checkreturn();
 	}
 	catch (const std::exception &e)
 	{
@@ -123,6 +124,7 @@ void wbs::Request::checkloc()
 			if (pos != std::string::npos)
 				loc.replace(pos, 1, ro + "/");
 		}
+		mloc = *it;
 	}
 
 	// std::cout << "loc: " << loc << std::endl;
@@ -144,4 +146,11 @@ void wbs::Request::checkver()
 		code = 505;
 		throw std::runtime_error("505 HTTP Version Not Supported");
 	}
+}
+
+void wbs::Request::checkreturn()
+{
+	if (loc == serv.get_inf().get_root())
+		return;
+	mloc.get_params
 }
