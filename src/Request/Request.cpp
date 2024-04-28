@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/27 15:34:11 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/28 12:53:23 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), code(200)
 		checkmeth();
 		checkloc();
 		checkver();
-		checkreturn();
 	}
 	catch (const std::exception &e)
 	{
@@ -48,6 +47,9 @@ wbs::Request &wbs::Request::operator=(const Request &r)
 		meth = r.meth;
 		loc = r.loc;
 		ver = r.ver;
+		body = r.body;
+		code = r.code;
+		mloc = r.mloc;
 	}
 	return *this;
 }
@@ -101,7 +103,7 @@ void wbs::Request::checkmeth()
 void wbs::Request::checkloc()
 {
 	std::string ro = serv.get_inf().get_root();
-	std::vector<Location> locs = serv.get_inf().get_locations();
+	std::vector<Location> &locs = serv.get_inf().get_locations();
 
 	if (loc == "/")
 		loc = ro;
@@ -115,6 +117,12 @@ void wbs::Request::checkloc()
 			if (pos != std::string::npos)
 			{
 				loc.replace(pos, lro.size(), lro);
+				mloc = *it;
+				if (it->get_params().find("return") != it->get_params().end())
+				{
+					code = 301;
+					throw std::runtime_error("301 " + *++(it->get_params().find("return")->second.begin()));
+				}
 				break;
 			}
 		}
@@ -124,10 +132,7 @@ void wbs::Request::checkloc()
 			if (pos != std::string::npos)
 				loc.replace(pos, 1, ro + "/");
 		}
-		mloc = *it;
 	}
-
-	// std::cout << "loc: " << loc << std::endl;
 
 	if (!opendir(loc.c_str()))
 	{
@@ -146,11 +151,4 @@ void wbs::Request::checkver()
 		code = 505;
 		throw std::runtime_error("505 HTTP Version Not Supported");
 	}
-}
-
-void wbs::Request::checkreturn()
-{
-	if (loc == serv.get_inf().get_root())
-		return;
-	mloc.get_params
 }
