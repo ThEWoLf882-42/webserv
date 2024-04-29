@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/29 12:38:36 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/29 13:04:38 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,41 +58,6 @@ wbs::Request &wbs::Request::operator=(const Request &r)
 
 wbs::Request::~Request()
 {
-}
-
-wbs::Location &wbs::Request::get_mloc()
-{
-	return mloc;
-}
-
-std::string wbs::Request::get_meth()
-{
-	return meth;
-}
-
-std::string wbs::Request::get_loc()
-{
-	return loc;
-}
-
-std::string wbs::Request::get_ver()
-{
-	return ver;
-}
-
-std::string wbs::Request::get_body()
-{
-	return body;
-}
-
-std::string wbs::Request::get_codemsg()
-{
-	return codemsg;
-}
-
-int wbs::Request::get_code()
-{
-	return code;
 }
 
 void wbs::Request::set_heads(std::stringstream &ss, std::string &line)
@@ -166,6 +131,8 @@ void wbs::Request::checkloc()
 		}
 	}
 
+	// std::cout << "loc: " << loc << std::endl;
+
 	if (!opendir(loc.c_str()))
 	{
 		if (access(loc.c_str(), F_OK) == -1)
@@ -183,4 +150,39 @@ void wbs::Request::checkver()
 		code = 505;
 		throw std::runtime_error("505 HTTP Version Not Supported");
 	}
+}
+
+wbs::Location &wbs::Request::get_mloc()
+{
+	return mloc;
+}
+
+std::string wbs::Request::get_meth()
+{
+	return meth;
+}
+
+std::string wbs::Request::get_loc()
+{
+	return loc;
+}
+
+std::string wbs::Request::get_ver()
+{
+	return ver;
+}
+
+std::string wbs::Request::get_body()
+{
+	return body;
+}
+
+std::string wbs::Request::get_codemsg()
+{
+	return codemsg;
+}
+
+int wbs::Request::get_code()
+{
+	return code;
 }
