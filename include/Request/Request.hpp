@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/29 12:37:26 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/29 13:10:30 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ namespace wbs
 		std::string ver;
 		std::string body;
 		std::string codemsg;
+		std::string query;
 		int code;
 
 		Request();
@@ -48,6 +49,7 @@ namespace wbs
 		std::string get_ver();
 		std::string get_body();
 		std::string get_codemsg();
+		std::string get_query();
 		int get_code();
 	};
 }

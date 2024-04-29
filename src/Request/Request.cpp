@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/29 13:04:38 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/29 13:17:56 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,15 @@ void wbs::Request::checkloc()
 		}
 	}
 
-	// std::cout << "loc: " << loc << std::endl;
+	size_t pos = loc.find('?');
+	if (pos != std::string::npos)
+	{
+		query = loc.substr(pos + 1, loc.size());
+		loc = loc.substr(0, pos);
+	}
+
+	std::cout << "loc: " << loc << std::endl;
+	std::cout << "query: " << query << std::endl;
 
 	if (!opendir(loc.c_str()))
 	{
@@ -180,6 +188,11 @@ std::string wbs::Request::get_body()
 std::string wbs::Request::get_codemsg()
 {
 	return codemsg;
+}
+
+std::string wbs::Request::get_query()
+{
+	return query;
 }
 
 int wbs::Request::get_code()
