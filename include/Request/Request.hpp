@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/29 13:10:30 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/29 13:19:56 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ namespace wbs
 		void checkmeth();
 		void checkloc();
 		void checkver();
+		void setquery();
 
 	public:
 		Request(Listen &, const std::string &);
