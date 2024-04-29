@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/28 13:01:49 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/29 12:38:36 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), code(200)
 	}
 	catch (const std::exception &e)
 	{
+		codemsg = e.what();
 		std::cerr << e.what() << std::endl;
 	}
 	set_body(req);
@@ -82,6 +83,11 @@ std::string wbs::Request::get_ver()
 std::string wbs::Request::get_body()
 {
 	return body;
+}
+
+std::string wbs::Request::get_codemsg()
+{
+	return codemsg;
 }
 
 int wbs::Request::get_code()

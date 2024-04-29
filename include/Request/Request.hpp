@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/28 13:00:38 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/29 12:37:26 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ namespace wbs
 		std::string loc;
 		std::string ver;
 		std::string body;
+		std::string codemsg;
 		int code;
 
 		Request();
@@ -46,6 +47,7 @@ namespace wbs
 		std::string get_loc();
 		std::string get_ver();
 		std::string get_body();
+		std::string get_codemsg();
 		int get_code();
 	};
 }

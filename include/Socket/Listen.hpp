@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:32:50 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/21 12:22:33 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/29 12:47:18 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ namespace wbs
 		Listen &operator=(const Listen &);
 
 	public:
-		Listen(int, int, int, int, unsigned int, int,Infos &);
+		Listen(int, int, int, int, unsigned int, int, Infos &);
 		virtual ~Listen();
 
 		Infos &get_inf();
-		
+
 		void listning();
 		void close(long);
 		long accept();

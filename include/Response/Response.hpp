@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/03/01 12:00:37 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:46:13 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,28 @@
 
 #include <webserv.hpp>
 
-namespace wbs_r
+namespace wbs
 {
 	class Response
 	{
-		private:
-			int ver;
-			std::string stat;
-			std::string url_tst;
-			std::string con_ty;
-			std::string serv;
-			std::string meth;
-			std::string tst;
-			size_t con_len;
-			int code;
-		public:
-			Response();
-			~Response();
-			
-			std::string GenRes();
-			void count_size();
-			void get_cont_ty();
-			void GetResp();
+	private:
+		int ver;
+		std::string stat;
+		std::string url_tst;
+		std::string con_ty;
+		std::string serv;
+		std::string meth;
+		std::string tst;
+		size_t con_len;
+		int code;
+
+	public:
+		Response();
+		~Response();
+
+		std::string GenRes();
+		void count_size();
+		void get_cont_ty();
+		void GetResp();
 	};
 }
