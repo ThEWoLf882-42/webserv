@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Listen.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/22 15:23:59 by agimi            ###   ########.fr       */
+/*   Updated: 2024/03/02 16:25:24 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,8 @@ void wbs::Listen::proc(long soc)
 
 		if (OUTREQ)
 		{
-			std::string req = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc].substr(0, 1000) + "..." + reqs[soc].substr(reqs[soc].size() - 10, 15);
+			// std::string req = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc].substr(0, 1000) + "..." + reqs[soc].substr(reqs[soc].size() - 10, 15);
+			std::string req = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc];
 			std::cout << "\nRequest :" << std::endl
 					  << "[" << req << "]" << std::endl;
 		}

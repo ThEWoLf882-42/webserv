@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/22 15:52:46 by agimi            ###   ########.fr       */
+/*   Updated: 2024/04/27 11:37:58 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ std::string readfile(std::string path)
 
 	if (!file.is_open())
 	{
-		return NULL;
+		return "";
 	}
 
 	try

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/02/22 15:18:57 by agimi            ###   ########.fr       */
+/*   Updated: 2024/03/22 14:46:39 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ namespace wbs
 	private:
 		Listen &serv;
 		std::map<std::string, std::string> heads;
-		std::string meth;
-		std::string loc;
-		std::string ver;
+		std::string loc;// 	setters
+		std::string meth;//     	 and
+		std::string ver;//				   getters
 		std::string body;
 		int code;
 
