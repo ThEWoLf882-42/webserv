@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/03/02 16:05:06 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:00:42 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <array>
 #include <sys/select.h>
 #include <csignal>
 #include <fcntl.h>
@@ -33,7 +34,7 @@
 #define RSIZE 4096
 #define BLOG 1000
 #define OUTREQ 1
-#define OUTRES 0
+#define OUTRES 1
 
 namespace wbs
 {

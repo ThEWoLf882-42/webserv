@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/04/28 13:02:12 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:30:35 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ struct resp
 	int code;
 }respp_t;
 
-namespace wbs_r
+namespace wbs
 {
 	class Response
 	{
@@ -53,5 +53,24 @@ namespace wbs_r
 			void openf();
 			void uhhh();
 			void start_tst();
+	private:
+		int ver;
+		std::string stat;
+		std::string url_tst;
+		std::string con_ty;
+		std::string serv;
+		std::string meth;
+		std::string tst;
+		size_t con_len;
+		int code;
+
+	public:
+		Response();
+		~Response();
+
+		std::string GenRes();
+		void count_size();
+		void get_cont_ty();
+		void GetResp();
 	};
 }

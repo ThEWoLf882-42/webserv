@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/04/30 13:03:42 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:31:34 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,14 @@ void wbs_r::Response::count_size(std::string &url){
 		if (file.is_open()){
 			while (std::getline(file, line)){
 				con_len += line.size() + 1;
+	if (tst == "application/html")
+	{
+		std::ifstream file("aaa.html");
+		if (file.is_open())
+		{
+			while (std::getline(file, line))
+			{
+				con_len += line.size();
 			}
 	}
 	respp_t.length = con_len;

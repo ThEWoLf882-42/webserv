@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:14 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/16 11:47:09 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/04/29 12:43:47 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace wbs
 		~Confile();
 
 		std::vector<hopo> get_hop();
-		
+
 		// Main parsing
 		void parsing();
 
@@ -47,7 +47,6 @@ namespace wbs
 		const std::string take_path(const std::string &, const std::string &);
 		void check_semicolon();
 		void count_semicolons(const std::string &, int);
-
 
 		void the_list();
 	};

@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/03/22 16:28:02 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:32:06 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), code(200)
 	}
 	catch (const std::exception &e)
 	{
+		codemsg = e.what();
 		std::cerr << e.what() << std::endl;
 	}
 	set_body(req);
@@ -47,17 +48,16 @@ wbs::Request &wbs::Request::operator=(const Request &r)
 		meth = r.meth;
 		loc = r.loc;
 		ver = r.ver;
+		body = r.body;
+		code = r.code;
+		mloc = r.mloc;
+		heads = r.heads;
 	}
 	return *this;
 }
 
 wbs::Request::~Request()
 {
-}
-
-std::string wbs::Request::get_loc()
-{
-	return loc;
 }
 
 void wbs::Request::set_heads(std::stringstream &ss, std::string &line)
@@ -88,14 +88,9 @@ void wbs::Request::set_body(const std::string &req)
 
 void wbs::Request::checkmeth()
 {
-	std::string alme[] = {"GET", "POST", "DELETE"};
-	size_t i = 0;
-	for (; i < sizeof(alme) / sizeof(alme[0]); i++)
-	{
-		if (alme[i] == meth)
-			break;
-	}
-	if (i == sizeof(alme) / sizeof(alme[0]))
+	std::array<std::string, 3> alme = {{"GET", "POST", "DELETE"}};
+
+	if (std::find(alme.begin(), alme.end(), meth) == alme.end())
 	{
 		code = 501;
 		throw std::runtime_error("501 Not Implemented");
@@ -105,7 +100,7 @@ void wbs::Request::checkmeth()
 void wbs::Request::checkloc()
 {
 	std::string ro = serv.get_inf().get_root();
-	std::vector<Location> locs = serv.get_inf().get_locations();
+	std::vector<Location> &locs = serv.get_inf().get_locations();
 
 	if (loc == "/")
 		loc = ro;
@@ -119,6 +114,12 @@ void wbs::Request::checkloc()
 			if (pos != std::string::npos)
 			{
 				loc.replace(pos, lro.size(), lro);
+				mloc = *it;
+				if (it->get_params().find("return") != it->get_params().end())
+				{
+					code = 301;
+					throw std::runtime_error("301 " + *++(it->get_params().find("return")->second.begin()));
+				}
 				break;
 			}
 		}
@@ -130,7 +131,10 @@ void wbs::Request::checkloc()
 		}
 	}
 
+	setquery();
+
 	std::cout << "loc: " << loc << std::endl;
+	std::cout << "query: " << query << std::endl;
 
 	if (!opendir(loc.c_str()))
 	{
@@ -142,6 +146,16 @@ void wbs::Request::checkloc()
 	}
 }
 
+void wbs::Request::setquery()
+{
+	size_t pos = loc.find('?');
+	if (pos != std::string::npos)
+	{
+		query = loc.substr(pos + 1, loc.size());
+		loc = loc.substr(0, pos);
+	}
+}
+
 void wbs::Request::checkver()
 {
 	if (ver != "HTTP/1.1" && ver != "HTTP/1.0")
@@ -149,4 +163,44 @@ void wbs::Request::checkver()
 		code = 505;
 		throw std::runtime_error("505 HTTP Version Not Supported");
 	}
+}
+
+wbs::Location &wbs::Request::get_mloc()
+{
+	return mloc;
+}
+
+std::string wbs::Request::get_meth()
+{
+	return meth;
+}
+
+std::string wbs::Request::get_loc()
+{
+	return loc;
+}
+
+std::string wbs::Request::get_ver()
+{
+	return ver;
+}
+
+std::string wbs::Request::get_body()
+{
+	return body;
+}
+
+std::string wbs::Request::get_codemsg()
+{
+	return codemsg;
+}
+
+std::string wbs::Request::get_query()
+{
+	return query;
+}
+
+int wbs::Request::get_code()
+{
+	return code;
 }

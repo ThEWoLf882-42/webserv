@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/27 11:37:58 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:31:43 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ std::string readfile(std::string path)
 	}
 	catch (const std::exception &e)
 	{
-		return NULL;
+		return "";
 	}
 	return bo;
 }

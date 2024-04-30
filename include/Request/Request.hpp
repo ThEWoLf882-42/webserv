@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/03/22 14:46:39 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:32:01 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@ namespace wbs
 	{
 	private:
 		Listen &serv;
+		Location mloc;
 		std::map<std::string, std::string> heads;
 		std::string loc;// 	setters
 		std::string meth;//     	 and
 		std::string ver;//				   getters
 		std::string body;
+		std::string codemsg;
+		std::string query;
 		int code;
 
 		Request();
@@ -33,6 +36,7 @@ namespace wbs
 		void checkmeth();
 		void checkloc();
 		void checkver();
+		void setquery();
 
 	public:
 		Request(Listen &, const std::string &);
@@ -40,6 +44,13 @@ namespace wbs
 		Request &operator=(const Request &);
 		~Request();
 
+		Location &get_mloc();
+		std::string get_meth();
 		std::string get_loc();
+		std::string get_ver();
+		std::string get_body();
+		std::string get_codemsg();
+		std::string get_query();
+		int get_code();
 	};
 }
