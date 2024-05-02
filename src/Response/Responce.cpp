@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Responce.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/04/29 13:21:50 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/02 09:58:17 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
-
+/*
 wbs::Response::Response() : ver(1.1),
 							code(200),
 							stat("OK"),
@@ -69,3 +69,4 @@ std::string wbs::Response::GenRes()
 		GetResp();
 	}
 }
+*/

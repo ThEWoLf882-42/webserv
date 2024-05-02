@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/21 11:59:30 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/02 10:17:37 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,12 +127,25 @@ void wbs::Confile::parse()
 				ss >> key;
 				if (key != "location" && key != "}" && key != ";")
 				{
-					while (ss >> value)
+					if (key == "error_pages" || key == "error_page")
 					{
-						values.push_back(value);
+						std::string first;
+						ss >> first;
+						// std::cout << "num: " << first << std::endl;
+
+						ss >> value;
+						// std::cout << "value: " << value << std::endl;
+						
+						object.set_error_pages(first, value);			
 					}
-					object.set_directives(key, values);
-					// object.directives.insert(std::make_pair(key, values));
+					else
+					{
+						while (ss >> value)
+						{
+							values.push_back(value);
+						}
+						object.set_directives(key, values);
+					}
 					values.clear();
 					ss.clear();
 				}
@@ -150,7 +163,6 @@ void wbs::Confile::parse()
 						if (key == "}")
 						{
 							object.set_locations(ob_location);
-							// object.locations.push_back(ob_location);
 							break;
 						}
 						while (ss >> value)
@@ -165,6 +177,8 @@ void wbs::Confile::parse()
 				else if (key == "}")
 				{
 					servers.push_back(object);
+					// object.print_directives();
+					// object.print_error_pages();
 					break;
 				}
 			}

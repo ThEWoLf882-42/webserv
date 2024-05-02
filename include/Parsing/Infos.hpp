@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/21 12:41:57 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/02 10:08:52 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ namespace wbs
 		std::string root;
 		unsigned int host;
 
+		std::map<int, std::string> error_pages;
+		
 	public:
 		Infos();
 		Infos(const Infos &);
@@ -45,5 +47,9 @@ namespace wbs
 		void port_host_set();
 		void rootset();
 		unsigned int stip(const std::string &);
+
+		void set_error_pages(const std::string&, const std::string&);
+
+		void print_error_pages();
 	};
 }
