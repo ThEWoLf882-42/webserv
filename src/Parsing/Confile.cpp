@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/02 10:17:37 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:05:33 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,14 +129,14 @@ void wbs::Confile::parse()
 				{
 					if (key == "error_pages" || key == "error_page")
 					{
-						std::string first;
-						ss >> first;
+						// std::string first;
+						// ss >> first;
 						// std::cout << "num: " << first << std::endl;
 
-						ss >> value;
+						// ss >> value;
 						// std::cout << "value: " << value << std::endl;
 						
-						object.set_error_pages(first, value);			
+						object.set_error_pages(ss);			
 					}
 					else
 					{

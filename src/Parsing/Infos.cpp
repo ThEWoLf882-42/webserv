@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/02 10:13:54 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:04:20 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,14 +199,26 @@ unsigned int &wbs::Infos::get_host()
 	return host;
 }
 
-void wbs::Infos::set_error_pages(const std::string& first, const std::string& second)
+void wbs::Infos::set_error_pages(std::istream& ss) // DUPLICATED NUM
 {
-	int key;
-	std::istringstream ss(first);
-
+	std::string	test, key;
+	char	*ptr;
+	int		count = 0, num;
 	ss >> key;
-	error_pages.insert(std::make_pair(key, second));
-	// error_pages[key] = second;
+	num = std::strtod(key.c_str(), &ptr);
+	if (num <= 0)
+		throw std::runtime_error("Error Pages");
+	if (ptr[0] != '\0')
+		throw std::runtime_error("Error Pages");
+	std::string value;
+	ss >> value;
+	while (ss >> test)
+	{
+		count++;
+	}
+	if ((count != 1 || count == 1) && test != ";")
+		throw std::runtime_error("Error Pages");
+	error_pages[num] = value;
 }
 
 void	wbs::Infos::print_error_pages()

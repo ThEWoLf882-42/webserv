@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/02 10:08:52 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/02 11:28:54 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ namespace wbs
 		void rootset();
 		unsigned int stip(const std::string &);
 
-		void set_error_pages(const std::string&, const std::string&);
+		void set_error_pages(std::istream&);
 
 		void print_error_pages();
 	};
