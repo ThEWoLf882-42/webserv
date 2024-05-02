@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/02 13:04:20 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:13:19 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,17 +199,19 @@ unsigned int &wbs::Infos::get_host()
 	return host;
 }
 
-void wbs::Infos::set_error_pages(std::istream& ss) // DUPLICATED NUM
+void wbs::Infos::set_error_pages(std::istream& ss) 
 {
 	std::string	test, key;
 	char	*ptr;
 	int		count = 0, num;
+
 	ss >> key;
 	num = std::strtod(key.c_str(), &ptr);
 	if (num <= 0)
 		throw std::runtime_error("Error Pages");
 	if (ptr[0] != '\0')
 		throw std::runtime_error("Error Pages");
+	check_duplicated(duplicated, num);
 	std::string value;
 	ss >> value;
 	while (ss >> test)
@@ -219,6 +221,7 @@ void wbs::Infos::set_error_pages(std::istream& ss) // DUPLICATED NUM
 	if ((count != 1 || count == 1) && test != ";")
 		throw std::runtime_error("Error Pages");
 	error_pages[num] = value;
+	duplicated.push_back(num);
 }
 
 void	wbs::Infos::print_error_pages()
@@ -229,4 +232,11 @@ void	wbs::Infos::print_error_pages()
 	{
 		std::cout <<  "key=> " << it->first << " value=> " << it->second << std::endl;
 	}
+}
+
+void	wbs::Infos::check_duplicated(const std::vector<int>& vec, int num)
+{
+	std::vector<int>::const_iterator it = find(vec.begin(), vec.end(), num);
+	if (it != vec.end())
+		throw std::runtime_error("Error code is duplicated");
 }

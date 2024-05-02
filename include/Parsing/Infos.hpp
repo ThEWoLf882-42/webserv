@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/02 11:28:54 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/02 13:12:26 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ namespace wbs
 		std::vector<Location> locations;
 		std::vector<unsigned int> ports;
 		std::string root;
+		std::vector<int> duplicated;
 		unsigned int host;
 
 		std::map<int, std::string> error_pages;
@@ -51,5 +52,6 @@ namespace wbs
 		void set_error_pages(std::istream&);
 
 		void print_error_pages();
+		void	check_duplicated(const std::vector<int>& vec, int num);
 	};
 }
