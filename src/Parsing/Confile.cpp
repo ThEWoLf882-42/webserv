@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/02 13:05:33 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/02 17:01:02 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,16 +128,7 @@ void wbs::Confile::parse()
 				if (key != "location" && key != "}" && key != ";")
 				{
 					if (key == "error_pages" || key == "error_page")
-					{
-						// std::string first;
-						// ss >> first;
-						// std::cout << "num: " << first << std::endl;
-
-						// ss >> value;
-						// std::cout << "value: " << value << std::endl;
-						
 						object.set_error_pages(ss);			
-					}
 					else
 					{
 						while (ss >> value)
@@ -230,6 +221,8 @@ void wbs::Confile::syntax_error()
 		ss >> key;
 		if (key == "server")
 		{
+			std::vector<std::string> all_keys;
+
 			std::getline(infile, input);
 			if (input != "{")
 				throw std::runtime_error("After server it should be {");
@@ -240,9 +233,17 @@ void wbs::Confile::syntax_error()
 				std::istringstream ss(input);
 				ss >> key;
 				if (key != "location" && key != "}" && key != ";")
+				{
+					if (key != "error_page" && key != "error_pages")
+						key_duplicated(all_keys, key);
+					// CHECK WECH DUPLICATED
+					// CHECK WECH NOT VALID
 					count_semicolons(input, 1);
+					key_invalid(key);
+				}
 				else if (key == "location")
 				{
+					std::vector<std::string> loc_keys;
 					count_semicolons(input, 0);
 					std::getline(infile, input);
 					ss.str(input);
@@ -255,10 +256,15 @@ void wbs::Confile::syntax_error()
 							continue;
 						std::istringstream ss(input);
 						ss >> key;
-						if (key == "}")
+						if (key == "}")	
 							break;
 						else if (key == ";")
 							throw std::runtime_error("; Should not be in a single line");
+						else
+						{
+							key_invalid(key);
+							key_duplicated(loc_keys, key);
+						}
 						count_semicolons(input, 1);
 					}
 				}
@@ -302,4 +308,33 @@ void wbs::Confile::the_list()
 				  << "	host: " << it->ho << std::endl
 				  << "	port: " << it->po << std::endl;
 	}
+}
+
+void	wbs::Confile::key_duplicated(std::vector<std::string>& all_keys, const std::string& value)
+{
+	std::vector<std::string>::iterator it = find(all_keys.begin(), all_keys.end(), value);
+	if (it != all_keys.end())
+		throw std::runtime_error("Duplicated key");
+	all_keys.push_back(value);
+}
+
+void	wbs::Confile::key_invalid(const std::string& value) // SEE WHAT U CAN ADD
+{
+	std::vector<std::string> valid;
+	valid.push_back("listen");
+	valid.push_back("server_name");
+	valid.push_back("error_page");
+	valid.push_back("error_pages");
+	valid.push_back("client_body_size");
+	valid.push_back("root");
+	valid.push_back("autoindex");
+	valid.push_back("cgi_extension");
+	valid.push_back("cgi_bin");
+	valid.push_back("methods");
+	valid.push_back("return");
+	valid.push_back("default_file");
+
+	std::vector<std::string>::iterator it = find(valid.begin(), valid.end(), value);
+	if (it == valid.end())
+		throw std::runtime_error("Invalid key");
 }

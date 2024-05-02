@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:14 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/04/29 12:43:47 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/02 16:47:52 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace wbs
 
 		std::ifstream infile;
 		std::string input;
-
+	
 	public:
 		Confile();
 		Confile(const std::string &);
@@ -49,5 +49,7 @@ namespace wbs
 		void count_semicolons(const std::string &, int);
 
 		void the_list();
+		void	key_duplicated(std::vector<std::string>&, const std::string&);
+		void	key_invalid(const std::string&);
 	};
 }
