@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/30 17:32:01 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:22:29 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ namespace wbs
 		std::string get_meth();
 		std::string get_loc();
 		std::string get_ver();
-		std::string get_body();
+		std:: string get_body();
 		std::string get_codemsg();
 		std::string get_query();
 		int get_code();
