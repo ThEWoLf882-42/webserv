@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/02 13:12:26 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:11:47 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace wbs
 		unsigned int host;
 
 		std::map<int, std::string> error_pages;
-		
+
 	public:
 		Infos();
 		Infos(const Infos &);
@@ -49,9 +49,9 @@ namespace wbs
 		void rootset();
 		unsigned int stip(const std::string &);
 
-		void set_error_pages(std::istream&);
+		void set_error_pages(std::istream &);
 
 		void print_error_pages();
-		void	check_duplicated(const std::vector<int>& vec, int num);
+		void check_duplicated(const std::vector<int> &vec, int num);
 	};
 }
