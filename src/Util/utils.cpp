@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/10 15:54:37 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/10 17:11:14 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,58 @@ std::string get_mime(const std::string &pat)
 	if (pat.find_last_of('.') != std::string::npos)
 		type = pat.substr(pat.find_last_of('.'), pat.size());
 	else
-		type = ".text";
+		type = ".html";
 	if (wbs::Server::mime.find(type) != wbs::Server::mime.end())
 		return wbs::Server::mime.find(type)->second;
 	else
-		return wbs::Server::mime.find(".text")->second;
+		return wbs::Server::mime.find(".html")->second;
 }
 
 bool AllowedChars(const std::string &str)
 {
 	const std::string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=%";
 	return str.find_first_not_of(allowedChars) == std::string::npos;
+}
+
+std::vector<std::string> list_directory(const std::string &directory)
+{
+	std::vector<std::string> files;
+	DIR *dirp = opendir(directory.c_str());
+	if (dirp != NULL)
+	{
+		struct dirent *dp;
+		while ((dp = readdir(dirp)) != NULL)
+		{
+			if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0)
+				files.push_back(dp->d_name);
+		}
+		closedir(dirp);
+	}
+	return files;
+}
+
+std::string autoindex(const std::string &directory)
+{
+	std::string html = "<!DOCTYPE html><html><head><title>Index of ";
+
+	html += directory;
+
+	html += "</title></head><body><h1>Index of ";
+
+	html += directory;
+
+	html += "</h1><hr><ul><li><a href=\".\">.</a></li><li><a href=\"../\">..</a></li>";
+
+	std::vector<std::string> files = list_directory(directory); // Call list_directory
+
+	// Traditional for loop
+	for (unsigned int i = 0; i < files.size(); ++i)
+	{
+		const std::string &file = files[i];
+		html += "<li><a href='" + file + "'>" + file + "</a></li>";
+	}
+
+	html += "</ul><hr></body></html>";
+
+	return html;
 }
