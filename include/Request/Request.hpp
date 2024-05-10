@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/29 13:19:56 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/10 16:01:28 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ namespace wbs
 		Request();
 		void set_heads(std::stringstream &, std::string &);
 		void set_body(const std::string &);
+		void checkencoding();
+		void checkbodysize();
 		void checkmeth();
 		void checkloc();
 		void checkver();
