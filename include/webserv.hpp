@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/29 13:00:42 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/10 16:11:01 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,5 @@ void cleankey(std::string &);
 void cleanval(std::string &);
 std::string readfile(std::string);
 std::map<std::string, std::string> set_mime();
-std::string get_mime(const std::string &pat);
+std::string get_mime(const std::string &);
+bool AllowedChars(const std::string &);

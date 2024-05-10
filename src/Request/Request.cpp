@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/30 17:32:06 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/10 16:35:12 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), code(200)
 	set_heads(ss, line);
 	try
 	{
+		checkencoding();
+		checkbodysize();
 		checkmeth();
 		checkloc();
 		checkver();
@@ -84,6 +86,50 @@ void wbs::Request::set_body(const std::string &req)
 	size_t pos = req.find("\r\n\r\n") + 4;
 
 	body = req.substr(pos, req.size() - pos);
+}
+
+void wbs::Request::checkencoding()
+{
+	if (heads.find("Transfer-Encoding") != heads.end() && heads.find("Transfer-Encoding")->second != "chunked")
+	{
+		code = 501;
+		throw std::runtime_error("501 Not Implemented");
+	}
+	if (heads.find("Transfer-Encoding") == heads.end() && heads.find("Content-Length") == heads.end() && meth == "POST")
+	{
+		code = 400;
+		throw std::runtime_error("400 Bad Request");
+	}
+	if (!AllowedChars(loc))
+	{
+		code = 400;
+		throw std::runtime_error("400 Bad Request");
+	}
+	if (loc.size() > 2048)
+	{
+		code = 414;
+		throw std::runtime_error("414 URI Too Long");
+	}
+}
+
+void wbs::Request::checkbodysize()
+{
+	std::string bodys("-69");
+
+	if (serv.get_inf().get_directives().find("client_body_size") != serv.get_inf().get_directives().end())
+		bodys = serv.get_inf().get_directives().find("client_body_size")->second.front();
+	std::stringstream ss(bodys);
+	long size;
+	long clen;
+	ss >> size;
+	ss.clear();
+	ss.str(heads.find("Content-Length")->second);
+	ss >> clen;
+	if (size != -69 && clen > size)
+	{
+		code = 413;
+		throw std::runtime_error("413 Content Too Large");
+	}
 }
 
 void wbs::Request::checkmeth()

@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/09 13:22:29 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/10 16:36:04 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ namespace wbs
 		Request();
 		void set_heads(std::stringstream &, std::string &);
 		void set_body(const std::string &);
+		void checkencoding();
+		void checkbodysize();
 		void checkmeth();
 		void checkloc();
 		void checkver();

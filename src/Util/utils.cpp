@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/30 17:31:43 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/10 16:36:16 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ std::map<std::string, std::string> set_mime()
 std::string get_mime(const std::string &pat)
 {
 	std::string type;
-	
+
 	if (pat.find_last_of('.') != std::string::npos)
 		type = pat.substr(pat.find_last_of('.'), pat.size());
 	else
@@ -100,4 +100,10 @@ std::string get_mime(const std::string &pat)
 		return wbs::Server::mime.find(type)->second;
 	else
 		return wbs::Server::mime.find(".text")->second;
+}
+
+bool AllowedChars(const std::string &str)
+{
+	const std::string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=%";
+	return str.find_first_not_of(allowedChars) == std::string::npos;
 }
