@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/10 17:13:24 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/10 21:39:13 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@
 #include <fcntl.h>
 #include <cstring>
 #include <dirent.h>
+#include <ctime>
+#include <iomanip>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define DEF_CONF "./config/default.conf"
 #define RSIZE 4096
@@ -77,4 +81,4 @@ std::map<std::string, std::string> set_mime();
 std::string get_mime(const std::string &);
 bool AllowedChars(const std::string &);
 std::vector<std::string> list_directory(const std::string &);
-std::string autoindex(const std::string &);
+std::string autoindex(const std::string &, const std::string &);

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/10 17:11:14 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/11 12:18:07 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,28 +125,110 @@ std::vector<std::string> list_directory(const std::string &directory)
 	return files;
 }
 
-std::string autoindex(const std::string &directory)
+bool is_dir(const std::string &path)
 {
-	std::string html = "<!DOCTYPE html><html><head><title>Index of ";
+	struct stat statbuf;
+	if (stat(path.c_str(), &statbuf) != 0)
+		return false;
+	return S_ISDIR(statbuf.st_mode);
+}
 
-	html += directory;
+std::size_t get_file_size(const std::string &path)
+{
+	struct stat statbuf;
+	if (stat(path.c_str(), &statbuf) != 0)
+		return 0;
+	return statbuf.st_size;
+}
 
-	html += "</title></head><body><h1>Index of ";
+time_t get_last_modified_time(const std::string &path)
+{
+	struct stat statbuf;
+	if (stat(path.c_str(), &statbuf) != 0)
+		return 0;
+	return statbuf.st_mtime;
+}
 
-	html += directory;
+std::string format_size(std::size_t size)
+{
+	std::stringstream ss;
+	if (size < 1024)
+		ss << size << " B";
+	else if (size < 1024 * 1024)
+		ss << std::fixed << std::setprecision(2) << size / 1024.0 << " KB";
+	else
+		ss << std::fixed << std::setprecision(2) << size / (1024.0 * 1024.0) << " MB";
+	return ss.str();
+}
 
-	html += "</h1><hr><ul><li><a href=\".\">.</a></li><li><a href=\"../\">..</a></li>";
+std::string format_time(time_t time)
+{
+	std::stringstream ss;
+	struct tm *tm_info = localtime(&time);
+	char buffer[20];
+	strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
+	ss << buffer;
+	return ss.str();
+}
 
-	std::vector<std::string> files = list_directory(directory); // Call list_directory
+std::string autoindex(const std::string &directory, const std::string &location)
+{
+	std::string html = "<!DOCTYPE html>\n"
+					   "<html>\n"
+					   "<head>\n"
+					   "    <title>Index of " +
+					   location + "</title>\n"
+								  "    <style>\n"
+								  "        body { font-family: Arial, sans-serif; margin: 20px; }\n"
+								  "        h1 { color: #333; }\n"
+								  "        ul { list-style-type: none; padding: 0; }\n"
+								  "        li { margin-bottom: 10px; }\n"
+								  "        a { color: #007bff; text-decoration: none; }\n"
+								  "        a:hover { text-decoration: underline; }\n"
+								  "        .footer { margin-top: 20px; color: #777; font-size: 12px; }\n"
+								  "        .file { color: #333; }\n"
+								  "        .directory { color: #007bff; }\n"
+								  "        .file-size, .last-modified { color: #777; margin-left: 10px; }\n"
+								  "        .icon { font-size: 20px; margin-right: 5px; }\n"
+								  "        .container { max-width: 800px; margin: 0 auto; }\n"
+								  "        .header { background-color: #f7f7f7; padding: 10px; }\n"
+								  "        .header h1 { margin: 0; }\n"
+								  "        .content { padding: 20px; }\n"
+								  "        .file-info { font-size: 0.8em; }\n"
+								  "    </style>\n"
+								  "</head>\n"
+								  "<body>\n"
+								  "    <div class=\"container\">\n"
+								  "        <div class=\"header\">\n"
+								  "            <h1>Index of " +
+					   location + "</h1>\n"
+								  "        </div>\n"
+								  "        <div class=\"content\">\n"
+								  "            <ul>\n"
+								  "                <li><span class=\"icon\">&#128193;</span><a href=\"./\">.</a></li>\n"
+								  "                <li><span class=\"icon\">&#128193;</span><a href=\"../\">..</a></li>";
 
-	// Traditional for loop
-	for (unsigned int i = 0; i < files.size(); ++i)
+	std::vector<std::string> files = list_directory(directory);
+	std::sort(files.begin(), files.end());
+
+	for (size_t i = 0; i < files.size(); ++i)
 	{
 		const std::string &file = files[i];
-		html += "<li><a href='" + file + "'>" + file + "</a></li>";
+		std::string path = directory + '/' + file;
+		bool is_directory = is_dir(path);
+		std::string icon = is_directory ? "&#128193;" : "&#x1F517;";
+		std::string name = is_directory ? "<span class=\"directory\">" + file + "/</span>" : "<span class=\"file\">" + file + "</span>";
+		std::string size = is_directory ? "" : "<span class=\"file-size\">" + format_size(get_file_size(path)) + "</span>";
+		std::string time = is_directory ? "" : "<span class=\"last-modified\">" + format_time(get_last_modified_time(path)) + "</span>";
+		html += "                <li><span class=\"icon\">" + icon + "</span><a href='" + (location != "/" ? location : "") + '/' + file + "'>" + name + "</a> " + size + " " + time + "</li>\n";
 	}
 
-	html += "</ul><hr></body></html>";
+	html += "            </ul>\n"
+			"        </div>\n"
+			"        <div class=\"footer\">Generated by autoindex</div>\n"
+			"    </div>\n"
+			"</body>\n"
+			"</html>";
 
 	return html;
 }

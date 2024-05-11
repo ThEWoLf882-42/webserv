@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:15:55 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/21 13:58:53 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/10 18:26:55 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ namespace wbs
 
 		void insert(const std::pair<std::string, std::vector<std::string> > &);
 		void set_path(const std::string &);
-		std::string get_path();
-		std::string get_root();
+		std::string get_path() const;
+		std::string get_root() const;
 		std::map<std::string, std::vector<std::string> > &get_params();
 
 		void end_map_location();

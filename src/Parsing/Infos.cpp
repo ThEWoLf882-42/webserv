@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/02 13:13:19 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:06:40 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ void wbs::Infos::print_directives()
 		std::cout << "EMPTY\n";
 	else
 	{
-		std::vector<Location>::iterator loc = locations.begin();
+		std::map<std::string, Location>::iterator loc = locations.begin();
 		for (; loc != locations.end(); loc++)
 		{
 			std::cout << "Location " << j++ << std::endl;
-			std::cout << "Path: " << loc->get_path() << std::endl;
-			std::map<std::string, std::vector<std::string> >::iterator mini = loc->get_params().begin();
-			for (; mini != loc->get_params().end(); mini++)
+			std::cout << "Path: " << loc->second.get_path() << std::endl;
+			std::map<std::string, std::vector<std::string> >::iterator mini = loc->second.get_params().begin();
+			for (; mini != loc->second.get_params().end(); mini++)
 			{
 				std::cout << "Key: " << mini->first << std::endl;
 				std::vector<std::string>::iterator vec = mini->second.begin();
@@ -160,8 +160,8 @@ void wbs::Infos::rootset()
 		root = it->second[0];
 	else
 		root = "./";
-	for (std::vector<Location>::iterator lit = locations.begin(); lit != locations.end(); lit++)
-		lit->rootset();
+	for (std::map<std::string, Location>::iterator lit = locations.begin(); lit != locations.end(); lit++)
+		lit->second.rootset();
 }
 
 void wbs::Infos::set_directives(const std::string &key, const std::vector<std::string> &array)
@@ -171,7 +171,7 @@ void wbs::Infos::set_directives(const std::string &key, const std::vector<std::s
 
 void wbs::Infos::set_locations(const Location &location)
 {
-	this->locations.push_back(location);
+	this->locations.insert(std::make_pair(location.get_path(), location));
 }
 
 std::map<std::string, std::vector<std::string> > &wbs::Infos::get_directives()
@@ -179,7 +179,7 @@ std::map<std::string, std::vector<std::string> > &wbs::Infos::get_directives()
 	return this->directives;
 }
 
-std::vector<wbs::Location> &wbs::Infos::get_locations()
+std::map<std::string, wbs::Location> &wbs::Infos::get_locations()
 {
 	return this->locations;
 }

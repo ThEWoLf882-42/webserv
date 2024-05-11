@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/10 16:31:32 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/10 21:26:10 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), code(200)
 	std::stringstream fir(line);
 	fir >> meth >> loc >> ver;
 
+	oloc = loc;
 	set_heads(ss, line);
 	try
 	{
@@ -49,6 +50,7 @@ wbs::Request &wbs::Request::operator=(const Request &r)
 	{
 		meth = r.meth;
 		loc = r.loc;
+		oloc = r.oloc;
 		ver = r.ver;
 		body = r.body;
 		code = r.code;
@@ -123,7 +125,10 @@ void wbs::Request::checkbodysize()
 	long clen;
 	ss >> size;
 	ss.clear();
-	ss.str(heads.find("Content-Length")->second);
+	if (heads.find("Content-Length") != heads.end())
+		ss.str(heads.find("Content-Length")->second);
+	else
+		ss.str("0");
 	ss >> clen;
 	if (size != -69 && clen > size)
 	{
@@ -145,39 +150,39 @@ void wbs::Request::checkmeth()
 
 void wbs::Request::checkloc()
 {
-	std::string ro = serv.get_inf().get_root();
-	std::vector<Location> &locs = serv.get_inf().get_locations();
+	setquery();
 
-	if (loc == "/")
-		loc = ro;
-	else
+	std::string ro = serv.get_inf().get_root();
+	std::map<std::string, Location> &locs = serv.get_inf().get_locations();
+
+	std::map<std::string, Location>::iterator it = locs.lower_bound(loc);
+	if (it != locs.end())
 	{
-		std::vector<Location>::iterator it;
-		for (it = locs.begin(); it != locs.end(); it++)
+		if (it->first != loc)
 		{
-			std::string lro = it->get_root() == "" ? it->get_path() : it->get_root();
-			size_t pos = loc.find(it->get_path());
-			if (pos != std::string::npos)
+			for (size_t pos = loc.back(); pos != std::string::npos; pos--)
 			{
-				loc.replace(pos, lro.size(), lro);
-				mloc = *it;
-				if (it->get_params().find("return") != it->get_params().end())
+				pos = loc.find_last_of('/', pos);
+				it = locs.lower_bound(loc.substr(0, pos));
+				if (it != locs.end() && it->second.get_root() != "")
 				{
-					code = 301;
-					throw std::runtime_error("301 " + *++(it->get_params().find("return")->second.begin()));
+					loc = it->second.get_root() + loc.substr(pos, loc.back());
+					std::cerr << "mloc seted" << std::endl;
+					mloc = it->second;
+					break;
 				}
-				break;
+				if (pos == 0)
+					loc = ro + loc;
 			}
 		}
-		if (it == locs.end())
+		else
 		{
-			size_t pos = loc.find('/');
-			if (pos != std::string::npos)
-				loc.replace(pos, 1, ro + "/");
+			loc = it->second.get_root();
+			mloc = it->second;
 		}
 	}
-
-	setquery();
+	else if (loc == "/")
+		loc = ro;
 
 	std::cout << "loc: " << loc << std::endl;
 	std::cout << "query: " << query << std::endl;
@@ -224,6 +229,11 @@ std::string wbs::Request::get_meth()
 std::string wbs::Request::get_loc()
 {
 	return loc;
+}
+
+std::string wbs::Request::get_oloc()
+{
+	return oloc;
 }
 
 std::string wbs::Request::get_ver()

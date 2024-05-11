@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/10 15:11:47 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/10 18:03:54 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace wbs
 	{
 	private:
 		std::map<std::string, std::vector<std::string> > directives;
-		std::vector<Location> locations;
+		std::map<std::string, Location> locations;
 		std::vector<unsigned int> ports;
 		std::string root;
 		std::vector<int> duplicated;
@@ -39,7 +39,7 @@ namespace wbs
 		void print_directives();
 
 		std::map<std::string, std::vector<std::string> > &get_directives();
-		std::vector<Location> &get_locations();
+		std::map<std::string, Location> &get_locations();
 		std::vector<unsigned int> &get_ports();
 		std::string get_root();
 		unsigned int &get_host();
