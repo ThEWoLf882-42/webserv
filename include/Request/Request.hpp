@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/11 12:24:01 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/11 12:35:45 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace wbs
 	{
 	private:
 		Listen &serv;
-		Location mloc;
+		Location *mloc;
 		std::map<std::string, std::string> heads;
 		std::string meth;
 		std::string loc;

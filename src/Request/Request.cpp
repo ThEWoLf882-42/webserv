@@ -6,13 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/11 12:24:11 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/11 12:36:58 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::Request::Request(Listen &s, const std::string &req) : serv(s), code(200)
+wbs::Request::Request(Listen &s, const std::string &req) : serv(s), mloc(NULL), code(200)
 {
 	std::stringstream ss(req);
 	std::string line;
@@ -168,7 +168,7 @@ void wbs::Request::checkloc()
 				{
 					loc = it->second.get_root() + loc.substr(pos, loc.back());
 					std::cerr << "mloc seted" << std::endl;
-					mloc = it->second;
+					mloc = &it->second;
 					break;
 				}
 				if (pos == 0)
@@ -178,7 +178,7 @@ void wbs::Request::checkloc()
 		else
 		{
 			loc = it->second.get_root();
-			mloc = it->second;
+			mloc = &it->second;
 		}
 	}
 	else if (loc == "/")
@@ -218,7 +218,7 @@ void wbs::Request::checkver()
 
 wbs::Location &wbs::Request::get_mloc()
 {
-	return mloc;
+	return *mloc;
 }
 
 std::string wbs::Request::get_meth()
