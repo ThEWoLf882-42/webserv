@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/10 21:39:13 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/11 12:27:55 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,4 @@ std::string readfile(std::string);
 std::map<std::string, std::string> set_mime();
 std::string get_mime(const std::string &);
 bool AllowedChars(const std::string &);
-std::vector<std::string> list_directory(const std::string &);
 std::string autoindex(const std::string &, const std::string &);
