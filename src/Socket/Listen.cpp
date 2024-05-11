@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/11 12:21:44 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/11 12:24:24 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,8 @@ void wbs::Listen::proc(long soc)
 
 		if (OUTREQ)
 		{
-			std::string req = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc].substr(0, 1000) + "..." + reqs[soc].substr(reqs[soc].size() - 10, 15);
+			// std::string req = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc].substr(0, 1000) + "..." + reqs[soc].substr(reqs[soc].size() - 10, 15);
+			std::string req = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc];
 			std::cout << "\nRequest :" << std::endl
 					  << "[" << req << "]" << std::endl;
 		}

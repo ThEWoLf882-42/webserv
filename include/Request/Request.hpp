@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/10 21:17:22 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/11 12:23:05 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ namespace wbs
 		std::map<std::string, std::string> heads;
 		std::string meth;
 		std::string loc;
-		std::string oloc;
 		std::string ver;
 		std::string body;
 		std::string codemsg;
@@ -52,7 +51,7 @@ namespace wbs
 		std::string get_loc();
 		std::string get_oloc();
 		std::string get_ver();
-		std::string get_body();
+		std:: string get_body();
 		std::string get_codemsg();
 		std::string get_query();
 		int get_code();
