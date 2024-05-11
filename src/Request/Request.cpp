@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/11 12:36:58 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/11 14:30:19 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,34 +155,56 @@ void wbs::Request::checkloc()
 	std::string ro = serv.get_inf().get_root();
 	std::map<std::string, Location> &locs = serv.get_inf().get_locations();
 
-	std::map<std::string, Location>::iterator it = locs.lower_bound(loc);
-	if (it != locs.end())
+	std::map<std::string, Location>::iterator it = locs.find(loc);
+	if (it == locs.end())
 	{
-		if (it->first != loc)
+		size_t pos = loc.back();
+		for (pos = loc.find_last_of('/', pos - 1); pos != std::string::npos; pos--)
 		{
-			for (size_t pos = loc.back(); pos != std::string::npos; pos--)
+			it = locs.find(loc.substr(0, pos));
+			if (it != locs.end())
 			{
-				pos = loc.find_last_of('/', pos);
-				it = locs.lower_bound(loc.substr(0, pos));
-				if (it != locs.end() && it->second.get_root() != "")
-				{
-					loc = it->second.get_root() + loc.substr(pos, loc.back());
-					std::cerr << "mloc seted" << std::endl;
-					mloc = &it->second;
-					break;
-				}
-				if (pos == 0)
-					loc = ro + loc;
+				loc = it->second.get_root() + loc.substr(pos, loc.back());
+				std::cerr << "mloc seted" << std::endl;
+				mloc = &it->second;
+				break;
 			}
-		}
-		else
-		{
-			loc = it->second.get_root();
-			mloc = &it->second;
+			if (!pos)
+				loc = ro + loc;
 		}
 	}
-	else if (loc == "/")
-		loc = ro;
+	else
+	{
+		loc = it->second.get_root();
+		mloc = &it->second;
+	}
+	// if (it != locs.end())
+	// {
+	// 	if (it->first != loc)
+	// 	{
+	// 		for (size_t pos = loc.back(); pos != std::string::npos; pos--)
+	// 		{
+	// 			pos = loc.find_last_of('/', pos);
+	// 			it = locs.lower_bound(loc.substr(0, pos));
+	// 			if (it != locs.end() && it->second.get_root() != "")
+	// 			{
+	// 				loc = it->second.get_root() + loc.substr(pos, loc.back());
+	// 				std::cerr << "mloc seted" << std::endl;
+	// 				mloc = &it->second;
+	// 				break;
+	// 			}
+	// 			if (pos == 0)
+	// 				loc = ro + loc;
+	// 		}
+	// 	}
+	// 	else
+	// 	{
+	// 		loc = it->second.get_root();
+	// 		mloc = &it->second;
+	// 	}
+	// }
+	// else if (loc == "/")
+	// 	loc = ro;
 
 	std::cout << "loc: " << loc << std::endl;
 	std::cout << "query: " << query << std::endl;
