@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Listen.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/21 19:11:56 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/21 21:23:01 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,17 +138,7 @@ void wbs::Listen::proc(long soc)
 	{
 		Request r(*this, reqs[soc]);
 		Response res(r);
-		// std::string str = "HTTP/1.1 200 OK\r\nContent-Type: ";
-		// str += get_mime(r.get_loc()) + "\r\nContent-Length: ";
-		// // std::string body = readfile(r.get_loc());
-		// std::string body = autoindex(r.get_loc(),r.get_oloc());
-		// std::stringstream s;
 
-		// s << body.size();
-		// std::string size = s.str();
-		// str += size + "\r\n\r\n";
-		// str += body;
-		// // std::cerr << "res: " << res.get_response() << std::endl;
 		if (OUTREQ)
 		{
 			// std::string req = reqs[soc].size() < 1000 ? reqs[soc] : reqs[soc].substr(0, 1000) + "..." + reqs[soc].substr(reqs[soc].size() - 10, 15);

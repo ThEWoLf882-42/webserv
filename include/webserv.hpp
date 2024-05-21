@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/11 12:27:55 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/21 21:26:48 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 #define RSIZE 4096
 #define BLOG 1000
 #define OUTREQ 1
-#define OUTRES 1
+#define OUTRES 0
 
 namespace wbs
 {
