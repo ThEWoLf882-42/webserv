@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/21 16:06:27 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:26:47 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ namespace wbs
 	class Response
 	{
 		private:
+			Request &req;
+			Infos &inf;
 			std::vector<std::string> vec_p;
 			std::vector<std::string> vec;
 			std::map<const std::string, std::string> map;
@@ -33,7 +35,7 @@ namespace wbs
 			std::string length;
 			std::string body;
 			std::string content;
-			wbs::Request &req;
+			std::string response;
 			
 			int code;
 			Response();
@@ -41,24 +43,21 @@ namespace wbs
 			~Response();
 			Response(Request &req);
 			
-			std::string mime_comp();
 			void count_size(std::string &url);
 			int check_file(std::string &url);
 			int check_meth(const std::string &method);
-			void get_file(std::string &url);
-			void get_cont_ty(std::string &url_tst);
-			void print_map(std::map<const std::string, std::string>& map);
-			void openf_f();
-			void start_tst();
+			void start_resp();
 			void get_resource_type(const std::string &path);
-			void generate_response_headers(int code, const std::string &status);
+			void generate_response(int code, const std::string &status);
 			void generate_body(std::string &url, int ind, int code);
 			std::string get_method(std::string &url);
 			std::string post_method(std::string &url);
 			std::string delete_method(std::string &url);
 			bool check_auto_index();
-			void get_req_resource(std::string &loc);
 			void delete_all_content(std::string &loc);
 			bool location_has_cgi();
+			bool there_is_an_index();
+
+			const std::string &get_response();
 	};
 }

@@ -6,13 +6,13 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/21 15:16:12 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:20:19 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::Request::Request(Listen &s, const std::string &req) : serv(s), mloc(NULL), code(200)
+wbs::Request::Request(Listen &s, const std::string &req) : serv(s), mloc(NULL), inf(serv.get_inf()), code(200)
 {
 	std::stringstream ss(req);
 	std::string line;
@@ -39,7 +39,7 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), mloc(NULL), 
 	set_body(req);
 }
 
-wbs::Request::Request(const Request &r) : serv(r.serv)
+wbs::Request::Request(const Request &r) : serv(r.serv), inf(serv.get_inf())
 {
 	*this = r;
 }
@@ -95,22 +95,22 @@ void wbs::Request::checkencoding()
 	if (heads.find("Transfer-Encoding") != heads.end() && heads.find("Transfer-Encoding")->second != "chunked")
 	{
 		code = 501;
-		throw std::runtime_error("501 Not Implemented");
+		throw std::runtime_error(" Not Implemented");
 	}
 	if (heads.find("Transfer-Encoding") == heads.end() && heads.find("Content-Length") == heads.end() && meth == "POST")
 	{
 		code = 400;
-		throw std::runtime_error("400 Bad Request");
+		throw std::runtime_error(" Bad Request");
 	}
 	if (!AllowedChars(loc))
 	{
 		code = 400;
-		throw std::runtime_error("400 Bad Request");
+		throw std::runtime_error(" Bad Request");
 	}
 	if (loc.size() > 2048)
 	{
 		code = 414;
-		throw std::runtime_error("414 URI Too Long");
+		throw std::runtime_error(" URI Too Long");
 	}
 }
 
@@ -133,7 +133,7 @@ void wbs::Request::checkbodysize()
 	if (size != -69 && clen > size)
 	{
 		code = 413;
-		throw std::runtime_error("413 Content Too Large");
+		throw std::runtime_error(" Content Too Large");
 	}
 }
 
@@ -144,7 +144,7 @@ void wbs::Request::checkmeth()
 	if (std::find(alme.begin(), alme.end(), meth) == alme.end())
 	{
 		code = 501;
-		throw std::runtime_error("501 Not Implemented");
+		throw std::runtime_error(" Not Implemented");
 	}
 }
 
@@ -165,7 +165,6 @@ void wbs::Request::checkloc()
 			if (it != locs.end())
 			{
 				loc = it->second.get_root() + loc.substr(pos, loc.back());
-				std::cerr << "mloc seted" << std::endl;
 				mloc = &it->second;
 				break;
 			}
@@ -178,34 +177,6 @@ void wbs::Request::checkloc()
 		loc = it->second.get_root();
 		mloc = &it->second;
 	}
-	// if (it != locs.end())
-	// {
-	// 	if (it->first != loc)
-	// 	{
-	// 		for (size_t pos = loc.back(); pos != std::string::npos; pos--)
-	// 		{
-	// 			pos = loc.find_last_of('/', pos);
-	// 			it = locs.lower_bound(loc.substr(0, pos));
-	// 			if (it != locs.end() && it->second.get_root() != "")
-	// 			{
-	// 				loc = it->second.get_root() + loc.substr(pos, loc.back());
-	// 				std::cerr << "mloc seted" << std::endl;
-	// 				mloc = &it->second;
-	// 				break;
-	// 			}
-	// 			if (pos == 0)
-	// 				loc = ro + loc;
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		loc = it->second.get_root();
-	// 		mloc = &it->second;
-	// 	}
-	// }
-	// else if (loc == "/")
-	// 	loc = ro;
-
 	std::cout << "loc: " << loc << std::endl;
 	std::cout << "query: " << query << std::endl;
 
@@ -214,7 +185,7 @@ void wbs::Request::checkloc()
 		if (access(loc.c_str(), F_OK) == -1)
 		{
 			code = 404;
-			throw std::runtime_error("404 Not Found");
+			throw std::runtime_error(" Not Found");
 		}
 	}
 }
@@ -234,13 +205,22 @@ void wbs::Request::checkver()
 	if (ver != "HTTP/1.1" && ver != "HTTP/1.0")
 	{
 		code = 505;
-		throw std::runtime_error("505 HTTP Version Not Supported");
+		throw std::runtime_error(" HTTP Version Not Supported");
 	}
 }
 
-wbs::Location &wbs::Request::get_mloc()
+wbs::Listen &wbs::Request::get_serv()
 {
-	return *mloc;
+	return serv;
+}
+wbs::Infos &wbs::Request::get_inf()
+{
+	return inf;
+}
+
+wbs::Location *wbs::Request::get_mloc()
+{
+	return mloc;
 }
 
 std::string wbs::Request::get_meth()

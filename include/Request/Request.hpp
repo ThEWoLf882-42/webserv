@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/11 12:35:45 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/21 18:18:03 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ namespace wbs
 	private:
 		Listen &serv;
 		Location *mloc;
+		Infos &inf;
 		std::map<std::string, std::string> heads;
 		std::string meth;
 		std::string loc;
@@ -47,7 +48,9 @@ namespace wbs
 		Request &operator=(const Request &);
 		~Request();
 
-		Location &get_mloc();
+		Listen &get_serv();
+		Infos &get_inf();
+		Location *get_mloc();
 		std::string get_meth();
 		std::string get_loc();
 		std::string get_oloc();
