@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/10 15:47:27 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:07:33 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ namespace wbs_r
 			std::string ress_type;
 			std::string ver;
 			std::string meth;
+			std::string length;
+			std::string body;
+			std::string content;
+			
 			int code;
-			int length;
 		public:
 			Response();
 			~Response();
@@ -39,25 +42,21 @@ namespace wbs_r
 			std::string mime_comp();
 			void count_size(std::string &url);
 			int check_file(std::string &url);
-			void mapping();
 			int check_meth(const std::string &method);
 			void get_file(std::string &url);
-			void get_file_p(std::string &url, std::string s1);
-			void hund_(std::string &st);
 			void get_cont_ty(std::string &url_tst);
 			void print_map(std::map<const std::string, std::string>& map);
 			void openf_f();
-			void uhhh();
 			void start_tst();
-			void check_dir_file(const std::string &path);
-			int get_ressource_type(const std::string &path);
-			bool post_resp();
-			int check_code();
-			void gen_resp();
+			void get_resource_type(const std::string &path);
+			void generate_response_headers(int code, const std::string &status);
+			void generate_body(std::string &url, int ind, int code);
+			std::string get_method(std::string &url);
+			void post_method(std::string &url);
+			void delete_method(std::string &url);
+			bool check_auto_index();
+			bool get_req_resource(std::string &loc);
+			void delete_all_content(std::string &loc);
+			bool location_has_cgi();
 	};
 }
-
-bool supports_upload(const std::string &path);
-void upload_req_body(const std::string &path);
-bool location_has_cgi(const std::string &path);
-bool get_req_ressource();
