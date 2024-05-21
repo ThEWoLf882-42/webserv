@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/21 16:09:27 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:13:54 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,7 +358,6 @@ void wbs::Response::generate_body(std::string &url, int ind, int code){
 }
 
 std::string wbs::Response::get_method(std::string &loc){
-	get_req_resource(loc);
 	get_resource_type(loc);
 	if (ress_type == "directory"){
 		if (loc[loc.size() - 1] != '/'){
