@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/10 16:36:16 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/11 17:04:48 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,141 @@ std::string get_mime(const std::string &pat)
 	if (pat.find_last_of('.') != std::string::npos)
 		type = pat.substr(pat.find_last_of('.'), pat.size());
 	else
-		type = ".text";
+		type = ".html";
 	if (wbs::Server::mime.find(type) != wbs::Server::mime.end())
 		return wbs::Server::mime.find(type)->second;
 	else
-		return wbs::Server::mime.find(".text")->second;
+		return wbs::Server::mime.find(".html")->second;
 }
 
 bool AllowedChars(const std::string &str)
 {
 	const std::string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=%";
 	return str.find_first_not_of(allowedChars) == std::string::npos;
+}
+
+std::vector<std::string> list_directory(const std::string &directory)
+{
+	std::vector<std::string> files;
+	DIR *dirp = opendir(directory.c_str());
+	if (dirp != NULL)
+	{
+		struct dirent *dp;
+		while ((dp = readdir(dirp)) != NULL)
+		{
+			if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0)
+				files.push_back(dp->d_name);
+		}
+		closedir(dirp);
+	}
+	return files;
+}
+
+bool is_dir(const std::string &path)
+{
+	struct stat statbuf;
+	if (stat(path.c_str(), &statbuf) != 0)
+		return false;
+	return S_ISDIR(statbuf.st_mode);
+}
+
+std::size_t get_file_size(const std::string &path)
+{
+	struct stat statbuf;
+	if (stat(path.c_str(), &statbuf) != 0)
+		return 0;
+	return statbuf.st_size;
+}
+
+time_t get_last_modified_time(const std::string &path)
+{
+	struct stat statbuf;
+	if (stat(path.c_str(), &statbuf) != 0)
+		return 0;
+	return statbuf.st_mtime;
+}
+
+std::string format_size(std::size_t size)
+{
+	std::stringstream ss;
+	if (size < 1024)
+		ss << size << " B";
+	else if (size < 1024 * 1024)
+		ss << std::fixed << std::setprecision(2) << size / 1024.0 << " KB";
+	else if (size < 1024 * 1024 * 1024)
+		ss << std::fixed << std::setprecision(2) << size / (1024.0 * 1024.0) << " MB";
+	else
+		ss << std::fixed << std::setprecision(2) << size / (1024 * 1024 * 1024) << " GB";
+	return ss.str();
+}
+
+std::string format_time(time_t time)
+{
+	std::stringstream ss;
+	struct tm *tm_info = localtime(&time);
+	char buffer[20];
+	strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
+	ss << buffer;
+	return ss.str();
+}
+
+std::string autoindex(const std::string &directory, const std::string &location)
+{
+	std::string html = "<!DOCTYPE html>\n"
+					   "<html>\n"
+					   "<head>\n"
+					   "    <title>Index of " +
+					   location + "</title>\n"
+								  "    <style>\n"
+								  "        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; }\n"
+								  "        .container { max-width: 800px; margin: 20px auto; padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }\n"
+								  "        h1 { color: #333; }\n"
+								  "        ul { list-style-type: none; padding: 0; }\n"
+								  "        li { margin-bottom: 10px; display: flex; align-items: center; }\n"
+								  "        a { color: #007bff; text-decoration: none; }\n"
+								  "        a:hover { text-decoration: underline; }\n"
+								  "        .footer { margin-top: 20px; color: #777; font-size: 18px; }\n"
+								  "        .file { color: #333; }\n"
+								  "        .directory { color: #007bff; }\n"
+								  "        .file-info { color: #777; font-size: 1em; margin-left: 10px; }\n"
+								  "        .icon { font-size: 28px; margin-right: 5px; }\n"
+								  "        .size { margin-left: auto; }\n"
+								  "        .time { margin-left: 10px; }\n"
+								  "        .content { height: 1000px; overflow-y: auto; }\n"
+								  "    </style>\n"
+								  "</head>\n"
+								  "<body>\n"
+								  "    <div class=\"container\">\n"
+								  "        <h1>Index of " +
+					   location + "</h1>\n"
+								  "        <hr>\n"
+								  "        <div class=\"content\">\n"
+								  "            <ul>\n"
+								  "                <li><span class=\"icon\">&#128193;</span><a href=\"./\">.</a></li>\n"
+								  "                <li><span class=\"icon\">&#128193;</span><a href=\"../\">..</a></li>";
+
+	std::vector<std::string> files = list_directory(directory);
+	std::sort(files.begin(), files.end());
+
+	for (size_t i = 0; i < files.size(); ++i)
+	{
+		const std::string &file = files[i];
+		std::string path = directory + '/' + file;
+		bool is_directory = is_dir(path);
+		std::string icon = is_directory ? "&#128193;" : "&#x1F517;";
+		std::string name = is_directory ? "<span class=\"directory\">" + file + "/</span>" : "<span class=\"file\">" + file + "</span>";
+		std::string size = is_directory ? "" : "<span class=\"file-info size\">" + format_size(get_file_size(path)) + "</span>";
+		std::string time = is_directory ? "" : "<span class=\"file-info time\">" + format_time(get_last_modified_time(path)) + "</span>";
+		html += "                <li><span class=\"icon\">" + icon + "</span><div><a href='" + location + (location.back() != '/' ? ('/' + file) : file) + "'>" + name + "</a></div><div class=\"file-info size\">" + size + "</div><div class=\"file-info time\">" + time + "</div></li>\n";
+	}
+
+	html += "            </ul>\n"
+			"        </div>\n"
+			"        <hr>\n"
+			"        <div class=\"footer\">Generated by autoindex</div>\n"
+			"    </div>\n"
+			"</body>\n"
+			"</html>";
+
+	return html;
 }

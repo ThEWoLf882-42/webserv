@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:18:32 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/21 15:13:37 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/10 18:26:50 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ void wbs::Location::set_path(const std::string &p)
 	path = p;
 }
 
-std::string wbs::Location::get_path()
+std::string wbs::Location::get_path() const
 {
 	return path;
 }
 
-std::string wbs::Location::get_root()
+std::string wbs::Location::get_root() const
 {
 	return root;
 }

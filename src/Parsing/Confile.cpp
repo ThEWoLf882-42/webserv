@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/02 17:01:02 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/10 18:24:49 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,8 @@ void wbs::Confile::check_semicolon()
 	for (; it != servers.end(); it++)
 	{
 		it->end_map();
-		for (std::vector<Location>::iterator loc = it->get_locations().begin(); loc != it->get_locations().end(); loc++)
-			loc->end_map_location();
+		for (std::map<std::string, Location>::iterator loc = it->get_locations().begin(); loc != it->get_locations().end(); loc++)
+			loc->second.end_map_location();
 	}
 }
 

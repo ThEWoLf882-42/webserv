@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Listen.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/03/02 16:25:24 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/11 17:06:31 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void wbs::Listen::proc(long soc)
 		std::string str = "HTTP/1.1 200 OK\r\nContent-Type: ";
 		str += get_mime(r.get_loc()) + "\r\nContent-Length: ";
 		std::string body = readfile(r.get_loc());
+		// std::string body = autoindex(r.get_loc(),r.get_oloc());
 		std::stringstream s;
 
 		s << body.size();
