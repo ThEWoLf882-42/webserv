@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/21 13:07:33 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:06:27 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <webserv.hpp>
 
-namespace wbs_r
+namespace wbs
 {
 	class Response
 	{
@@ -33,11 +33,13 @@ namespace wbs_r
 			std::string length;
 			std::string body;
 			std::string content;
+			wbs::Request &req;
 			
 			int code;
-		public:
 			Response();
+		public:
 			~Response();
+			Response(Request &req);
 			
 			std::string mime_comp();
 			void count_size(std::string &url);
@@ -52,10 +54,10 @@ namespace wbs_r
 			void generate_response_headers(int code, const std::string &status);
 			void generate_body(std::string &url, int ind, int code);
 			std::string get_method(std::string &url);
-			void post_method(std::string &url);
-			void delete_method(std::string &url);
+			std::string post_method(std::string &url);
+			std::string delete_method(std::string &url);
 			bool check_auto_index();
-			bool get_req_resource(std::string &loc);
+			void get_req_resource(std::string &loc);
 			void delete_all_content(std::string &loc);
 			bool location_has_cgi();
 	};

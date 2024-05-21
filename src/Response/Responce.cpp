@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/21 15:13:58 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:09:27 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
-wbs_r::Response::Response()
+wbs::Response::Response(Request &req): req(req)
 {
 	
 }
 
-wbs_r::Response::~Response(){}
+wbs::Response::~Response(){}
 
-void wbs_r::Response::print_map(std::map<const std::string, std::string>& map){
+void wbs::Response::print_map(std::map<const std::string, std::string>& map){
 	for (std::map<const std::string, std::string>::const_iterator it = map.begin(); it != map.end(); ++it){
 		std::cout << it->first.substr(2) << it->second << '\r\n';
 	}
 }
 
-void wbs_r::Response::openf_f(){
+void wbs::Response::openf_f(){
 	std::vector<std::string>vector;
 	wbs::Request req();
 	
@@ -52,7 +52,7 @@ std::string::size_type find_char(const std::string &path, char thing){
 	return (std::string::npos);
 }
 
-bool wbs_r::Response::location_has_cgi(){
+bool wbs::Response::location_has_cgi(){
 	wbs::Location loc;
 
 	std::map<std::string, std::vector<std::string> >::iterator it;
@@ -114,7 +114,7 @@ bool if_supports_upload(){
 	return (true);
 }
 
-void wbs_r::Response::get_resource_type(const std::string &path){
+void wbs::Response::get_resource_type(const std::string &path){
 	struct stat s;
 
 	if ( stat(path.c_str(), &s) == 0){ //extract the resource info, which will contain if it's a dir/file (o_o;)?
@@ -139,7 +139,7 @@ void wbs_r::Response::get_resource_type(const std::string &path){
 
 //----------------RESP HEADER/BODY
 
-void wbs_r::Response::get_cont_ty(std::string &url_tst){
+void wbs::Response::get_cont_ty(std::string &url_tst){
 	wbs::Request req();
 
 	std::string token;
@@ -164,7 +164,7 @@ void wbs_r::Response::get_cont_ty(std::string &url_tst){
 	extention = url_tst;
 }
 
-std::string wbs_r::Response::mime_comp(){
+std::string wbs::Response::mime_comp(){
 	std::string line;
 	std::ifstream mime("mime");
 	if (mime.is_open()){
@@ -185,7 +185,7 @@ std::string wbs_r::Response::mime_comp(){
 	return ("");
 }
 
-void wbs_r::Response::count_size(std::string &url){
+void wbs::Response::count_size(std::string &url){
 	std::string body = readfile(url.c_str());
 	std::stringstream s;
 
@@ -197,7 +197,7 @@ void wbs_r::Response::count_size(std::string &url){
 	length = size;
 }
 
-void wbs_r::Response::get_file(std::string &url){
+void wbs::Response::get_file(std::string &url){
 	std::string line;
 	std::ifstream file(url);
 
@@ -216,7 +216,7 @@ void wbs_r::Response::get_file(std::string &url){
 
 //--------------------CHECK
 
-bool wbs_r::Response::check_auto_index(){
+bool wbs::Response::check_auto_index(){
 	wbs::Location loc;
 	std::string conf;
 
@@ -240,7 +240,7 @@ bool wbs_r::Response::check_auto_index(){
 	return (false);
 }
 
-void wbs_r::Response::generate_response_headers(int code, const std::string &status){
+void wbs::Response::generate_response_headers(int code, const std::string &status){
 	std::stringstream ss;
 
 	ss << "HTTP/1.1" << " " << code << status << "\r\n"
@@ -249,7 +249,7 @@ void wbs_r::Response::generate_response_headers(int code, const std::string &sta
 		<< "\r\n\r\n"; 
 }
 
-int wbs_r::Response::check_meth(const std::string &method){
+int wbs::Response::check_meth(const std::string &method){
 	if (method == "GET")
 		return (1);
 	else if (method == "POST")
@@ -259,7 +259,7 @@ int wbs_r::Response::check_meth(const std::string &method){
 	return (0);
 }
 
-int wbs_r::Response::check_file(std::string &url){
+int wbs::Response::check_file(std::string &url){
 	std::ifstream file(url);
 	if (access(url.c_str(), F_OK) != 0){
 		generate_response_headers(404, " Not Found");
@@ -321,14 +321,14 @@ bool there_is_an_index(){
 	return (false);
 }
 
-void wbs_r::Response::generate_body(std::string &url, int ind, int code){
+void wbs::Response::generate_body(std::string &url, int ind, int code){
 	
 	if (ind == 1 && (code == 200 || code == 201 || code == 204)){
 		body = readfile(url.c_str());
 		body += "\r\n";
 	}
 	else if (ind == 3 && code == 200){
-		body = generate_autoindex();
+		body =  autoindex(req.get_loc(), req.get_oloc());
 		body += "\r\n";
 	}
 	else if (ind == 2 && code == 403){
@@ -357,15 +357,15 @@ void wbs_r::Response::generate_body(std::string &url, int ind, int code){
 	}
 }
 
-std::string wbs_r::Response::get_method(std::string &loc){
-	wbs::Request req();
-	
+std::string wbs::Response::get_method(std::string &loc){
+	get_req_resource(loc);
 	get_resource_type(loc);
 	if (ress_type == "directory"){
 		if (loc[loc.size() - 1] != '/'){
 			generate_response_headers(301, " Moved Permanently");
 			generate_body(loc, 2, 301);
-			return (loc + '/');
+			loc += '/';
+			return (loc);
 		}
 		else{
 			if (there_is_an_index() == true){
@@ -408,11 +408,11 @@ std::string wbs_r::Response::get_method(std::string &loc){
 		return "";
 }
 
-void wbs_r::Response::post_method(std::string &loc){
+std::string wbs::Response::post_method(std::string &loc){
 	if (if_supports_upload()){
 		generate_response_headers(201, " Created");
 		generate_body(loc, 1, 201);
-		return ;
+		return ("");
 	}
 	else{
 		get_resource_type(loc);
@@ -421,7 +421,7 @@ void wbs_r::Response::post_method(std::string &loc){
 				generate_response_headers(301, " Moved Permanently");
 				generate_body(loc, 2, 301);
 				loc += '/';
-				return ;
+				return (loc);
 			}
 			else{
 				if (there_is_an_index()){
@@ -431,13 +431,13 @@ void wbs_r::Response::post_method(std::string &loc){
 					else{
 						generate_response_headers(403, " Forbidden");
 						generate_body(loc, 2, 403);
-						return ;
+						return ("");
 					}
 				}
 				else{
 					generate_response_headers(403, " Forbidden");
 					generate_body(loc, 2, 403);
-					return;
+					return ("");
 				}
 			}
 			}
@@ -448,18 +448,18 @@ void wbs_r::Response::post_method(std::string &loc){
 				else{
 					generate_response_headers(403, " Forbidden");
 					generate_body(loc, 2, 403);
-					return ;
+					return ("");
 				}
 		}
 		else{
 			generate_response_headers(404, " Not Found");
 			generate_body(loc, 2, 404);
-			return;
+			return ("");
 		}
 	}
 }
 
-void wbs_r::Response::delete_all_content(std::string &loc){
+void wbs::Response::delete_all_content(std::string &loc){
 	DIR* dir = opendir(loc.c_str());
 	if (dir == NULL){
 		generate_response_headers(500, " Internal Server Error");
@@ -513,15 +513,17 @@ void wbs_r::Response::delete_all_content(std::string &loc){
 	return ;
 }
 
-void wbs_r::Response::delete_method(std::string &loc){
-	if (get_req_resource(loc) == true){
+// get_req_res : readfile
+
+std::string wbs::Response::delete_method(std::string &loc){
+		get_req_resource(loc);
 		get_resource_type(loc);
 		if (ress_type == "directory"){
 			if (loc[loc.size() - 1] != '/'){
 				generate_response_headers(409, " Conflict");
 				generate_body(loc, 2, 409);
 				loc += '/';
-				return;
+				return (loc);
 			}
 			else{
 				if (location_has_cgi()){
@@ -531,7 +533,7 @@ void wbs_r::Response::delete_method(std::string &loc){
 					else{
 						generate_response_headers(403, " Forbidden");
 						generate_body(loc, 2, 403);
-						return ;
+						return ("");
 					}
 				}
 				delete_all_content(loc);
@@ -546,17 +548,15 @@ void wbs_r::Response::delete_method(std::string &loc){
 			else
 				delete_all_content(loc);
 		}
-	}
+	return ("");
 }
 
-void wbs_r::Response::start_tst(){
-	wbs::Request req();
-
-	std::string content = req().get_loc();
-	std::string codemsg = req().get_codemsg();
-	std::string method = req().get_meth();
-	ver = req().get_ver();
-	int code = req().get_code();
+void wbs::Response::start_tst(){
+	std::string content = readfile(req.get_loc());
+	std::string codemsg = req.get_codemsg();
+	std::string method = req.get_meth();
+	ver = req.get_ver();
+	code = req.get_code();
 
 	int check = check_file(content);
 	if (check == 0){
