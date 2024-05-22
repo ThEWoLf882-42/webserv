@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/21 18:26:47 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/22 11:13:29 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ namespace wbs
 			std::string delete_method(std::string &url);
 			bool check_auto_index();
 			void delete_all_content(std::string &loc);
+			void delete_file(std::string &file);
 			bool location_has_cgi();
+			bool if_supports_upload();
 			bool there_is_an_index();
 
 			const std::string &get_response();

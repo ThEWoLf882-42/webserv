@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/22 18:42:52 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/22 19:11:28 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,22 @@ bool wbs::Response::location_has_cgi()
 	return key == ex;
 }
 
-bool if_supports_upload()
+bool wbs::Response::if_supports_upload()
 {
-	wbs::Location loc;
-	std::string conf;
-
-	std::map<std::string, std::vector<std::string> >::iterator it;
-	for (it = loc.get_params().begin(); it != loc.get_params().end(); ++it)
-	{
-		std::string key = it->first;
-		std::vector<std::string> vec = it->second;
-
-		if (key == "methods")
-		{
-			std::vector<std::string>::iterator it_v;
-			for (it_v = vec.begin(); it_v != vec.end(); ++it_v)
-			{
-				std::string method = *it_v;
-				if (std::find(vec.begin(), vec.end(), "POST") == vec.end())
-				{
-					return (false);
-				}
-				else
-					return (true);
-			}
-		}
+	std::vector<std::string> ind;
+	if (inf.get_directives().find("methods") != inf.get_directives().end())
+		ind = inf.get_directives().find("methods")->second;
+		
+	if (req.get_mloc()){
+		wbs::Location loc = *req.get_mloc();
+		
+		if (loc.get_params().find("methods") != loc.get_params().end())
+			ind = loc.get_params().find("methods")->second;
 	}
-	return (true);
+	if(std::find(ind.begin(), ind.end(), "POST") != ind.end()){
+		return (true);
+	}
+	return (false);
 }
 
 void wbs::Response::get_resource_type(const std::string &path)
@@ -195,7 +184,7 @@ int wbs::Response::check_file(std::string &url)
 //-----------------------
 
 bool wbs::Response::there_is_an_index()
-{ // check location first if no then check autoindex
+{
 	std::vector<std::string> indexs;
 	if (inf.get_directives().find("default_file") != inf.get_directives().end())
 		indexs = inf.get_directives().find("default_file")->second;
@@ -315,9 +304,8 @@ std::string wbs::Response::post_method(std::string &loc)
 			if (loc[loc.size() - 1] != '/')
 			{
 				generate_body(loc, 2, 301);
-				generate_response(301, " Moved Permanently");
-				loc += '/';
-				return (loc);
+				generate_response(301, " Moved Permanently\r\nLocation: " + req.get_oloc() + '/');
+				return "";
 			}
 			else
 			{
@@ -426,6 +414,15 @@ void wbs::Response::delete_all_content(std::string &loc)
 	return;
 }
 
+void wbs::Response::delete_file(std::string &file){
+	if (!remove(file.c_str())){
+		generate_body(file, 2, 500);
+		generate_response(500, " Internal Server Error");
+		return;
+	}
+	generate_body(path, 1, 204);
+	generate_response(204, " No Content");
+}
 
 std::string wbs::Response::delete_method(std::string &loc)
 {
@@ -436,8 +433,7 @@ std::string wbs::Response::delete_method(std::string &loc)
 		{
 			generate_body(loc, 2, 409);
 			generate_response(409, " Conflict");
-			loc += '/';
-			return (loc);
+			return "";
 		}
 		else
 		{
@@ -466,10 +462,42 @@ std::string wbs::Response::delete_method(std::string &loc)
 			// 3tiha l meriem :3
 		}
 		else
-			delete_all_content(loc);
+			delete_file(loc);
 	}
 	return ("");
 }
+
+// For CGI, there are several environment variables that are commonly used to provide information to the CGI script. Here are some of the most important ones:
+
+// 1. `SERVER_SOFTWARE`: The name and version of the server software that is handling the request (e.g., "Apache/2.4.39").
+
+// 2. `SERVER_NAME`: The server's hostname or IP address.
+
+// 4. `SERVER_PROTOCOL`: The protocol and version used by the client (e.g., "HTTP/1.1").
+
+// 5. `SERVER_PORT`: The port number to which the request was sent.
+
+// 6. `REQUEST_METHOD`: The HTTP request method used by the client (e.g., "GET", "POST", "HEAD", etc.).
+
+// 7. `PATH_INFO`: The extra path information provided by the client (e.g., "/path/to/file").
+
+// 9. `SCRIPT_NAME`: The virtual path to the script being executed (e.g., "/cgi-bin/script.cgi").
+
+// 10. `QUERY_STRING`: The query string portion of the URL.
+
+// 11. `REMOTE_HOST`: The hostname of the client making the request (if available).
+
+// 12. `REMOTE_ADDR`: The IP address of the client making the request.
+
+// 13. `AUTH_TYPE`: The type of authentication used by the server (if any).
+
+// 14. `REMOTE_USER`: The username supplied by the client during authentication (if any).
+
+// 15. `CONTENT_TYPE`: The MIME type of the request body (for POST requests).
+
+// 16. `CONTENT_LENGTH`: The length of the request body (for POST requests).
+
+// These variables are typically made available to the CGI script by the web server.
 
 void wbs::Response::start_resp()
 {
@@ -478,6 +506,8 @@ void wbs::Response::start_resp()
 	std::string method = req.get_meth();
 	ver = req.get_ver();
 	code = req.get_code();
+
+	
 
 	if (code != 200)
 	{

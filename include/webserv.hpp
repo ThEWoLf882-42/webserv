@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/21 21:26:48 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/22 12:24:31 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 #define DEF_CONF "./config/default.conf"
 #define RSIZE 4096
 #define BLOG 1000
-#define OUTREQ 1
+#define OUTREQ 0
 #define OUTRES 0
 
 namespace wbs
