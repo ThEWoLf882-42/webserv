@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/22 15:48:03 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/22 18:52:27 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -498,6 +498,19 @@ std::string wbs::Response::delete_method(std::string &loc)
 // 16. `CONTENT_LENGTH`: The length of the request body (for POST requests).
 
 // These variables are typically made available to the CGI script by the web server.
+
+bool wbs::Response::set_environ_for_cgi(){
+	const char* conttype = "CONTENT_TYPE: ";
+	const char* valtype = get_mime(req.get_loc()).c_str();
+	
+	if (setenv("CONTENT_ TYPE: ", get_mime(req.get_loc()).c_str(), 1))
+		return (false);
+	if (setenv("CONTENT_LENGTH: ", length.c_str(), 1))
+		return (false);
+	if (setenv("PATH_INFO: ", req.get_loc().c_str(), 1)){
+		return (false);
+	}
+}
 
 void wbs::Response::start_resp()
 {
