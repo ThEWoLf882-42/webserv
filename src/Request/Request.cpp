@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/21 19:20:19 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/21 21:45:05 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,9 +177,7 @@ void wbs::Request::checkloc()
 		loc = it->second.get_root();
 		mloc = &it->second;
 	}
-	std::cout << "loc: " << loc << std::endl;
-	std::cout << "query: " << query << std::endl;
-
+	checkreturn();
 	if (!opendir(loc.c_str()))
 	{
 		if (access(loc.c_str(), F_OK) == -1)
@@ -206,6 +204,22 @@ void wbs::Request::checkver()
 	{
 		code = 505;
 		throw std::runtime_error(" HTTP Version Not Supported");
+	}
+}
+
+void wbs::Request::checkreturn()
+{
+	if (mloc)
+	{
+		if (mloc->get_params().find("return") != mloc->get_params().end())
+		{
+			std::vector<std::string> ret = mloc->get_params().find("return")->second;
+			std::string c = ret[0];
+			std::string loc = ret[1];
+			std::stringstream ss(c);
+			ss >> code;
+			throw std::runtime_error(" Moved Permanently\r\nLocation: " + loc);
+		}
 	}
 }
 

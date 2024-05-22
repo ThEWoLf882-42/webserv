@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/22 10:54:13 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/22 10:55:50 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,25 +151,10 @@ int wbs::Response::check_meth(const std::string &method)
 
 int wbs::Response::check_file(std::string &url)
 {
-	// if (access(url.c_str(), F_OK) != 0)
-	// {
-	// 	// std::cerr << "1" << std::endl;
-	// 	generate_body(url, 2, 404);
-	// 	generate_response(404, " Not Found");
-	// 	return (0);
-	// }
-	// else if ((access(url.c_str(), R_OK) != 0 && access(url.c_str(), W_OK) != 0) || (access(url.c_str(), R_OK)) != 0)
-	// {
-	// 	generate_body(url, 2, 403);
-	// 	generate_response(403, " Forbidden");
-	// 	return (0);
-	// }
-	// std::cerr << url << std::endl;
 	if (!opendir(url.c_str()))
 	{
 		if (access(url.c_str(), F_OK) == -1 && access(url.c_str(), R_OK) == -1)
 		{
-			// std::cerr << "1" << std::endl;
 			generate_body(url, 2, 403);
 			generate_response(403, " Forbidden");
 			return (0);
@@ -177,7 +162,6 @@ int wbs::Response::check_file(std::string &url)
 	}
 	else if (!opendir(url.c_str()))
 	{
-		// std::cerr << "2" << std::endl;
 		generate_body(url, 2, 404);
 		generate_response(404, " Not Found");
 		return (0);
@@ -233,12 +217,12 @@ void wbs::Response::generate_body(std::string &url, int ind, int code)
 		body = autoindex(req.get_loc(), req.get_oloc());
 
 	std::map<int, std::string> error_path;
-	error_path[403] = "/Users/fbelahse/Desktop/webserv/extra/403.html";
-	error_path[404] = "/Users/fbelahse/Desktop/webserv/extra/404.html";
-	error_path[405] = "/Users/fbelahse/Desktop/webserv/extra/405.html";
-	error_path[301] = "/Users/fbelahse/Desktop/webserv/extra/301.html";
-	error_path[409] = "/Users/fbelahse/Desktop/webserv/extra/409.html";
-	error_path[500] = "/Users/fbelahse/Desktop/webserv/extra/500.html";
+	error_path[403] = "./extra/403.html";
+	error_path[404] = "./extra/404.html";
+	error_path[405] = "./extra/405.html";
+	error_path[301] = "./extra/301.html";
+	error_path[409] = "./extra/409.html";
+	error_path[500] = "./extra/500.html";
 
 	if (ind == 2)
 		body = readfile(error_path[code]);
@@ -251,12 +235,9 @@ void wbs::Response::generate_body(std::string &url, int ind, int code)
 
 std::string wbs::Response::get_method(std::string &loc)
 {
-	// std::cerr << "loc " << loc[loc.size() - 1] << std::endl;
 	get_resource_type(loc);
-	// std::cerr << "rt " << ress_type << std::endl;
 	if (ress_type == "directory")
 	{
-		// std::cerr << req.get_oloc() << " [" << req.get_oloc().back() << "]" <<std::endl;
 		if (req.get_oloc().back() != '/')
 		{
 			generate_body(loc, 2, 301);
@@ -286,7 +267,6 @@ std::string wbs::Response::get_method(std::string &loc)
 			}
 			else
 			{
-				// std::cerr << "2" << std::endl;
 				generate_body(loc, 2, 403);
 				generate_response(403, " Forbidden");
 				return "";
@@ -297,9 +277,6 @@ std::string wbs::Response::get_method(std::string &loc)
 	{
 		if (location_has_cgi())
 		{
-			// generate_body(loc, 1, 200);
-			// generate_response(200, " OK");
-			// return "";
 		}
 		else
 		{
@@ -340,7 +317,6 @@ std::string wbs::Response::post_method(std::string &loc)
 					}
 					else
 					{
-						// std::cerr << "3" << std::endl;
 						generate_body(loc, 2, 403);
 						generate_response(403, " Forbidden");
 						return ("");
@@ -348,7 +324,6 @@ std::string wbs::Response::post_method(std::string &loc)
 				}
 				else
 				{
-					// std::cerr << "4" << std::endl;
 					generate_body(loc, 2, 403);
 					generate_response(403, " Forbidden");
 					return ("");
@@ -363,13 +338,11 @@ std::string wbs::Response::post_method(std::string &loc)
 			}
 			else
 			{
-				// std::cerr << "5" << std::endl;
 				generate_body(loc, 2, 403);
 				generate_response(403, " Forbidden");
 				return ("");
 			}
 		}
-		// std::cerr << "3" << std::endl;
 		generate_body(loc, 2, 404);
 		generate_response(404, " Not Found");
 		return ("");
@@ -427,7 +400,6 @@ void wbs::Response::delete_all_content(std::string &loc)
 	{
 		if (access(path.c_str(), W_OK) != 0 || access(path.c_str(), X_OK) != 0)
 		{
-			// std::cerr << "6" << std::endl;
 			generate_body(loc, 2, 403);
 			generate_response(403, " Forbidden");
 			return;
@@ -442,7 +414,6 @@ void wbs::Response::delete_all_content(std::string &loc)
 	return;
 }
 
-// get_req_res : readfile
 
 std::string wbs::Response::delete_method(std::string &loc)
 {
@@ -466,7 +437,6 @@ std::string wbs::Response::delete_method(std::string &loc)
 				}
 				else
 				{
-					// std::cerr << "7" << std::endl;
 					generate_body(loc, 2, 403);
 					generate_response(403, " Forbidden");
 					return ("");
@@ -474,7 +444,6 @@ std::string wbs::Response::delete_method(std::string &loc)
 			}
 			delete_all_content(loc);
 		}
-		// std::cerr << "4" << std::endl;
 		generate_body(path, 2, 404);
 		generate_response(404, " Not Found");
 	}
@@ -498,7 +467,6 @@ void wbs::Response::start_resp()
 	ver = req.get_ver();
 	code = req.get_code();
 
-	// std::cerr << path << std::endl;
 	if (code != 200)
 	{
 		generate_body(path, 2, code);
