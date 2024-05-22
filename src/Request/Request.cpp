@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/21 21:45:05 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/22 12:25:09 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), mloc(NULL), 
 	catch (const std::exception &e)
 	{
 		codemsg = e.what();
-		std::cerr << e.what() << std::endl;
+		// std::cerr << e.what() << std::endl;
 	}
 	set_body(req);
 }

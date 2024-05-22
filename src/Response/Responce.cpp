@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/22 10:55:50 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:48:03 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,6 +414,15 @@ void wbs::Response::delete_all_content(std::string &loc)
 	return;
 }
 
+void wbs::Response::delete_file(std::string &file){
+	if (!remove(file.c_str())){
+		generate_body(file, 2, 500);
+		generate_response(500, " Internal Server Error");
+		return;
+	}
+	generate_body(path, 1, 204);
+	generate_response(204, " No Content");
+}
 
 std::string wbs::Response::delete_method(std::string &loc)
 {
@@ -424,8 +433,7 @@ std::string wbs::Response::delete_method(std::string &loc)
 		{
 			generate_body(loc, 2, 409);
 			generate_response(409, " Conflict");
-			loc += '/';
-			return (loc);
+			return "";
 		}
 		else
 		{
@@ -454,10 +462,42 @@ std::string wbs::Response::delete_method(std::string &loc)
 			// 3tiha l meriem :3
 		}
 		else
-			delete_all_content(loc);
+			delete_file(loc);
 	}
 	return ("");
 }
+
+// For CGI, there are several environment variables that are commonly used to provide information to the CGI script. Here are some of the most important ones:
+
+// 1. `SERVER_SOFTWARE`: The name and version of the server software that is handling the request (e.g., "Apache/2.4.39").
+
+// 2. `SERVER_NAME`: The server's hostname or IP address.
+
+// 4. `SERVER_PROTOCOL`: The protocol and version used by the client (e.g., "HTTP/1.1").
+
+// 5. `SERVER_PORT`: The port number to which the request was sent.
+
+// 6. `REQUEST_METHOD`: The HTTP request method used by the client (e.g., "GET", "POST", "HEAD", etc.).
+
+// 7. `PATH_INFO`: The extra path information provided by the client (e.g., "/path/to/file").
+
+// 9. `SCRIPT_NAME`: The virtual path to the script being executed (e.g., "/cgi-bin/script.cgi").
+
+// 10. `QUERY_STRING`: The query string portion of the URL.
+
+// 11. `REMOTE_HOST`: The hostname of the client making the request (if available).
+
+// 12. `REMOTE_ADDR`: The IP address of the client making the request.
+
+// 13. `AUTH_TYPE`: The type of authentication used by the server (if any).
+
+// 14. `REMOTE_USER`: The username supplied by the client during authentication (if any).
+
+// 15. `CONTENT_TYPE`: The MIME type of the request body (for POST requests).
+
+// 16. `CONTENT_LENGTH`: The length of the request body (for POST requests).
+
+// These variables are typically made available to the CGI script by the web server.
 
 void wbs::Response::start_resp()
 {
@@ -466,6 +506,8 @@ void wbs::Response::start_resp()
 	std::string method = req.get_meth();
 	ver = req.get_ver();
 	code = req.get_code();
+
+	
 
 	if (code != 200)
 	{
