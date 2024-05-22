@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/21 21:33:22 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/22 18:38:42 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ namespace wbs
 		void checkver();
 		void setquery();
 		void checkreturn();
+		void chunked();
 
 	public:
 		Request(Listen &, const std::string &);

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/21 21:45:05 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/22 19:09:48 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ wbs::Request::Request(Listen &s, const std::string &req) : serv(s), mloc(NULL), 
 		checkmeth();
 		checkloc();
 		checkver();
+		set_body(req);
+		chunked();
 	}
 	catch (const std::exception &e)
 	{
 		codemsg = e.what();
-		std::cerr << e.what() << std::endl;
 	}
-	set_body(req);
 }
 
 wbs::Request::Request(const Request &r) : serv(r.serv), inf(serv.get_inf())
@@ -220,6 +220,28 @@ void wbs::Request::checkreturn()
 			ss >> code;
 			throw std::runtime_error(" Moved Permanently\r\nLocation: " + loc);
 		}
+	}
+}
+
+void wbs::Request::chunked()
+{
+	if (heads.find("Transfer-Encoding") != heads.end() && heads.find("Transfer-Encoding")->second == "chunked")
+	{
+		std::string ch = body.substr(0, 100);
+		std::string b = "";
+		size_t i = 0;
+		int s = strtol(ch.c_str(), NULL, 16);
+
+		while (s)
+		{
+			i = body.find("\r\n", i) + 2;
+			b += body.substr(i, s);
+			i += s + 2;
+			ch = body.substr(i, 100);
+			s = strtol(ch.c_str(), NULL, 16);
+		}
+		
+		body = b;
 	}
 }
 

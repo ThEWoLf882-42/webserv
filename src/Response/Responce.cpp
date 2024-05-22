@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/21 21:46:44 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/22 18:42:52 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void wbs::Response::get_resource_type(const std::string &path)
 	}
 	else
 	{
-		std::cout << ">>ERROR<<" << std::endl;
+		std::cerr << ">>ERROR<<" << std::endl;
 		return;
 	}
 }
