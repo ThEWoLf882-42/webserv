@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/21 19:44:50 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/22 10:54:13 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,22 @@ bool wbs::Response::location_has_cgi()
 	return key == ex;
 }
 
-bool if_supports_upload()
+bool wbs::Response::if_supports_upload()
 {
-	wbs::Location loc;
-	std::string conf;
-
-	std::map<std::string, std::vector<std::string> >::iterator it;
-	for (it = loc.get_params().begin(); it != loc.get_params().end(); ++it)
-	{
-		std::string key = it->first;
-		std::vector<std::string> vec = it->second;
-
-		if (key == "methods")
-		{
-			std::vector<std::string>::iterator it_v;
-			for (it_v = vec.begin(); it_v != vec.end(); ++it_v)
-			{
-				std::string method = *it_v;
-				if (std::find(vec.begin(), vec.end(), "POST") == vec.end())
-				{
-					return (false);
-				}
-				else
-					return (true);
-			}
-		}
+	std::vector<std::string> ind;
+	if (inf.get_directives().find("methods") != inf.get_directives().end())
+		ind = inf.get_directives().find("methods")->second;
+		
+	if (req.get_mloc()){
+		wbs::Location loc = *req.get_mloc();
+		
+		if (loc.get_params().find("methods") != loc.get_params().end())
+			ind = loc.get_params().find("methods")->second;
 	}
-	return (true);
+	if(std::find(ind.begin(), ind.end(), "POST") != ind.end()){
+		return (true);
+	}
+	return (false);
 }
 
 void wbs::Response::get_resource_type(const std::string &path)
@@ -211,7 +200,7 @@ int wbs::Response::check_file(std::string &url)
 //-----------------------
 
 bool wbs::Response::there_is_an_index()
-{ // check location first if no then check autoindex
+{
 	std::vector<std::string> indexs;
 	if (inf.get_directives().find("default_file") != inf.get_directives().end())
 		indexs = inf.get_directives().find("default_file")->second;
@@ -338,9 +327,8 @@ std::string wbs::Response::post_method(std::string &loc)
 			if (loc[loc.size() - 1] != '/')
 			{
 				generate_body(loc, 2, 301);
-				generate_response(301, " Moved Permanently");
-				loc += '/';
-				return (loc);
+				generate_response(301, " Moved Permanently\r\nLocation: " + req.get_oloc() + '/');
+				return "";
 			}
 			else
 			{
