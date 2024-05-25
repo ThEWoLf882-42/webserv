@@ -6,13 +6,13 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:35:32 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/21 21:23:01 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/25 20:29:22 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::Listen::Listen(int d, int s, int pro, int por, unsigned int i, int b, Infos &inf) : Bind(d, s, pro, por, i), inf(inf), blog(b)
+wbs::Listen::Listen(int d, int s, int pro, int por, unsigned int i, int b, Infos &inf) : Bind(d, s, pro, por, i), inf(inf), blog(b), port(por)
 {
 	listning();
 	c_test(list);
