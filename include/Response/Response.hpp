@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/25 19:34:13 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/26 15:58:14 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ namespace wbs
 			void create_envp();
 			void set_env();
 			void free_envp();
+			void print_env();
 			std::string get_cgi_path();
 			std::string get_method(std::string &url);
 			std::string post_method(std::string &url);

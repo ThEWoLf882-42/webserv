@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/26 15:23:18 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:00:21 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -483,7 +483,10 @@ std::string wbs::Response::get_cgi_path(){
 
 void wbs::Response::set_env(){
 	map_env.insert(std::make_pair("SERVER_PROTOCOL", "HTTP/1.1"));
-	map_env.insert(std::make_pair("SERVER_PORT", "8080"));
+	int port = req.get_serv().port;
+	std::stringstream ss;
+	ss << port;
+	map_env.insert(std::make_pair("SERVER_PORT", ss.str()));
 	map_env.insert(std::make_pair("CONTENT_TYPE", get_mime(req.get_loc())));
 	map_env.insert(std::make_pair("CONTENT_LENGTH", length));
 	map_env.insert(std::make_pair("PATH_INFO", req.get_loc()));
@@ -491,6 +494,7 @@ void wbs::Response::set_env(){
 	map_env.insert(std::make_pair("SERVER_NAME", "webserv"));
 	map_env.insert(std::make_pair("QUERY_STRING", req.get_query()));
 	get_cgi_path();
+	
 	map_env.insert(std::make_pair("SCRIPT_NAME", get_cgi_path()));
 }
 
@@ -516,8 +520,14 @@ void wbs::Response::free_envp(){
 
 char** &wbs::Response::get_envi_var(){
 	set_env();
-	create_envp(); //don't forget to free!! the function is called free_envp()
+	create_envp();
 	return envp_c;
+}
+
+void wbs::Response::print_env(){
+	for (int i = 0; envp_c[i] != NULL; i++){
+		std::cout << envp_c[i] << std::endl;
+	}
 }
 
 void wbs::Response::start_resp()
