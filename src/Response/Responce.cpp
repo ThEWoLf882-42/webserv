@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/22 18:52:27 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:20:36 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void wbs::Response::get_resource_type(const std::string &path)
 	}
 	else
 	{
-		std::cout << ">>ERROR<<" << std::endl;
+		std::cerr << ">>ERROR<<" << std::endl;
 		return;
 	}
 }
