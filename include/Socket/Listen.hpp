@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 10:32:50 by agimi             #+#    #+#             */
-/*   Updated: 2024/04/29 12:47:18 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/25 20:30:42 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ namespace wbs
 
 		Infos &get_inf();
 
+		const int port;
 		void listning();
 		void close(long);
 		long accept();
