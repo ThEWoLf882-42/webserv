@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/10 18:06:40 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/26 09:49:48 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 wbs::Infos::Infos()
 {
+	error_pages.insert(std::make_pair(403, "./extra/403.html"));
+	error_pages.insert(std::make_pair(404, "./extra/404.html"));
+	error_pages.insert(std::make_pair(405, "./extra/405.html"));
+	error_pages.insert(std::make_pair(301, "./extra/301.html"));
+	error_pages.insert(std::make_pair(409, "./extra/409.html"));
+	error_pages.insert(std::make_pair(500, "./extra/500.html"));
 }
 
 wbs::Infos::Infos(const Infos &ob)
