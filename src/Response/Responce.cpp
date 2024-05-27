@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responce.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/22 19:11:28 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/26 16:00:21 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -457,47 +457,78 @@ std::string wbs::Response::delete_method(std::string &loc)
 	}
 	if (ress_type == "file")
 	{
-		if (location_has_cgi())
-		{
+		if (location_has_cgi()){
 			// 3tiha l meriem :3
 		}
 		else
-			delete_file(loc);
+			delete_file(loc); 
 	}
 	return ("");
 }
 
-// For CGI, there are several environment variables that are commonly used to provide information to the CGI script. Here are some of the most important ones:
+std::string wbs::Response::get_cgi_path(){
+	DIR *dir = opendir("./cgi-bin/");
+	if (dir != NULL){
+		struct dirent *entry;
+		while ((entry = readdir(dir)) != NULL){
+			if (entry->d_type == DT_REG){
+				std::string f_name = entry->d_name;
+				std::string cgi_path = "./cgi-bin/" + f_name;
+				return (cgi_path);
+			}
+		}
+	}
+	return "";
+}
 
-// 1. `SERVER_SOFTWARE`: The name and version of the server software that is handling the request (e.g., "Apache/2.4.39").
+void wbs::Response::set_env(){
+	map_env.insert(std::make_pair("SERVER_PROTOCOL", "HTTP/1.1"));
+	int port = req.get_serv().port;
+	std::stringstream ss;
+	ss << port;
+	map_env.insert(std::make_pair("SERVER_PORT", ss.str()));
+	map_env.insert(std::make_pair("CONTENT_TYPE", get_mime(req.get_loc())));
+	map_env.insert(std::make_pair("CONTENT_LENGTH", length));
+	map_env.insert(std::make_pair("PATH_INFO", req.get_loc()));
+	map_env.insert(std::make_pair("REQUEST_METHOD", req.get_meth()));
+	map_env.insert(std::make_pair("SERVER_NAME", "webserv"));
+	map_env.insert(std::make_pair("QUERY_STRING", req.get_query()));
+	get_cgi_path();
+	
+	map_env.insert(std::make_pair("SCRIPT_NAME", get_cgi_path()));
+}
 
-// 2. `SERVER_NAME`: The server's hostname or IP address.
+void wbs::Response::create_envp(){
+	envp_c = new char*[map_env.size() + 1];
+	int i = 0;
+	std::map<std::string, std::string>::iterator it;
+	for (it = map_env.begin(); it != map_env.end(); ++it, ++i){
+		std::string str = it->first + "=" + it->second;
+		envp_c[i] = new char[str.size() + 1];
+		std::strcpy(envp_c[i], str.c_str());
+	}
+	envp_c[i] = NULL;
+}
 
-// 4. `SERVER_PROTOCOL`: The protocol and version used by the client (e.g., "HTTP/1.1").
+void wbs::Response::free_envp(){
+	for (int i = 0; envp_c != 0; i++){
+		delete[] envp_c[i];
+	}
+	delete[] envp_c;
+	envp_c = NULL;
+}
 
-// 5. `SERVER_PORT`: The port number to which the request was sent.
+char** &wbs::Response::get_envi_var(){
+	set_env();
+	create_envp();
+	return envp_c;
+}
 
-// 6. `REQUEST_METHOD`: The HTTP request method used by the client (e.g., "GET", "POST", "HEAD", etc.).
-
-// 7. `PATH_INFO`: The extra path information provided by the client (e.g., "/path/to/file").
-
-// 9. `SCRIPT_NAME`: The virtual path to the script being executed (e.g., "/cgi-bin/script.cgi").
-
-// 10. `QUERY_STRING`: The query string portion of the URL.
-
-// 11. `REMOTE_HOST`: The hostname of the client making the request (if available).
-
-// 12. `REMOTE_ADDR`: The IP address of the client making the request.
-
-// 13. `AUTH_TYPE`: The type of authentication used by the server (if any).
-
-// 14. `REMOTE_USER`: The username supplied by the client during authentication (if any).
-
-// 15. `CONTENT_TYPE`: The MIME type of the request body (for POST requests).
-
-// 16. `CONTENT_LENGTH`: The length of the request body (for POST requests).
-
-// These variables are typically made available to the CGI script by the web server.
+void wbs::Response::print_env(){
+	for (int i = 0; envp_c[i] != NULL; i++){
+		std::cout << envp_c[i] << std::endl;
+	}
+}
 
 void wbs::Response::start_resp()
 {
@@ -507,8 +538,6 @@ void wbs::Response::start_resp()
 	ver = req.get_ver();
 	code = req.get_code();
 
-	
-
 	if (code != 200)
 	{
 		generate_body(path, 2, code);
@@ -517,8 +546,7 @@ void wbs::Response::start_resp()
 	else
 	{
 		int check = check_file(path);
-		if (check == 0)
-		{
+		if (check == 0){
 			return;
 		}
 		else
