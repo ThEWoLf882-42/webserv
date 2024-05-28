@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/26 16:00:21 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:54:38 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,8 @@ void wbs::Response::get_resource_type(const std::string &path)
 {
 	struct stat s;
 
-	if (stat(path.c_str(), &s) == 0)
-	{ // extract the resource info, which will contain if it's a dir/file (o_o;)?
-		if (s.st_mode & S_IFDIR)
-		{ // st_mode field contains the file type and permissions for the file ~(^v^)~
+	if (stat(path.c_str(), &s) == 0){
+		if (s.st_mode & S_IFDIR){
 			ress_type = "directory";
 			return;
 		}
@@ -493,8 +491,6 @@ void wbs::Response::set_env(){
 	map_env.insert(std::make_pair("REQUEST_METHOD", req.get_meth()));
 	map_env.insert(std::make_pair("SERVER_NAME", "webserv"));
 	map_env.insert(std::make_pair("QUERY_STRING", req.get_query()));
-	get_cgi_path();
-	
 	map_env.insert(std::make_pair("SCRIPT_NAME", get_cgi_path()));
 }
 
@@ -535,7 +531,6 @@ void wbs::Response::start_resp()
 	path = req.get_loc();
 	std::string codemsg = req.get_codemsg();
 	std::string method = req.get_meth();
-	ver = req.get_ver();
 	code = req.get_code();
 
 	if (code != 200)
