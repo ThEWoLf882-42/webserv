@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 11:43:53 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/22 12:24:31 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:24:48 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 #define DEF_CONF "./config/default.conf"
 #define RSIZE 4096
 #define BLOG 1000
-#define OUTREQ 0
+#define OUTREQ 1
 #define OUTRES 0
 
 namespace wbs
