@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:57 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/02/20 17:49:33 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/30 18:25:44 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,33 @@ namespace wbs
 {
 	class CGI
 	{
-	public:
-		CGI();
-		CGI(const CGI &ob);
-		CGI &operator=(const CGI &ob);
-		~CGI();
+		private:
+			std::string	_path;
+			std::string	binary_path;
+			int fd[2];
+			int pid;
+			const char **args;
+			char **env;
+			int r;
+			char c;
+			std::string content;
+			
+			// an7taj l env
+			// binary path so aykhsni location
+			// path li kiji f request
+			
+		public:
+			CGI();
+			CGI(const CGI &ob);
+			CGI &operator=(const CGI &ob);
+			~CGI();
+
+			CGI(const std::string&);
+			void valid_extension(const std::string&);
+			void check_binary_path();
+			void execution();
+			void take_output();
+
+			void execute_cgi(const std::string&);
 	};
 }
