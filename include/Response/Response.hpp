@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/26 15:58:14 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:47:36 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,12 @@ namespace wbs
 			Request &req;
 			Infos &inf;
 			std::map<std::string, std::string> map_env;
-			std::string extention;
-			std::string file_name;
-			std::string status;
 			std::string path;
-			std::string dir_stats;
 			std::string ress_type;
-			std::string ver;
 			std::string meth;
 			std::string length;
 			std::string body;
-			std::string content;
 			std::string response;
-			// std::string cgi_path;
 			char **envp_c;
 			
 			int code;
@@ -61,6 +54,7 @@ namespace wbs
 			void free_envp();
 			void print_env();
 			std::string get_cgi_path();
+
 			std::string get_method(std::string &url);
 			std::string post_method(std::string &url);
 			std::string delete_method(std::string &url);
