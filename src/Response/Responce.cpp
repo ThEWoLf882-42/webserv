@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/26 19:54:38 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/28 12:03:50 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ std::string wbs::Response::get_method(std::string &loc)
 			{
 				if (location_has_cgi())
 				{
+					std::cout <<"WAAAAAAAAA" << req.get_loc() << std::endl;
 					// return code based on cgi (?)
 				}
 				else
