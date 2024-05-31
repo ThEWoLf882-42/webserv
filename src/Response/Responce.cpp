@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responce.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/28 12:03:50 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:42:05 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,16 @@ bool wbs::Response::if_supports_upload()
 	std::vector<std::string> ind;
 	if (inf.get_directives().find("methods") != inf.get_directives().end())
 		ind = inf.get_directives().find("methods")->second;
-		
-	if (req.get_mloc()){
+
+	if (req.get_mloc())
+	{
 		wbs::Location loc = *req.get_mloc();
-		
+
 		if (loc.get_params().find("methods") != loc.get_params().end())
 			ind = loc.get_params().find("methods")->second;
 	}
-	if(std::find(ind.begin(), ind.end(), "POST") != ind.end()){
+	if (std::find(ind.begin(), ind.end(), "POST") != ind.end())
+	{
 		return (true);
 	}
 	return (false);
@@ -57,8 +59,10 @@ void wbs::Response::get_resource_type(const std::string &path)
 {
 	struct stat s;
 
-	if (stat(path.c_str(), &s) == 0){
-		if (s.st_mode & S_IFDIR){
+	if (stat(path.c_str(), &s) == 0)
+	{
+		if (s.st_mode & S_IFDIR)
+		{
 			ress_type = "directory";
 			return;
 		}
@@ -193,7 +197,6 @@ bool wbs::Response::there_is_an_index()
 			indexs = loc.get_params().find("default_file")->second;
 	}
 
-
 	for (std::vector<std::string>::iterator it = indexs.begin(); it != indexs.end(); it++)
 	{
 		std::string loc = path + *it;
@@ -244,11 +247,11 @@ std::string wbs::Response::get_method(std::string &loc)
 		}
 		else
 		{
-			if (there_is_an_index() == true)
+			if (there_is_an_index())
 			{
 				if (location_has_cgi())
 				{
-					std::cout <<"WAAAAAAAAA" << req.get_loc() << std::endl;
+					std::cout << "WAAAAAAAAA" << req.get_loc() << std::endl;
 					// return code based on cgi (?)
 				}
 				else
@@ -258,7 +261,7 @@ std::string wbs::Response::get_method(std::string &loc)
 					return "";
 				}
 			}
-			else if (check_auto_index() == true)
+			else if (check_auto_index())
 			{
 				generate_body(loc, 3, 200);
 				generate_response(200, " OK");
@@ -289,64 +292,106 @@ std::string wbs::Response::get_method(std::string &loc)
 
 std::string wbs::Response::post_method(std::string &loc)
 {
-	if (if_supports_upload())
+	get_resource_type(loc);
+	if (ress_type == "directory")
 	{
-		generate_body(loc, 1, 201);
-		generate_response(201, " Created");
-		return ("");
+		if (req.get_oloc().back() != '/')
+		{
+			generate_body(loc, 2, 301);
+			generate_response(301, " Moved Permanently\r\nLocation: " + req.get_oloc() + '/');
+			return "";
+		}
+		there_is_an_index();
+		// cgi
 	}
-	else
+	else if (ress_type == "file")
 	{
-		get_resource_type(loc);
-		if (ress_type == "directory")
-		{
-			if (loc[loc.size() - 1] != '/')
-			{
-				generate_body(loc, 2, 301);
-				generate_response(301, " Moved Permanently\r\nLocation: " + req.get_oloc() + '/');
-				return "";
-			}
-			else
-			{
-				if (there_is_an_index())
-				{
-					if (location_has_cgi())
-					{
-						// run cgi
-					}
-					else
-					{
-						generate_body(loc, 2, 403);
-						generate_response(403, " Forbidden");
-						return ("");
-					}
-				}
-				else
-				{
-					generate_body(loc, 2, 403);
-					generate_response(403, " Forbidden");
-					return ("");
-				}
-			}
-		}
-		if (ress_type == "file")
-		{
-			if (location_has_cgi())
-			{
-				// run cgi
-			}
-			else
-			{
-				generate_body(loc, 2, 403);
-				generate_response(403, " Forbidden");
-				return ("");
-			}
-		}
-		generate_body(loc, 2, 404);
-		generate_response(404, " Not Found");
-		return ("");
+		// cgi
 	}
+	return "";
 }
+
+std::string wbs::Response::delete_method(std::string &loc)
+{
+	get_resource_type(loc);
+	if (ress_type == "directory")
+	{
+		if (req.get_oloc().back() != '/')
+		{
+			generate_body(loc, 2, 301);
+			generate_response(301, " Moved Permanently\r\nLocation: " + req.get_oloc() + '/');
+			return "";
+		}
+		there_is_an_index();
+		// cgi
+	}
+	else if (ress_type == "file")
+	{
+		// cgi
+	}
+	return "";
+}
+
+// std::string wbs::Response::post_method(std::string &loc)
+// {
+// 	if (if_supports_upload())
+// 	{
+// 		generate_body(loc, 1, 201);
+// 		generate_response(201, " Created");
+// 		return ("");
+// 	}
+// 	else
+// 	{
+// 		get_resource_type(loc);
+// 		if (ress_type == "directory")
+// 		{
+// 			if (loc[loc.size() - 1] != '/')
+// 			{
+// 				generate_body(loc, 2, 301);
+// 				generate_response(301, " Moved Permanently\r\nLocation: " + req.get_oloc() + '/');
+// 				return "";
+// 			}
+// 			else
+// 			{
+// 				if (there_is_an_index())
+// 				{
+// 					if (location_has_cgi())
+// 					{
+// 						// run cgi
+// 					}
+// 					else
+// 					{
+// 						generate_body(loc, 2, 403);
+// 						generate_response(403, " Forbidden");
+// 						return ("");
+// 					}
+// 				}
+// 				else
+// 				{
+// 					generate_body(loc, 2, 403);
+// 					generate_response(403, " Forbidden");
+// 					return ("");
+// 				}
+// 			}
+// 		}
+// 		if (ress_type == "file")
+// 		{
+// 			if (location_has_cgi())
+// 			{
+// 				// run cgi
+// 			}
+// 			else
+// 			{
+// 				generate_body(loc, 2, 403);
+// 				generate_response(403, " Forbidden");
+// 				return ("");
+// 			}
+// 		}
+// 		generate_body(loc, 2, 404);
+// 		generate_response(404, " Not Found");
+// 		return ("");
+// 	}
+// }
 
 void wbs::Response::delete_all_content(std::string &loc)
 {
@@ -413,8 +458,10 @@ void wbs::Response::delete_all_content(std::string &loc)
 	return;
 }
 
-void wbs::Response::delete_file(std::string &file){
-	if (!remove(file.c_str())){
+void wbs::Response::delete_file(std::string &file)
+{
+	if (!remove(file.c_str()))
+	{
 		generate_body(file, 2, 500);
 		generate_response(500, " Internal Server Error");
 		return;
@@ -423,54 +470,59 @@ void wbs::Response::delete_file(std::string &file){
 	generate_response(204, " No Content");
 }
 
-std::string wbs::Response::delete_method(std::string &loc)
-{
-	get_resource_type(loc);
-	if (ress_type == "directory")
-	{
-		if (loc[loc.size() - 1] != '/')
-		{
-			generate_body(loc, 2, 409);
-			generate_response(409, " Conflict");
-			return "";
-		}
-		else
-		{
-			if (location_has_cgi())
-			{
-				if (there_is_an_index())
-				{
-					// run cgi
-				}
-				else
-				{
-					generate_body(loc, 2, 403);
-					generate_response(403, " Forbidden");
-					return ("");
-				}
-			}
-			delete_all_content(loc);
-		}
-		generate_body(path, 2, 404);
-		generate_response(404, " Not Found");
-	}
-	if (ress_type == "file")
-	{
-		if (location_has_cgi()){
-			// 3tiha l meriem :3
-		}
-		else
-			delete_file(loc); 
-	}
-	return ("");
-}
+// std::string wbs::Response::delete_method(std::string &loc)
+// {
+// 	get_resource_type(loc);
+// 	if (ress_type == "directory")
+// 	{
+// 		if (loc[loc.size() - 1] != '/')
+// 		{
+// 			generate_body(loc, 2, 409);
+// 			generate_response(409, " Conflict");
+// 			return "";
+// 		}
+// 		else
+// 		{
+// 			if (location_has_cgi())
+// 			{
+// 				if (there_is_an_index())
+// 				{
+// 					// run cgi
+// 				}
+// 				else
+// 				{
+// 					generate_body(loc, 2, 403);
+// 					generate_response(403, " Forbidden");
+// 					return ("");
+// 				}
+// 			}
+// 			delete_all_content(loc);
+// 		}
+// 		generate_body(path, 2, 404);
+// 		generate_response(404, " Not Found");
+// 	}
+// 	if (ress_type == "file")
+// 	{
+// 		if (location_has_cgi())
+// 		{
+// 			// 3tiha l meriem :3
+// 		}
+// 		else
+// 			delete_file(loc);
+// 	}
+// 	return ("");
+// }
 
-std::string wbs::Response::get_cgi_path(){
+std::string wbs::Response::get_cgi_path()
+{
 	DIR *dir = opendir("./cgi-bin/");
-	if (dir != NULL){
+	if (dir != NULL)
+	{
 		struct dirent *entry;
-		while ((entry = readdir(dir)) != NULL){
-			if (entry->d_type == DT_REG){
+		while ((entry = readdir(dir)) != NULL)
+		{
+			if (entry->d_type == DT_REG)
+			{
 				std::string f_name = entry->d_name;
 				std::string cgi_path = "./cgi-bin/" + f_name;
 				return (cgi_path);
@@ -480,26 +532,30 @@ std::string wbs::Response::get_cgi_path(){
 	return "";
 }
 
-void wbs::Response::set_env(){
+void wbs::Response::set_env()
+{
 	map_env.insert(std::make_pair("SERVER_PROTOCOL", "HTTP/1.1"));
 	int port = req.get_serv().port;
 	std::stringstream ss;
 	ss << port;
 	map_env.insert(std::make_pair("SERVER_PORT", ss.str()));
-	map_env.insert(std::make_pair("CONTENT_TYPE", get_mime(req.get_loc())));
+	map_env.insert(std::make_pair("CONTENT_TYPE", req.get_heads()["Content-Type"]));
+	// map_env.insert(std::make_pair("CONTENT_TYPE", get_mime(req.get_loc())));
 	map_env.insert(std::make_pair("CONTENT_LENGTH", length));
 	map_env.insert(std::make_pair("PATH_INFO", req.get_loc()));
 	map_env.insert(std::make_pair("REQUEST_METHOD", req.get_meth()));
-	map_env.insert(std::make_pair("SERVER_NAME", "webserv"));
+	map_env.insert(std::make_pair("SERVER_NAME", "the Webrains on a Re\"Quest to Peasantria"));
 	map_env.insert(std::make_pair("QUERY_STRING", req.get_query()));
-	map_env.insert(std::make_pair("SCRIPT_NAME", get_cgi_path()));
+	map_env.insert(std::make_pair("SCRIPT_NAME", path));
 }
 
-void wbs::Response::create_envp(){
-	envp_c = new char*[map_env.size() + 1];
+void wbs::Response::create_envp()
+{
+	envp_c = new char *[map_env.size() + 1];
 	int i = 0;
 	std::map<std::string, std::string>::iterator it;
-	for (it = map_env.begin(); it != map_env.end(); ++it, ++i){
+	for (it = map_env.begin(); it != map_env.end(); ++it, ++i)
+	{
 		std::string str = it->first + "=" + it->second;
 		envp_c[i] = new char[str.size() + 1];
 		std::strcpy(envp_c[i], str.c_str());
@@ -507,22 +563,27 @@ void wbs::Response::create_envp(){
 	envp_c[i] = NULL;
 }
 
-void wbs::Response::free_envp(){
-	for (int i = 0; envp_c != 0; i++){
+void wbs::Response::free_envp()
+{
+	for (int i = 0; envp_c != 0; i++)
+	{
 		delete[] envp_c[i];
 	}
 	delete[] envp_c;
 	envp_c = NULL;
 }
 
-char** &wbs::Response::get_envi_var(){
+char **&wbs::Response::get_envi_var()
+{
 	set_env();
 	create_envp();
 	return envp_c;
 }
 
-void wbs::Response::print_env(){
-	for (int i = 0; envp_c[i] != NULL; i++){
+void wbs::Response::print_env()
+{
+	for (int i = 0; envp_c[i] != NULL; i++)
+	{
 		std::cout << envp_c[i] << std::endl;
 	}
 }
@@ -542,7 +603,8 @@ void wbs::Response::start_resp()
 	else
 	{
 		int check = check_file(path);
-		if (check == 0){
+		if (check == 0)
+		{
 			return;
 		}
 		else

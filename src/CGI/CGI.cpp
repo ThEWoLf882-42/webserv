@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/30 18:30:03 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:41:22 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ wbs::CGI::CGI()
 {
 }
 
-wbs::CGI::CGI(const std::string& path)
-: _path(path) // initialize the binary path 
+wbs::CGI::CGI(const std::string &path)
+	: _path(path) // initialize the binary path
 {
 	// r = 1;
 }
@@ -27,7 +27,7 @@ wbs::CGI::CGI(const CGI &ob)
 	*this = ob;
 }
 
-wbs::CGI	&wbs::CGI::operator=(const CGI &ob)
+wbs::CGI &wbs::CGI::operator=(const CGI &ob)
 {
 	if (this != &ob)
 	{
@@ -50,20 +50,20 @@ wbs::CGI::~CGI()
 // 		throw std::runtime_error("File does not exist"); // if its already done then remove it
 // }
 
-void	wbs::CGI::check_binary_path()
+void wbs::CGI::check_binary_path()
 {
 	// I should take the binary path first
 	struct stat sb;
-	
-    if (stat(binary_path.c_str(), &sb) == -1)
+
+	if (stat(binary_path.c_str(), &sb) == -1)
 		throw std::runtime_error("No such file");
-    if (S_ISDIR(sb.st_mode))
+	if (S_ISDIR(sb.st_mode))
 		throw std::runtime_error("It's a directory");
 	if (access(binary_path.c_str(), X_OK) == -1)
 		throw std::runtime_error("Not executable");
 }
 
-void	wbs::CGI::execution()
+void wbs::CGI::execution()
 {
 	if (pipe(fd) == -1)
 		throw std::runtime_error("Pipe error");
@@ -79,7 +79,7 @@ void	wbs::CGI::execution()
 		args[0] = binary_path.c_str();
 		args[1] = _path.c_str();
 		args[2] = NULL;
-		if (execve(args[0], (char* const*)args, env) == -1)
+		if (execve(args[0], (char *const *)args, env) == -1)
 			throw std::runtime_error("Execve failure");
 	}
 	else
@@ -92,7 +92,7 @@ void	wbs::CGI::execution()
 	}
 }
 
-void	wbs::CGI::take_output()
+void wbs::CGI::take_output()
 {
 	r = 1;
 	while (r > 0)
@@ -110,7 +110,11 @@ void	wbs::CGI::take_output()
 	close(fd[1]);
 }
 
-void	wbs::CGI::execute_cgi(const std::string& path)
+void wbs::CGI::valid_extension(const std::string &)
+{
+}
+
+void wbs::CGI::execute_cgi(const std::string &path)
 {
 	valid_extension(path);
 	check_binary_path();

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/22 18:38:42 by agimi            ###   ########.fr       */
+/*   Updated: 2024/05/31 10:40:48 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ namespace wbs
 		Listen &get_serv();
 		Infos &get_inf();
 		Location *get_mloc();
+		std::map<std::string, std::string> get_heads();
 		std::string get_meth();
 		std::string get_loc();
 		std::string get_oloc();

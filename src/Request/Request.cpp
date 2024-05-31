@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/22 19:24:02 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:38:42 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,11 @@ void wbs::Request::chunked()
 		}
 		body = b;
 	}
+}
+
+std::map<std::string, std::string> wbs::Request::get_heads()
+{
+	return heads;
 }
 
 wbs::Listen &wbs::Request::get_serv()
