@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:57 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/01 10:13:40 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/01 12:48:33 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ namespace wbs
 		private:
 			std::string	_path;
 			std::string	binary_path;
-			int fd[2];
+		
 			int pid;
-			const char **args;
+			const char* args[3];
 			char **env;
 			int r;
 			char c;
@@ -38,6 +38,8 @@ namespace wbs
 			
 			wbs::Response& _response;
 
+			int	std_out;
+
 		public:
 			// CGI();
 			CGI(const CGI &ob);
@@ -45,14 +47,16 @@ namespace wbs
 			~CGI();
 
 			CGI(const std::string&);
-			void valid_extension(const std::string&);
+			void valid_extension();
 			void check_binary_path();
 			void execution();
 			void take_output();
 
-			void execute_cgi(const std::string&);
+			void	execute_cgi();
 			void	default_binary_path();
 			CGI(Response&);
+
+			void setup_file();
 	};
 }
 
