@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responce.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/05/31 11:00:16 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/01 10:23:36 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ std::string wbs::Response::get_method(std::string &loc)
 				if (location_has_cgi())
 				{
 					std::cout << "WAAAAAAAAA" << req.get_loc() << std::endl;
-					CGI cgi(this);
+					CGI cgi(*this);
 				}
 				else
 				{
@@ -302,11 +302,11 @@ std::string wbs::Response::post_method(std::string &loc)
 			return "";
 		}
 		there_is_an_index();
-		CGI cgi(this);
+		CGI cgi(*this);
 	}
 	else if (ress_type == "file")
 	{
-		CGI cgi(this);
+		CGI cgi(*this);
 	}
 	return "";
 }
@@ -323,11 +323,11 @@ std::string wbs::Response::delete_method(std::string &loc)
 			return "";
 		}
 		there_is_an_index();
-		CGI cgi(this);
+		CGI cgi(*this);
 	}
 	else if (ress_type == "file")
 	{
-		CGI cgi(this);
+		CGI cgi(*this);
 	}
 	return "";
 }

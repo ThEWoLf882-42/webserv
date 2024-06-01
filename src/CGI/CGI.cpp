@@ -3,26 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/31 10:41:22 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/01 10:21:43 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::CGI::CGI()
-{
-}
-
-wbs::CGI::CGI(const std::string &path)
-	: _path(path) // initialize the binary path
-{
-	// r = 1;
-}
-
 wbs::CGI::CGI(const CGI &ob)
+: _response(ob._response)
 {
 	*this = ob;
 }
@@ -37,22 +28,33 @@ wbs::CGI &wbs::CGI::operator=(const CGI &ob)
 	return (*this);
 }
 
+wbs::CGI::CGI(wbs::Response& response) 
+: _response(response)
+{
+	_path = response.get_path();
+	// std::map<std::string, wbs::Location> locs = response.get_infos().get_locations();
+	// std::map<std::string, wbs::Location>::iterator loc_cgi = locs.find("cgi-bin");
+	// std::map<std::string, std::vector<std::string> > pars = loc_cgi->second.get_params();
+	// binary_path = pars["cgi_path"][0];
+}
+
 wbs::CGI::~CGI()
 {
 }
 
-// void	wbs::CGI::valid_extension(const std::string& path)
-// {
-// 	std::string extension = path.substr(path.find_last_of(".") + 1);
-// 	if (extension != "py")
-// 		throw std::runtime_error("Invalid extension of the script");
-// 	if (access(path.c_str(), R_OK | X_OK) == -1)
-// 		throw std::runtime_error("File does not exist"); // if its already done then remove it
-// }
+void	wbs::CGI::valid_extension(const std::string& path)
+{
+	std::string extension = path.substr(path.find_last_of(".") + 1);
+	if (extension != "py" && extension != "php")
+		throw std::runtime_error("Invalid extension of the script");
+	if (access(path.c_str(), R_OK | X_OK) == -1)
+		throw std::runtime_error("File does not exist");
+	if (extension == "php")
+		ext = 1;
+}
 
 void wbs::CGI::check_binary_path()
 {
-	// I should take the binary path first
 	struct stat sb;
 
 	if (stat(binary_path.c_str(), &sb) == -1)
@@ -79,7 +81,7 @@ void wbs::CGI::execution()
 		args[0] = binary_path.c_str();
 		args[1] = _path.c_str();
 		args[2] = NULL;
-		if (execve(args[0], (char *const *)args, env) == -1)
+		if (execve(args[0], (char *const *)args, _response.get_envi_var()) == -1)
 			throw std::runtime_error("Execve failure");
 	}
 	else
@@ -110,14 +112,20 @@ void wbs::CGI::take_output()
 	close(fd[1]);
 }
 
-void wbs::CGI::valid_extension(const std::string &)
-{
-}
 
 void wbs::CGI::execute_cgi(const std::string &path)
 {
 	valid_extension(path);
+	default_binary_path();
 	check_binary_path();
 	execution();
 	take_output();
+}
+
+void	wbs::CGI::default_binary_path()
+{
+	if (ext && binary_path.empty())
+		binary_path = "/usr/bin/php";
+	else
+		binary_path = "/usr/bin/python3";
 }

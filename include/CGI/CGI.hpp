@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:57 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/30 18:25:44 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/01 10:13:40 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 namespace wbs
 {
+	class Response;
+	
 	class CGI
 	{
 		private:
@@ -28,13 +30,16 @@ namespace wbs
 			int r;
 			char c;
 			std::string content;
+			int ext;
 			
-			// an7taj l env
+			// an7taj l env, yesu
 			// binary path so aykhsni location
 			// path li kiji f request
 			
+			wbs::Response& _response;
+
 		public:
-			CGI();
+			// CGI();
 			CGI(const CGI &ob);
 			CGI &operator=(const CGI &ob);
 			~CGI();
@@ -46,5 +51,9 @@ namespace wbs
 			void take_output();
 
 			void execute_cgi(const std::string&);
+			void	default_binary_path();
+			CGI(Response&);
 	};
 }
+
+//check duplicate location's path
