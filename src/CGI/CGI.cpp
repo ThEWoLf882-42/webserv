@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/01 10:21:43 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/01 12:36:46 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ wbs::CGI::CGI(wbs::Response& response)
 : _response(response)
 {
 	_path = response.get_path();
+	try
+	{
+		execute_cgi(_path);
+		std::cerr << "CGI [" << content << "]" <<std::endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+	
 	// std::map<std::string, wbs::Location> locs = response.get_infos().get_locations();
 	// std::map<std::string, wbs::Location>::iterator loc_cgi = locs.find("cgi-bin");
 	// std::map<std::string, std::vector<std::string> > pars = loc_cgi->second.get_params();
@@ -74,8 +84,8 @@ void wbs::CGI::execution()
 		throw std::runtime_error("Forking error");
 	else if (pid == 0)
 	{
-		if (dup2(fd[1], STDOUT_FILENO) == -1)
-			throw std::runtime_error("Dup2 for STDOUT failure");
+		// if (dup2(fd[1], STDOUT_FILENO) == -1)
+		// 	throw std::runtime_error("Dup2 for STDOUT failure");
 		if (dup2(fd[0], STDIN_FILENO) == -1)
 			throw std::runtime_error("Dup2 for STDIN failure");
 		args[0] = binary_path.c_str();

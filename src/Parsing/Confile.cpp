@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/10 18:24:49 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/01 10:51:24 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +328,7 @@ void	wbs::Confile::key_invalid(const std::string& value) // SEE WHAT U CAN ADD
 	valid.push_back("client_body_size");
 	valid.push_back("root");
 	valid.push_back("autoindex");
-	valid.push_back("cgi_extension");
+	valid.push_back("cgi_extention");
 	valid.push_back("cgi_bin");
 	valid.push_back("methods");
 	valid.push_back("return");
