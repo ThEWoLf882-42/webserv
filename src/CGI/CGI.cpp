@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/01 12:55:43 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/03 12:09:00 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,13 @@ wbs::CGI::CGI(wbs::Response& response)
 	_path = response.get_path();
 	try
 	{
-		execute_cgi(_path);
+		execute_cgi();
 		std::cerr << "CGI [" << content << "]" <<std::endl;
 	}
 	catch(const std::exception& e)
 	{
 		std::cerr << e.what() << '\n';
-	}
-	
-	// std::map<std::string, wbs::Location> locs = response.get_infos().get_locations();
-	// std::map<std::string, wbs::Location>::iterator loc_cgi = locs.find("cgi-bin");
-	// std::map<std::string, std::vector<std::string> > pars = loc_cgi->second.get_params();
-	// binary_path = pars["cgi_path"][0];
+	}	
 }
 
 wbs::CGI::~CGI()
@@ -58,21 +53,25 @@ void	wbs::CGI::valid_extension()
 	if (extension != "py" && extension != "php")
 		throw std::runtime_error("Invalid extension of the script");
 	if (access(_path.c_str(), R_OK | X_OK) == -1)
-		throw std::runtime_error("File does not exist");
+		throw std::runtime_error("File does not have the correct permissions");
 	if (extension == "php")
 		ext = 1;
 }
 
-void wbs::CGI::check_binary_path()
+void wbs::CGI::binary_path()
 {
-	struct stat sb;
+	if (ext)
+		_binary_path = "/usr/bin/php";
+	else
+		_binary_path = "/usr/bin/python3";
 
-	if (stat(binary_path.c_str(), &sb) == -1)
-		throw std::runtime_error("No such file");
+	struct stat sb;
+	if (stat(_binary_path.c_str(), &sb) == -1)
+		throw std::runtime_error("No such binary file");
 	if (S_ISDIR(sb.st_mode))
 		throw std::runtime_error("It's a directory");
-	if (access(binary_path.c_str(), X_OK) == -1)
-		throw std::runtime_error("Not executable");
+	if (access(_binary_path.c_str(), X_OK) == -1)
+		throw std::runtime_error("Binary file is not executable");
 }
 
 void wbs::CGI::execution()
@@ -82,10 +81,16 @@ void wbs::CGI::execution()
 		throw std::runtime_error("Forking error");
 	else if (pid == 0)
 	{
+		// if ()  //I SHOULD KNOW IF IT'S POST
+		// {
+		// 	if (lseek(std_in, 0, SEEK_SET) == -1)
+		// 		throw std::runtime_error("lseek for stdin");
+		// 	if (dup2(std_in, STDIN_FILENO) == -1)
+		// 		throw std::runtime_error("dup2 for stdin");
+		// }
 		if (dup2(std_out, STDOUT_FILENO) == -1)
 			throw std::runtime_error("Dup2 for STDOUT failure");
-		//maybe ill need also stderr ??
-		args[0] = binary_path.c_str();
+		args[0] = _binary_path.c_str();
 		args[1] = _path.c_str();
 		args[2] = NULL;
 		if (execve(args[0], (char *const *)args, _response.get_envi_var()) == -1)
@@ -104,6 +109,8 @@ void wbs::CGI::execution()
 void wbs::CGI::take_output()
 {
 	r = 1;
+	if (lseek(std_out, 0, SEEK_SET) == -1)
+		throw std::runtime_error("lseek error");
 	while (r > 0)
 	{
 		r = read(std_out, &c, 1);
@@ -112,6 +119,8 @@ void wbs::CGI::take_output()
 			close(std_out);
 			throw std::runtime_error("Error while reading from the pipe");
 		}
+		else if (r == 0)
+			break;
 		content += c;
 	}
 	close(std_out);
@@ -120,22 +129,20 @@ void wbs::CGI::take_output()
 void wbs::CGI::execute_cgi()
 {
 	valid_extension();
-	default_binary_path();
-	check_binary_path();
+	binary_path();
+	setup_files();
 	execution();
 	take_output();
 }
 
-void	wbs::CGI::default_binary_path()
+void	wbs::CGI::setup_files()
 {
-	if (ext && binary_path.empty())
-		binary_path = "/usr/bin/php";
-	else
-		binary_path = "/usr/bin/python3";
-}
+	std_in = fileno(tmpfile());
+	if (std_in == -1)
+		throw std::runtime_error("Creating stdin file");
+	// if (write(std_in, , ) BODY FROM THE REQUEST
+		// throw std::runtime_error("Content to body file");
 
-void	wbs::CGI::setup_file()
-{
 	std_out = fileno(tmpfile());
 	if (std_out == -1)
 		throw std::runtime_error("Creating a stdout file");
