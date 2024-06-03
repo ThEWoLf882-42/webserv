@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/01 10:22:53 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/03 12:22:48 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,7 @@ namespace wbs
 		char **&get_envi_var();
 		
 		const std::string &get_path();
+
+		Request &get_req();
 	};
 }
