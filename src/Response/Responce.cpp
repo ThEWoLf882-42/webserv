@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/01 14:02:40 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/03 12:18:35 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -637,4 +637,9 @@ const std::string &wbs::Response::get_response()
 const std::string &wbs::Response::get_path()
 {
 	return path;
+}
+
+Request &wbs::Response::get_req()
+{
+	return req;
 }
