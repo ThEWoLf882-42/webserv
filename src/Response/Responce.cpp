@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/01 12:32:17 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/01 14:02:40 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool wbs::Response::location_has_cgi()
 		if (loc.get_params().find("cgi_extention") != loc.get_params().end())
 			key = loc.get_params().find("cgi_extention")->second.front();
 	}
-	if (inf.get_directives().find("cgi_extention") != inf.get_directives().end() && key.empty())
+	else if (inf.get_directives().find("cgi_extention") != inf.get_directives().end() && key.empty())
 		key = *inf.get_directives().find("cgi_extention")->second.begin();
 	return key == ex;
 }
@@ -251,7 +251,6 @@ std::string wbs::Response::get_method(std::string &loc)
 			{
 				if (location_has_cgi())
 				{
-					std::cout << "WAAAAAAAAA" << req.get_loc() << std::endl;
 					CGI cgi(*this);
 				}
 				else
@@ -279,6 +278,7 @@ std::string wbs::Response::get_method(std::string &loc)
 	{
 		if (location_has_cgi())
 		{
+			CGI cgi(*this);
 		}
 		else
 		{

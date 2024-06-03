@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/01 12:55:43 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/01 14:01:24 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ wbs::CGI::CGI(wbs::Response& response)
 	_path = response.get_path();
 	try
 	{
-		execute_cgi(_path);
+		execute_cgi();
 		std::cerr << "CGI [" << content << "]" <<std::endl;
 	}
 	catch(const std::exception& e)
@@ -78,12 +78,13 @@ void wbs::CGI::check_binary_path()
 void wbs::CGI::execution()
 {
 	pid = fork();
+
 	if (pid == -1)
 		throw std::runtime_error("Forking error");
 	else if (pid == 0)
 	{
-		if (dup2(std_out, STDOUT_FILENO) == -1)
-			throw std::runtime_error("Dup2 for STDOUT failure");
+		// if (dup2(std_out, STDOUT_FILENO) == -1)
+		// 	throw std::runtime_error("Dup2 for STDOUT failure");
 		//maybe ill need also stderr ??
 		args[0] = binary_path.c_str();
 		args[1] = _path.c_str();
@@ -112,6 +113,7 @@ void wbs::CGI::take_output()
 			close(std_out);
 			throw std::runtime_error("Error while reading from the pipe");
 		}
+		std::cerr << c << std::endl;
 		content += c;
 	}
 	close(std_out);
@@ -122,6 +124,7 @@ void wbs::CGI::execute_cgi()
 	valid_extension();
 	default_binary_path();
 	check_binary_path();
+	setup_file();
 	execution();
 	take_output();
 }
