@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/03 12:15:18 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/03 12:25:02 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ void wbs::CGI::execution()
 		throw std::runtime_error("Forking error");
 	else if (pid == 0)
 	{
-		// if ()  //I SHOULD KNOW IF IT'S POST
-		// {
-		// 	if (lseek(std_in, 0, SEEK_SET) == -1)
-		// 		throw std::runtime_error("lseek for stdin");
-		// 	if (dup2(std_in, STDIN_FILENO) == -1)
-		// 		throw std::runtime_error("dup2 for stdin");
-		// }
+		if (_response.get_req().get_meth() == "POST")  //I SHOULD KNOW IF IT'S POST
+		{
+			if (lseek(std_in, 0, SEEK_SET) == -1)
+				throw std::runtime_error("lseek for stdin");
+			if (dup2(std_in, STDIN_FILENO) == -1)
+				throw std::runtime_error("dup2 for stdin");
+		}
 		if (dup2(std_out, STDOUT_FILENO) == -1)
 			throw std::runtime_error("Dup2 for STDOUT failure");
 		args[0] = _binary_path.c_str();
@@ -141,8 +141,8 @@ void	wbs::CGI::setup_files()
 	std_in = fileno(tmpfile());
 	if (std_in == -1)
 		throw std::runtime_error("Creating stdin file");
-	// if (write(std_in, , ) BODY FROM THE REQUEST
-		// throw std::runtime_error("Content to body file");
+	if (write(std_in, _response.get_req().get_body().c_str() , _response.get_req().get_body().size())) // BODY FROM THE REQUEST
+		throw std::runtime_error("Content to body file");
 
 	std_out = fileno(tmpfile());
 	if (std_out == -1)

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/03 12:17:13 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/03 12:28:14 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ namespace wbs
 		Request &get_req();
 		
 		const std::string &get_path();
+
+		Request &get_req();
 	};
 }
