@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/03 14:10:31 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 13:34:29 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,15 @@ wbs::CGI::~CGI()
 void wbs::CGI::valid_extension()
 {
 	std::string extension = _path.substr(_path.find_last_of(".") + 1);
-	if (extension != "py" && extension != "php")
+	if (extension != "py")
 		throw std::runtime_error("Invalid extension of the script");
 	if (access(_path.c_str(), R_OK | X_OK) == -1)
 		throw std::runtime_error("File does not have the correct permissions");
-	if (extension == "php")
-		ext = 1;
 }
 
 void wbs::CGI::binary_path()
 {
-	if (ext)
-		_binary_path = "/usr/bin/php";
-	else
-		_binary_path = "/usr/bin/python3";
+	_binary_path = "/usr/bin/python3";
 
 	struct stat sb;
 	if (stat(_binary_path.c_str(), &sb) == -1)
