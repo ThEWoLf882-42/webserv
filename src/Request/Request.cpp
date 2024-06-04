@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/06/04 14:41:17 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 17:04:13 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,14 +181,14 @@ void wbs::Request::checkloc()
 	DIR *d = opendir(loc.c_str());
 	if (!d)
 	{
-		closedir(d);
 		if (access(loc.c_str(), F_OK) == -1)
 		{
 			code = 404;
 			throw std::runtime_error(" Not Found");
 		}
 	}
-	closedir(d);
+	else
+		closedir(d);
 }
 
 void wbs::Request::setquery()

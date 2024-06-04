@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/04 15:28:13 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 17:04:56 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,6 @@ int wbs::Response::check_file(std::string &url)
 	DIR *d = opendir(url.c_str());
 	if (!d)
 	{
-		closedir(d);
 		if (access(url.c_str(), F_OK) == -1 && access(url.c_str(), R_OK) == -1)
 		{
 			generate_body(url, 2, 403);
@@ -181,7 +180,6 @@ int wbs::Response::check_file(std::string &url)
 	}
 	else if (!d)
 	{
-		closedir(d);
 		generate_body(url, 2, 404);
 		generate_response(404, " Not Found");
 		return (0);
@@ -200,7 +198,8 @@ int wbs::Response::check_file(std::string &url)
 		generate_response(200, " OK");
 		return (1);
 	}
-	closedir(d);
+	if (d)
+		closedir(d);
 	return (1);
 }
 
