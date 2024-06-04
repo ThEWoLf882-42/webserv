@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/03 12:25:02 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/03 14:10:31 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
 wbs::CGI::CGI(const CGI &ob)
-: _response(ob._response)
+	: _response(ob._response)
 {
 	*this = ob;
 }
@@ -28,26 +28,26 @@ wbs::CGI &wbs::CGI::operator=(const CGI &ob)
 	return (*this);
 }
 
-wbs::CGI::CGI(wbs::Response& response) 
-: _response(response)
+wbs::CGI::CGI(wbs::Response &response)
+	: ext(0), _response(response)
 {
 	_path = response.get_path();
 	try
 	{
 		execute_cgi();
-		std::cerr << "CGI [" << content << "]" <<std::endl;
+		std::cerr << "CGI [" << content << "]" << std::endl;
 	}
-	catch(const std::exception& e)
+	catch (const std::exception &e)
 	{
 		std::cerr << e.what() << '\n';
-	}	
+	}
 }
 
 wbs::CGI::~CGI()
 {
 }
 
-void	wbs::CGI::valid_extension()
+void wbs::CGI::valid_extension()
 {
 	std::string extension = _path.substr(_path.find_last_of(".") + 1);
 	if (extension != "py" && extension != "php")
@@ -82,13 +82,13 @@ void wbs::CGI::execution()
 		throw std::runtime_error("Forking error");
 	else if (pid == 0)
 	{
-		if (_response.get_req().get_meth() == "POST")  //I SHOULD KNOW IF IT'S POST
-		{
-			if (lseek(std_in, 0, SEEK_SET) == -1)
-				throw std::runtime_error("lseek for stdin");
-			if (dup2(std_in, STDIN_FILENO) == -1)
-				throw std::runtime_error("dup2 for stdin");
-		}
+		// if (_response.get_req().get_meth() == "POST")  //I SHOULD KNOW IF IT'S POST
+		// {
+		if (lseek(std_in, 0, SEEK_SET) == -1)
+			throw std::runtime_error("lseek for stdin");
+		if (dup2(std_in, STDIN_FILENO) == -1)
+			throw std::runtime_error("dup2 for stdin");
+		// }
 		if (dup2(std_out, STDOUT_FILENO) == -1)
 			throw std::runtime_error("Dup2 for STDOUT failure");
 		args[0] = _binary_path.c_str();
@@ -102,8 +102,8 @@ void wbs::CGI::execution()
 		int status;
 		if (waitpid(pid, &status, 0) == -1)
 			throw std::runtime_error("Waitpid failure");
-		if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
-			throw std::runtime_error("Error");
+		// if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
+		// 	throw std::runtime_error("Error HERE");
 	}
 }
 
@@ -136,15 +136,19 @@ void wbs::CGI::execute_cgi()
 	take_output();
 }
 
-void	wbs::CGI::setup_files()
+void wbs::CGI::setup_files()
 {
 	std_in = fileno(tmpfile());
 	if (std_in == -1)
 		throw std::runtime_error("Creating stdin file");
-	if (write(std_in, _response.get_req().get_body().c_str() , _response.get_req().get_body().size())) // BODY FROM THE REQUEST
-		throw std::runtime_error("Content to body file");
-
+	write(std_in, _response.get_req().get_body().c_str(), _response.get_req().get_body().size()); // BODY FROM THE REQUEST
+	lseek(std_in, 0, SEEK_SET);
 	std_out = fileno(tmpfile());
 	if (std_out == -1)
 		throw std::runtime_error("Creating a stdout file");
+}
+
+std::string &wbs::CGI::get_content()
+{
+	return content;
 }

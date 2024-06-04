@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/03 12:29:31 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/03 21:38:20 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,20 @@ bool wbs::Response::check_auto_index()
 void wbs::Response::generate_response(int code, const std::string &status)
 {
 	std::stringstream ss;
-	ss << "HTTP/1.1 " << code << status << "\r\n"
-	   << "Content-Type: " << get_mime(path) << "\r\n"
-	   << "Content-Length: " << length << "\r\n\r\n"
-	   << body;
+	if (code == 201)
+	{
+		ss << "HTTP/1.1 " << code << status << "\r\n"
+		   << "Content-Length: " << length << "\r\n"
+		   << "Content-Type: text/html" << "\r\n\r\n"
+		   << body;
+	}
+	else
+	{
+		ss << "HTTP/1.1 " << code << status << "\r\n"
+		   << "Content-Type: " << get_mime(path) << "\r\n"
+		   << "Content-Length: " << length << "\r\n\r\n"
+		   << body;
+	}
 
 	response = ss.str();
 }
@@ -227,6 +237,12 @@ void wbs::Response::generate_body(std::string &url, int ind, int code)
 
 	if (ind == 2)
 		body = readfile(error_path[code]);
+	if (ind == 4)
+	{
+		size_t p = url.find("\r\n\r\n");
+		if (p != std::string::npos)
+			body = url.substr(p + 4, url.size());
+	}
 
 	std::stringstream s;
 
@@ -303,10 +319,18 @@ std::string wbs::Response::post_method(std::string &loc)
 		}
 		there_is_an_index();
 		CGI cgi(*this);
+		generate_body(cgi.get_content(), 4, 201);
+		generate_response(201, " Created");
+		std::cerr << "HERE" << std::endl;
+		return "";
 	}
 	else if (ress_type == "file")
 	{
 		CGI cgi(*this);
+		generate_body(cgi.get_content(), 4, 201);
+		generate_response(201, " Created");
+		std::cerr << "HERE" << std::endl;
+		return "";
 	}
 	return "";
 }
@@ -324,10 +348,12 @@ std::string wbs::Response::delete_method(std::string &loc)
 		}
 		there_is_an_index();
 		CGI cgi(*this);
+		return "";
 	}
 	else if (ress_type == "file")
 	{
 		CGI cgi(*this);
+		return "";
 	}
 	return "";
 }
@@ -534,19 +560,30 @@ std::string wbs::Response::get_cgi_path()
 
 void wbs::Response::set_env()
 {
-	map_env.insert(std::make_pair("SERVER_PROTOCOL", "HTTP/1.1"));
+	std::map<std::string, std::string> heads = 	req.get_heads();
 	int port = req.get_serv().port;
 	std::stringstream ss;
 	ss << port;
+
+	if (heads.find("Auth-Scheme") != heads.end() && heads["Auth-Scheme"] != "")
+		map_env.insert(std::make_pair("AUTH_TYPE", heads["Authorization"]));
+	
+	map_env.insert(std::make_pair("SERVER_PROTOCOL", "HTTP/1.1"));
 	map_env.insert(std::make_pair("SERVER_PORT", ss.str()));
-	map_env.insert(std::make_pair("CONTENT_TYPE", req.get_heads()["Content-Type"]));
-	// map_env.insert(std::make_pair("CONTENT_TYPE", get_mime(req.get_loc())));
+	map_env.insert(std::make_pair("CONTENT_TYPE", heads["Content-Type"]));
 	map_env.insert(std::make_pair("CONTENT_LENGTH", length));
 	map_env.insert(std::make_pair("PATH_INFO", req.get_loc()));
+	map_env.insert(std::make_pair("PATH_TRANSLATED", req.get_loc()));
 	map_env.insert(std::make_pair("REQUEST_METHOD", req.get_meth()));
 	map_env.insert(std::make_pair("SERVER_NAME", "the Webrains on a Re\"Quest to Peasantria"));
 	map_env.insert(std::make_pair("QUERY_STRING", req.get_query()));
 	map_env.insert(std::make_pair("SCRIPT_NAME", path));
+	map_env.insert(std::make_pair("SCRIPT_FILENAME", path));
+	map_env.insert(std::make_pair("SCRIPT_PATH", path));
+	map_env.insert(std::make_pair("REDIRECT_STATUS", "200"));
+	map_env.insert(std::make_pair("GATEWAY_INTERFACE", "CGI/1.1"));
+	map_env.insert(std::make_pair("REMOTE_IDENT", heads["Authorization"]));
+	map_env.insert(std::make_pair("REMOTE_USER", heads["Authorization"]));
 }
 
 void wbs::Response::create_envp()
@@ -637,11 +674,6 @@ const std::string &wbs::Response::get_response()
 const std::string &wbs::Response::get_path()
 {
 	return path;
-}
-
-wbs::Request &wbs::Response::get_req()
-{
-	return req;
 }
 
 wbs::Request &wbs::Response::get_req()
