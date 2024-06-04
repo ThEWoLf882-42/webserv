@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/01 10:51:24 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 13:36:13 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,6 +333,7 @@ void	wbs::Confile::key_invalid(const std::string& value) // SEE WHAT U CAN ADD
 	valid.push_back("methods");
 	valid.push_back("return");
 	valid.push_back("default_file");
+	valid.push_back("upload_dir");
 
 	std::vector<std::string>::iterator it = find(valid.begin(), valid.end(), value);
 	if (it == valid.end())

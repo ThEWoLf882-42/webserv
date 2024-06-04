@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:57 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/03 13:29:55 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 13:37:01 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace wbs
 			int r;
 			char c;
 			std::string content;
-			int ext;
+			// int ext;
 			
 			// an7taj l env, yesu
 			// binary path so aykhsni location
