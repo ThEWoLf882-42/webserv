@@ -11,5 +11,32 @@
         <br><br>
         <input type="submit" value="Submit">
     </form>
+
+    <h2>Delete Resource Form</h2>
+    <form id="delete-form">
+        <label for="resource_id">Enter Resource ID (Filename) to delete:</label>
+        <input type="text" id="resource_id" name="id">
+        <br><br>
+        <input type="submit" value="Delete">
+    </form>
+
+    <script>
+        document.getElementById('delete-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the form from submitting normally
+
+            var resourceId = document.getElementById('resource_id').value;
+
+            fetch('ALL.py?id=' + encodeURIComponent(resourceId), {
+                method: 'DELETE'
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.body.insertAdjacentHTML('beforeend', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
 </body>
 </html>

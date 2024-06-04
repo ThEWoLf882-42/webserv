@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/04 12:55:54 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 13:16:27 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ bool wbs::Response::check_auto_index()
 void wbs::Response::generate_response(int code, const std::string &status)
 {
 	std::stringstream ss;
-	if (code == 201)
+	if (code == 201 || code == 204)
 	{
 		ss << "HTTP/1.1 " << code << status << "\r\n"
 		   << "Content-Type: text/html" << "\r\n"
@@ -226,8 +226,6 @@ void wbs::Response::generate_body(std::string &url, int ind, int code)
 		body = readfile(url.c_str());
 	else if (ind == 3 && code == 200)
 		body = autoindex(req.get_loc(), req.get_oloc());
-
-
 
 	if (ind == 2)
 		body = readfile(inf.get_error_pages()[code]);
@@ -344,11 +342,15 @@ std::string wbs::Response::delete_method(std::string &loc)
 		}
 		there_is_an_index();
 		CGI cgi(*this);
+		generate_body(cgi.get_content(), 4, 204);
+		generate_response(204, " No Content");
 		return "";
 	}
 	else if (ress_type == "file")
 	{
 		CGI cgi(*this);
+		generate_body(cgi.get_content(), 4, 204);
+		generate_response(204, " No Content");
 		return "";
 	}
 	return "";
