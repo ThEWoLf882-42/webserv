@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/04 14:54:01 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 15:28:13 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -531,10 +531,13 @@ void wbs::Response::create_envp()
 
 void wbs::Response::free_envp()
 {
-	for (int i = 0; envp_c != 0; i++)
-		delete[] envp_c[i];
-	delete[] envp_c;
-	envp_c = NULL;
+	if (envp_c)
+	{
+		for (int i = 0; envp_c[i] != NULL; i++)
+			delete[] envp_c[i];
+		delete[] envp_c;
+		envp_c = NULL;
+	}
 }
 
 char **&wbs::Response::get_envi_var()
