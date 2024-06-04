@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:01:06 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/21 19:12:39 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/06/04 12:05:32 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,23 +180,7 @@ std::string autoindex(const std::string &directory, const std::string &location)
 					   "<head>\n"
 					   "    <title>Index of " +
 					   location + "</title>\n"
-								  "    <style>\n"
-								  "        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; }\n"
-								  "        .container { max-width: 800px; margin: 20px auto; padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }\n"
-								  "        h1 { color: #333; }\n"
-								  "        ul { list-style-type: none; padding: 0; }\n"
-								  "        li { margin-bottom: 10px; display: flex; align-items: center; }\n"
-								  "        a { color: #007bff; text-decoration: none; }\n"
-								  "        a:hover { text-decoration: underline; }\n"
-								  "        .footer { margin-top: 20px; color: #777; font-size: 18px; }\n"
-								  "        .file { color: #333; }\n"
-								  "        .directory { color: #007bff; }\n"
-								  "        .file-info { color: #777; font-size: 1em; margin-left: 10px; }\n"
-								  "        .icon { font-size: 28px; margin-right: 5px; }\n"
-								  "        .size { margin-left: auto; }\n"
-								  "        .time { margin-left: 10px; }\n"
-								  "        .content { height: 1000px; overflow-y: auto; }\n"
-								  "    </style>\n"
+								  "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/assets/css/autoindex.css\">\n"
 								  "</head>\n"
 								  "<body>\n"
 								  "    <div class=\"container\">\n"

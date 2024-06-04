@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:34:15 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/10 18:03:54 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 12:53:34 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,7 @@ namespace wbs
 
 		void print_error_pages();
 		void check_duplicated(const std::vector<int> &vec, int num);
+
+		std::map<int, std::string> &get_error_pages();
 	};
 }

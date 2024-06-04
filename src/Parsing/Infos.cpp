@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/05/26 09:49:48 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/04 12:56:14 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 wbs::Infos::Infos()
 {
-	error_pages.insert(std::make_pair(403, "./extra/403.html"));
-	error_pages.insert(std::make_pair(404, "./extra/404.html"));
-	error_pages.insert(std::make_pair(405, "./extra/405.html"));
-	error_pages.insert(std::make_pair(301, "./extra/301.html"));
-	error_pages.insert(std::make_pair(409, "./extra/409.html"));
-	error_pages.insert(std::make_pair(500, "./extra/500.html"));
+	error_pages[403] = "./extra/403.html";
+	error_pages[404] = "./extra/404.html";
+	error_pages[405] = "./extra/405.html";
+	error_pages[301] = "./extra/301.html";
+	error_pages[409] = "./extra/409.html";
+	error_pages[500] = "./extra/500.html";
 }
 
 wbs::Infos::Infos(const Infos &ob)
@@ -33,6 +33,7 @@ wbs::Infos &wbs::Infos::operator=(const Infos &ob)
 	{
 		directives = ob.directives;
 		locations = ob.locations;
+		error_pages = ob.error_pages;
 	}
 	return *this;
 }
@@ -205,11 +206,11 @@ unsigned int &wbs::Infos::get_host()
 	return host;
 }
 
-void wbs::Infos::set_error_pages(std::istream& ss) 
+void wbs::Infos::set_error_pages(std::istream &ss)
 {
-	std::string	test, key;
-	char	*ptr;
-	int		count = 0, num;
+	std::string test, key;
+	char *ptr;
+	int count = 0, num;
 
 	ss >> key;
 	num = std::strtod(key.c_str(), &ptr);
@@ -230,19 +231,24 @@ void wbs::Infos::set_error_pages(std::istream& ss)
 	duplicated.push_back(num);
 }
 
-void	wbs::Infos::print_error_pages()
+void wbs::Infos::print_error_pages()
 {
 	std::map<int, std::string>::iterator it = error_pages.begin();
 
 	for (; it != error_pages.end(); it++)
 	{
-		std::cout <<  "key=> " << it->first << " value=> " << it->second << std::endl;
+		std::cout << "key=> " << it->first << " value=> " << it->second << std::endl;
 	}
 }
 
-void	wbs::Infos::check_duplicated(const std::vector<int>& vec, int num)
+void wbs::Infos::check_duplicated(const std::vector<int> &vec, int num)
 {
 	std::vector<int>::const_iterator it = find(vec.begin(), vec.end(), num);
 	if (it != vec.end())
 		throw std::runtime_error("Error code is duplicated");
+}
+
+std::map<int, std::string> &wbs::Infos::get_error_pages()
+{
+	return error_pages;
 }

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/04 11:47:01 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 12:55:54 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,8 @@ void wbs::Response::generate_response(int code, const std::string &status)
 	if (code == 201)
 	{
 		ss << "HTTP/1.1 " << code << status << "\r\n"
-		   << "Content-Length: " << length << "\r\n"
-		   << "Content-Type: text/html" << "\r\n\r\n"
+		   << "Content-Type: text/html" << "\r\n"
+		   << "Content-Length: " << length << "\r\n\r\n"
 		   << body;
 	}
 	else
@@ -227,16 +227,10 @@ void wbs::Response::generate_body(std::string &url, int ind, int code)
 	else if (ind == 3 && code == 200)
 		body = autoindex(req.get_loc(), req.get_oloc());
 
-	std::map<int, std::string> error_path;
-	error_path[403] = "./extra/403.html";
-	error_path[404] = "./extra/404.html";
-	error_path[405] = "./extra/405.html";
-	error_path[301] = "./extra/301.html";
-	error_path[409] = "./extra/409.html";
-	error_path[500] = "./extra/500.html";
+
 
 	if (ind == 2)
-		body = readfile(error_path[code]);
+		body = readfile(inf.get_error_pages()[code]);
 	if (ind == 4)
 	{
 		size_t p = url.find("\r\n\r\n");
@@ -268,6 +262,8 @@ std::string wbs::Response::get_method(std::string &loc)
 				if (location_has_cgi())
 				{
 					CGI cgi(*this);
+					generate_body(cgi.get_content(), 4, 200);
+					generate_response(200, " OK");
 				}
 				else
 				{
@@ -295,6 +291,8 @@ std::string wbs::Response::get_method(std::string &loc)
 		if (location_has_cgi())
 		{
 			CGI cgi(*this);
+			generate_body(cgi.get_content(), 4, 200);
+			generate_response(200, " OK");
 		}
 		else
 		{
@@ -321,7 +319,6 @@ std::string wbs::Response::post_method(std::string &loc)
 		CGI cgi(*this);
 		generate_body(cgi.get_content(), 4, 201);
 		generate_response(201, " Created");
-		std::cerr << "HERE" << std::endl;
 		return "";
 	}
 	else if (ress_type == "file")
@@ -329,7 +326,6 @@ std::string wbs::Response::post_method(std::string &loc)
 		CGI cgi(*this);
 		generate_body(cgi.get_content(), 4, 201);
 		generate_response(201, " Created");
-		std::cerr << "HERE" << std::endl;
 		return "";
 	}
 	return "";
