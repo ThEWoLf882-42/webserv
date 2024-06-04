@@ -178,14 +178,17 @@ void wbs::Request::checkloc()
 		mloc = &it->second;
 	}
 	checkreturn();
-	if (!opendir(loc.c_str()))
+	DIR *d = opendir(loc.c_str());
+	if (!d)
 	{
+		closedir(d);
 		if (access(loc.c_str(), F_OK) == -1)
 		{
 			code = 404;
 			throw std::runtime_error(" Not Found");
 		}
 	}
+	closedir(d);
 }
 
 void wbs::Request::setquery()
