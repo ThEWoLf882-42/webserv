@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/04 13:34:29 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/04 13:56:09 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::CGI::CGI(const CGI &ob)
-	: _response(ob._response)
+wbs::CGI::CGI(const CGI &ob) : _response(ob._response)
 {
 	*this = ob;
 }
@@ -28,18 +27,16 @@ wbs::CGI &wbs::CGI::operator=(const CGI &ob)
 	return (*this);
 }
 
-wbs::CGI::CGI(wbs::Response &response)
-	: ext(0), _response(response)
+wbs::CGI::CGI(wbs::Response &response) : _response(response)
 {
 	_path = response.get_path();
 	try
 	{
 		execute_cgi();
-		std::cerr << "CGI [" << content << "]" << std::endl;
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << '\n';
+		throw std::runtime_error("500 Internal Server Error");
 	}
 }
 
@@ -97,8 +94,8 @@ void wbs::CGI::execution()
 		int status;
 		if (waitpid(pid, &status, 0) == -1)
 			throw std::runtime_error("Waitpid failure");
-		// if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
-		// 	throw std::runtime_error("Error HERE");
+		if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
+			throw std::runtime_error("Error HERE");
 	}
 }
 

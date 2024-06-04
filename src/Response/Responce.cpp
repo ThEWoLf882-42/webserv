@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/04 13:16:27 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 13:55:25 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ bool wbs::Response::check_auto_index()
 void wbs::Response::generate_response(int code, const std::string &status)
 {
 	std::stringstream ss;
-	if (code == 201 || code == 204)
+	if (code == 201 || code == 204 || code == 500)
 	{
 		ss << "HTTP/1.1 " << code << status << "\r\n"
 		   << "Content-Type: text/html" << "\r\n"
@@ -356,67 +356,6 @@ std::string wbs::Response::delete_method(std::string &loc)
 	return "";
 }
 
-// std::string wbs::Response::post_method(std::string &loc)
-// {
-// 	if (if_supports_upload())
-// 	{
-// 		generate_body(loc, 1, 201);
-// 		generate_response(201, " Created");
-// 		return ("");
-// 	}
-// 	else
-// 	{
-// 		get_resource_type(loc);
-// 		if (ress_type == "directory")
-// 		{
-// 			if (loc[loc.size() - 1] != '/')
-// 			{
-// 				generate_body(loc, 2, 301);
-// 				generate_response(301, " Moved Permanently\r\nLocation: " + req.get_oloc() + '/');
-// 				return "";
-// 			}
-// 			else
-// 			{
-// 				if (there_is_an_index())
-// 				{
-// 					if (location_has_cgi())
-// 					{
-// 						// run cgi
-// 					}
-// 					else
-// 					{
-// 						generate_body(loc, 2, 403);
-// 						generate_response(403, " Forbidden");
-// 						return ("");
-// 					}
-// 				}
-// 				else
-// 				{
-// 					generate_body(loc, 2, 403);
-// 					generate_response(403, " Forbidden");
-// 					return ("");
-// 				}
-// 			}
-// 		}
-// 		if (ress_type == "file")
-// 		{
-// 			if (location_has_cgi())
-// 			{
-// 				// run cgi
-// 			}
-// 			else
-// 			{
-// 				generate_body(loc, 2, 403);
-// 				generate_response(403, " Forbidden");
-// 				return ("");
-// 			}
-// 		}
-// 		generate_body(loc, 2, 404);
-// 		generate_response(404, " Not Found");
-// 		return ("");
-// 	}
-// }
-
 void wbs::Response::delete_all_content(std::string &loc)
 {
 	DIR *dir = opendir(loc.c_str());
@@ -493,49 +432,6 @@ void wbs::Response::delete_file(std::string &file)
 	generate_body(path, 1, 204);
 	generate_response(204, " No Content");
 }
-
-// std::string wbs::Response::delete_method(std::string &loc)
-// {
-// 	get_resource_type(loc);
-// 	if (ress_type == "directory")
-// 	{
-// 		if (loc[loc.size() - 1] != '/')
-// 		{
-// 			generate_body(loc, 2, 409);
-// 			generate_response(409, " Conflict");
-// 			return "";
-// 		}
-// 		else
-// 		{
-// 			if (location_has_cgi())
-// 			{
-// 				if (there_is_an_index())
-// 				{
-// 					// run cgi
-// 				}
-// 				else
-// 				{
-// 					generate_body(loc, 2, 403);
-// 					generate_response(403, " Forbidden");
-// 					return ("");
-// 				}
-// 			}
-// 			delete_all_content(loc);
-// 		}
-// 		generate_body(path, 2, 404);
-// 		generate_response(404, " Not Found");
-// 	}
-// 	if (ress_type == "file")
-// 	{
-// 		if (location_has_cgi())
-// 		{
-// 			// 3tiha l meriem :3
-// 		}
-// 		else
-// 			delete_file(loc);
-// 	}
-// 	return ("");
-// }
 
 std::string wbs::Response::get_cgi_path()
 {
@@ -647,21 +543,29 @@ void wbs::Response::start_resp()
 		}
 		else
 		{
-			switch (check_meth(method))
+			try
 			{
-			case 0:
-				generate_body(path, 2, 405);
-				generate_response(405, " Method Not Allowed");
-				break;
-			case 1:
-				get_method(path);
-				break;
-			case 2:
-				post_method(path);
-				break;
-			case 3:
-				delete_method(path);
-				break;
+				switch (check_meth(method))
+				{
+				case 0:
+					generate_body(path, 2, 405);
+					generate_response(405, " Method Not Allowed");
+					break;
+				case 1:
+					get_method(path);
+					break;
+				case 2:
+					post_method(path);
+					break;
+				case 3:
+					delete_method(path);
+					break;
+				}
+			}
+			catch (const std::exception &e)
+			{
+				generate_body(path, 2, 500);
+				generate_response(500, " Internal Server Error");
 			}
 		}
 	}
