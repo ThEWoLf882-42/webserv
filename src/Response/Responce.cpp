@@ -168,8 +168,10 @@ int wbs::Response::check_meth(const std::string &method)
 
 int wbs::Response::check_file(std::string &url)
 {
-	if (!opendir(url.c_str()))
+	DIR *d = opendir(url.c_str());
+	if (!d)
 	{
+		closedir(d);
 		if (access(url.c_str(), F_OK) == -1 && access(url.c_str(), R_OK) == -1)
 		{
 			generate_body(url, 2, 403);
@@ -177,24 +179,28 @@ int wbs::Response::check_file(std::string &url)
 			return (0);
 		}
 	}
-	else if (!opendir(url.c_str()))
+	else if (!d)
 	{
+		closedir(d);
 		generate_body(url, 2, 404);
 		generate_response(404, " Not Found");
 		return (0);
 	}
 	else if (check_meth(meth))
 	{
+		closedir(d);
 		generate_body(url, 2, 405);
 		generate_response(405, " Method Not Allowed");
 		return (0);
 	}
 	else if (!access(url.c_str(), F_OK))
 	{
+		closedir(d);
 		generate_body(url, 1, 200);
 		generate_response(200, " OK");
 		return (1);
 	}
+	closedir(d);
 	return (1);
 }
 

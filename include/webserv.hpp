@@ -33,11 +33,12 @@
 #include <iomanip>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 
 #define DEF_CONF "./config/default.conf"
 #define RSIZE 4096
 #define BLOG 1000
-#define OUTREQ 1
+#define OUTREQ 0
 #define OUTRES 0
 
 namespace wbs
