@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/31 12:30:32 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:46:12 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,6 +296,19 @@ std::string wbs::Request::get_codemsg()
 std::string wbs::Request::get_query()
 {
 	return query;
+}
+
+std::string wbs::Request::get_up_dir()
+{
+	if (mloc)
+	{
+		if (mloc->get_params().find("upload_dir") != mloc->get_params().end())
+			up_dir = mloc->get_params().find("upload_dir")->second.front();
+	}
+	else if (inf.get_directives().find("upload_dir") != inf.get_directives().end())
+		up_dir = inf.get_directives().find("upload_dir")->second.front();
+
+	return up_dir;
 }
 
 int wbs::Request::get_code()

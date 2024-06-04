@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:03:15 by agimi             #+#    #+#             */
-/*   Updated: 2024/05/31 12:30:27 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:39:47 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ namespace wbs
 		std::string body;
 		std::string codemsg;
 		std::string query;
+		std::string up_dir;
 		int code;
 
 		Request();
@@ -62,5 +63,6 @@ namespace wbs
 		std::string get_codemsg();
 		std::string get_query();
 		int get_code();
+		std::string get_up_dir();
 	};
 }

@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/03 21:38:20 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 11:47:01 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -560,14 +560,17 @@ std::string wbs::Response::get_cgi_path()
 
 void wbs::Response::set_env()
 {
-	std::map<std::string, std::string> heads = 	req.get_heads();
+	std::map<std::string, std::string> heads = req.get_heads();
 	int port = req.get_serv().port;
 	std::stringstream ss;
 	ss << port;
 
 	if (heads.find("Auth-Scheme") != heads.end() && heads["Auth-Scheme"] != "")
 		map_env.insert(std::make_pair("AUTH_TYPE", heads["Authorization"]));
-	
+
+	if (!req.get_up_dir().empty())
+		map_env.insert(std::make_pair("UPLOAD_DIR", req.get_up_dir()));
+
 	map_env.insert(std::make_pair("SERVER_PROTOCOL", "HTTP/1.1"));
 	map_env.insert(std::make_pair("SERVER_PORT", ss.str()));
 	map_env.insert(std::make_pair("CONTENT_TYPE", heads["Content-Type"]));
