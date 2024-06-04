@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:01:58 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/03 12:30:05 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 14:41:43 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ namespace wbs
 
 		std::string get_method(std::string &url);
 		std::string post_method(std::string &url);
+		std::string put_method(std::string &url);
 		std::string delete_method(std::string &url);
 
 		const std::string &get_response();

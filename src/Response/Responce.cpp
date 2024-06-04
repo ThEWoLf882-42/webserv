@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/04 13:55:25 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 14:40:03 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ bool wbs::Response::location_has_cgi()
 {
 	std::string ex = path.substr(path.find_last_of('.'), path.size());
 	std::string key;
+	if (inf.get_directives().find("cgi_extention") != inf.get_directives().end())
+		key = *inf.get_directives().find("cgi_extention")->second.begin();
 	if (req.get_mloc())
 	{
 		wbs::Location loc = *req.get_mloc();
@@ -30,8 +32,6 @@ bool wbs::Response::location_has_cgi()
 		if (loc.get_params().find("cgi_extention") != loc.get_params().end())
 			key = loc.get_params().find("cgi_extention")->second.front();
 	}
-	else if (inf.get_directives().find("cgi_extention") != inf.get_directives().end() && key.empty())
-		key = *inf.get_directives().find("cgi_extention")->second.begin();
 	return key == ex;
 }
 
@@ -158,6 +158,8 @@ int wbs::Response::check_meth(const std::string &method)
 		return (2);
 	else if (method == "DELETE")
 		return (3);
+	else if (method == "PUT")
+		return (4);
 	return (0);
 }
 
@@ -303,6 +305,33 @@ std::string wbs::Response::get_method(std::string &loc)
 }
 
 std::string wbs::Response::post_method(std::string &loc)
+{
+	get_resource_type(loc);
+	if (ress_type == "directory")
+	{
+		if (req.get_oloc().back() != '/')
+		{
+			generate_body(loc, 2, 301);
+			generate_response(301, " Moved Permanently\r\nLocation: " + req.get_oloc() + '/');
+			return "";
+		}
+		there_is_an_index();
+		CGI cgi(*this);
+		generate_body(cgi.get_content(), 4, 201);
+		generate_response(201, " Created");
+		return "";
+	}
+	else if (ress_type == "file")
+	{
+		CGI cgi(*this);
+		generate_body(cgi.get_content(), 4, 201);
+		generate_response(201, " Created");
+		return "";
+	}
+	return "";
+}
+
+std::string wbs::Response::put_method(std::string &loc)
 {
 	get_resource_type(loc);
 	if (ress_type == "directory")
@@ -559,6 +588,9 @@ void wbs::Response::start_resp()
 					break;
 				case 3:
 					delete_method(path);
+					break;
+				case 4:
+					put_method(path);
 					break;
 				}
 			}

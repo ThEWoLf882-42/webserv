@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/06/04 11:46:12 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/04 14:41:17 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void wbs::Request::checkbodysize()
 
 void wbs::Request::checkmeth()
 {
-	std::array<std::string, 3> alme = {{"GET", "POST", "DELETE"}};
+	std::array<std::string, 4> alme = {{"GET", "POST", "DELETE", "PUT"}};
 
 	if (std::find(alme.begin(), alme.end(), meth) == alme.end())
 	{
