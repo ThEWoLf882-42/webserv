@@ -7,6 +7,10 @@ cgitb.enable()
 
 UPLOAD_DIR = os.environ.get('UPLOAD_DIR', './upload')
 
+# Ensure the upload directory exists
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
+
 def handle_post():
     print("Content-Type: text/html\r\n\r\n")
 
