@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/04 13:56:09 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/05 11:16:01 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,13 @@ void wbs::CGI::execution()
 		throw std::runtime_error("Forking error");
 	else if (pid == 0)
 	{
-		// if (_response.get_req().get_meth() == "POST")  //I SHOULD KNOW IF IT'S POST
-		// {
-		if (lseek(std_in, 0, SEEK_SET) == -1)
-			throw std::runtime_error("lseek for stdin");
-		if (dup2(std_in, STDIN_FILENO) == -1)
-			throw std::runtime_error("dup2 for stdin");
-		// }
+		if (_response.get_req().get_meth() == "POST")  //I SHOULD KNOW IF IT'S POST
+		{
+			if (lseek(std_in, 0, SEEK_SET) == -1)
+				throw std::runtime_error("lseek for stdin");
+			if (dup2(std_in, STDIN_FILENO) == -1)
+				throw std::runtime_error("dup2 for stdin");
+		}
 		if (dup2(std_out, STDOUT_FILENO) == -1)
 			throw std::runtime_error("Dup2 for STDOUT failure");
 		args[0] = _binary_path.c_str();
@@ -92,10 +92,24 @@ void wbs::CGI::execution()
 	else
 	{
 		int status;
-		if (waitpid(pid, &status, 0) == -1)
-			throw std::runtime_error("Waitpid failure");
+ 		time_t start = time(NULL);
+
+		while (waitpid(pid, &status, WNOHANG) == 0)
+        {
+            if (time(NULL) - start > 3)
+            {
+				close(std_in);
+				close(std_out);
+                kill(pid, SIGTERM);
+                break;
+            }
+        }
 		if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
+		{
+			close(std_in);
+			close(std_out);
 			throw std::runtime_error("Error HERE");
+		}
 	}
 }
 
