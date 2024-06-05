@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/05 12:06:11 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/05 13:11:14 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ wbs::CGI &wbs::CGI::operator=(const CGI &ob)
 {
 	if (this != &ob)
 	{
-		std::cout << "choofoonniii " << std::endl;
-		std::cout << "laaaaa " << std::endl;
 	}
 	return (*this);
 }
@@ -33,17 +31,19 @@ wbs::CGI::CGI(wbs::Response &response) : _response(response)
 	try
 	{
 		execute_cgi();
-		std::cerr << "CGI: [" << content << "]" << std::endl;
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
 		throw std::runtime_error("500 Internal Server Error");
 	}
 }
 
 wbs::CGI::~CGI()
 {
+	if (std_in != -1)
+		close(std_in);
+	if (std_out != -1)
+		close(std_out);
 }
 
 void wbs::CGI::valid_extension()
@@ -76,17 +76,13 @@ void wbs::CGI::execution()
 		throw std::runtime_error("Forking error");
 	else if (pid == 0)
 	{
-		if (lseek(std_in, 0, SEEK_SET) == -1)
-			throw std::runtime_error("lseek for stdin");
 		if (dup2(std_in, STDIN_FILENO) == -1)
-			throw std::runtime_error("dup2 for stdin");
+			_exit(EXIT_FAILURE);
 		if (dup2(std_out, STDOUT_FILENO) == -1)
-			throw std::runtime_error("Dup2 for STDOUT failure");
-		args[0] = _binary_path.c_str();
-		args[1] = _path.c_str();
-		args[2] = NULL;
-		if (execve(args[0], (char *const *)args, _response.get_envi_var()) == -1)
-			throw std::runtime_error("Execve failure");
+			_exit(EXIT_FAILURE);
+		char *argv[] = {strdup(_binary_path.c_str()), strdup(_path.c_str()), NULL};
+		if (execve(argv[0], argv, _response.get_envi_var()) == -1)
+			_exit(EXIT_FAILURE);
 	}
 	else
 	{
@@ -95,39 +91,37 @@ void wbs::CGI::execution()
 
 		while (waitpid(pid, &status, WNOHANG) == 0)
 		{
-			if (time(NULL) - start > 3)
+			if (time(NULL) - start > 5)
 			{
+				kill(pid, SIGTERM);
 				close(std_in);
 				close(std_out);
-				kill(pid, SIGTERM);
-				break;
+				throw std::runtime_error("Child process timed out");
 			}
 		}
+		close(std_in);
+		close(std_out);
 		if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
-		{
-			close(std_in);
-			close(std_out);
-			throw std::runtime_error("Error HERE");
-		}
+			throw std::runtime_error("Child process exited with error");
 	}
 }
 
 void wbs::CGI::take_output()
 {
-	r = 1;
-	if (lseek(std_out, 0, SEEK_SET) == -1)
-		throw std::runtime_error("lseek error");
-	while (r > 0)
+	lseek(std_out, 0, SEEK_SET);
+
+	char buffer[4096];
+	ssize_t bytesRead;
+	while ((bytesRead = read(std_out, buffer, sizeof(buffer))) > 0)
 	{
-		r = read(std_out, &c, 1);
-		if (r == -1)
-		{
-			close(std_out);
-			throw std::runtime_error("Error while reading from the pipe");
-		}
-		else if (r == 0)
-			break;
-		content += c;
+		content.append(buffer, bytesRead);
+	}
+	if (bytesRead == -1)
+	{
+		close(std_out);
+		content.clear();
+		perror("Error while reading from the pipe");
+		throw std::runtime_error("Error while reading from the pipe");
 	}
 	close(std_out);
 }
