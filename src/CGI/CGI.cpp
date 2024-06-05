@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/05 12:01:22 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/05 12:06:11 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,24 @@ void wbs::CGI::execution()
 	else
 	{
 		int status;
-		if (waitpid(pid, &status, 0) == -1)
-			throw std::runtime_error("Waitpid failure");
-		// if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
-		// 	throw std::runtime_error("Error HERE");
+		time_t start = time(NULL);
+
+		while (waitpid(pid, &status, WNOHANG) == 0)
+		{
+			if (time(NULL) - start > 3)
+			{
+				close(std_in);
+				close(std_out);
+				kill(pid, SIGTERM);
+				break;
+			}
+		}
+		if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
+		{
+			close(std_in);
+			close(std_out);
+			throw std::runtime_error("Error HERE");
+		}
 	}
 }
 
