@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/04 13:56:09 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/05 12:01:22 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ wbs::CGI::CGI(wbs::Response &response) : _response(response)
 	try
 	{
 		execute_cgi();
+		std::cerr << "CGI: [" << content << "]" << std::endl;
 	}
 	catch (const std::exception &e)
 	{
+		std::cerr << e.what() << std::endl;
 		throw std::runtime_error("500 Internal Server Error");
 	}
 }
@@ -74,13 +76,10 @@ void wbs::CGI::execution()
 		throw std::runtime_error("Forking error");
 	else if (pid == 0)
 	{
-		// if (_response.get_req().get_meth() == "POST")  //I SHOULD KNOW IF IT'S POST
-		// {
 		if (lseek(std_in, 0, SEEK_SET) == -1)
 			throw std::runtime_error("lseek for stdin");
 		if (dup2(std_in, STDIN_FILENO) == -1)
 			throw std::runtime_error("dup2 for stdin");
-		// }
 		if (dup2(std_out, STDOUT_FILENO) == -1)
 			throw std::runtime_error("Dup2 for STDOUT failure");
 		args[0] = _binary_path.c_str();
@@ -94,8 +93,8 @@ void wbs::CGI::execution()
 		int status;
 		if (waitpid(pid, &status, 0) == -1)
 			throw std::runtime_error("Waitpid failure");
-		if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
-			throw std::runtime_error("Error HERE");
+		// if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
+		// 	throw std::runtime_error("Error HERE");
 	}
 }
 
@@ -133,7 +132,7 @@ void wbs::CGI::setup_files()
 	std_in = fileno(tmpfile());
 	if (std_in == -1)
 		throw std::runtime_error("Creating stdin file");
-	write(std_in, _response.get_req().get_body().c_str(), _response.get_req().get_body().size()); // BODY FROM THE REQUEST
+	write(std_in, _response.get_req().get_body().c_str(), _response.get_req().get_body().size());
 	lseek(std_in, 0, SEEK_SET);
 	std_out = fileno(tmpfile());
 	if (std_out == -1)

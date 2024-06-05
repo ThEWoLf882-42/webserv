@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/04 17:04:56 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/05 11:23:37 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ bool wbs::Response::check_auto_index()
 void wbs::Response::generate_response(int code, const std::string &status)
 {
 	std::stringstream ss;
-	if (code == 201 || code == 204 || code == 500)
+	if (code != 200)
 	{
 		ss << "HTTP/1.1 " << code << status << "\r\n"
 		   << "Content-Type: text/html" << "\r\n"
