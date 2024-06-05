@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/06/04 17:04:13 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/05 13:39:49 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ void wbs::Request::checkloc()
 	else
 	{
 		loc = it->second.get_root();
+		loc.back() != '/' ? loc += '/' : loc;
 		mloc = &it->second;
 	}
 	checkreturn();
