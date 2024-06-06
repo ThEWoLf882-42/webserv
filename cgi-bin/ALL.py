@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import os
 import cgi
 import cgitb
@@ -12,6 +10,9 @@ UPLOAD_DIR = os.environ.get('UPLOAD_DIR', './upload')
 # Ensure the upload directory exists
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
+
+def sanitize_filename(filename):
+    return os.path.basename(filename)
 
 def handle_post():
     print("Content-Type: text/html\r\n\r\n")
@@ -30,10 +31,11 @@ def handle_post():
         if field_item.filename:
             # It's a file upload
             file_data = field_item.file.read()
-            file_path = os.path.join(UPLOAD_DIR, field_item.filename)
+            sanitized_filename = sanitize_filename(field_item.filename)
+            file_path = os.path.join(UPLOAD_DIR, sanitized_filename)
             with open(file_path, "wb") as f:
                 f.write(file_data)
-            print(f"<li>Uploaded file: {field_item.filename} to {file_path}</li>")
+            print(f"<li>Uploaded file: {sanitized_filename} to {file_path}</li>")
         else:
             # Regular form field
             print(f"<li>{field}: {form.getvalue(field)}</li>")
@@ -49,7 +51,7 @@ def handle_delete():
         params = urllib.parse.parse_qs(query_string)
         resource_id = params.get('id', [None])[0]
         if resource_id:
-            resource_path = os.path.join(UPLOAD_DIR, resource_id)
+            resource_path = os.path.join(UPLOAD_DIR, sanitize_filename(resource_id))
             try:
                 if os.path.exists(resource_path):
                     os.remove(resource_path)
@@ -96,10 +98,11 @@ def handle_put():
         field_item = form[field]
         if field_item.filename:
             file_data = field_item.file.read()
-            file_path = os.path.join(UPLOAD_DIR, field_item.filename)
+            sanitized_filename = sanitize_filename(field_item.filename)
+            file_path = os.path.join(UPLOAD_DIR, sanitized_filename)
             with open(file_path, "wb") as f:
                 f.write(file_data)
-            print(f"<li>Uploaded file: {field_item.filename} to {file_path}</li>")
+            print(f"<li>Uploaded file: {sanitized_filename} to {file_path}</li>")
         else:
             print(f"<li>{field}: {form.getvalue(field)}</li>")
     

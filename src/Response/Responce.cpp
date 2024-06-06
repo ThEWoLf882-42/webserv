@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/04 20:35:36 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:58:18 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ bool wbs::Response::check_auto_index()
 void wbs::Response::generate_response(int code, const std::string &status)
 {
 	std::stringstream ss;
-	if (code == 201 || code == 204 || code == 500)
+	if (code != 200)
 	{
 		ss << "HTTP/1.1 " << code << status << "\r\n"
 		   << "Content-Type: text/html" << "\r\n"
