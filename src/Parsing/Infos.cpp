@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/05 11:49:47 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/07 16:41:08 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,10 +152,13 @@ void wbs::Infos::port_host_set()
 		for (std::vector<std::string>::iterator itv = d.begin(); itv != d.end() - 1; itv++)
 		{
 			unsigned int por;
+			long long p;
 			std::stringstream s(*itv);
 
-			s >> por;
-			// std::cout << "	port: " << por << std::endl;
+			s >> p;
+			if (p < 0)
+				throw std::invalid_argument("Ports must be POSITIVE!!!");
+			por = p;
 			ports.push_back(por);
 		}
 	}
