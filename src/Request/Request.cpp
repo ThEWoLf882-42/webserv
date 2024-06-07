@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:22:07 by agimi             #+#    #+#             */
-/*   Updated: 2024/06/06 13:10:38 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:25:30 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,12 +162,16 @@ void wbs::Request::checkloc()
 	if (it == locs.end())
 	{
 		size_t pos = loc.back();
-		for (pos = loc.find_last_of('/', pos - 1); pos != std::string::npos; pos--)
+		for (pos = loc.find_last_of('/', pos); pos != std::string::npos; pos--)
 		{
 			it = locs.find(loc.substr(0, pos));
 			if (it != locs.end())
 			{
-				loc = it->second.get_root() + loc.substr(pos, loc.back());
+				if (!it->second.get_root().empty())
+					loc = it->second.get_root() + loc.substr(pos, loc.back());
+
+				else
+					ro.back() != '/' ? loc = ro + '/' + loc.substr(pos, loc.back()) : loc = ro + loc.substr(pos, loc.back());
 				mloc = &it->second;
 				break;
 			}
@@ -177,7 +181,10 @@ void wbs::Request::checkloc()
 	}
 	else
 	{
-		loc = it->second.get_root();
+		if (!it->second.get_root().empty())
+			loc = it->second.get_root();
+		else
+			loc = ro;
 		loc.back() != '/' ? loc += '/' : loc;
 		mloc = &it->second;
 	}
@@ -307,14 +314,15 @@ std::string wbs::Request::get_query()
 
 std::string wbs::Request::get_up_dir()
 {
+	if (inf.get_directives().find("upload_dir") != inf.get_directives().end())
+		up_dir = inf.get_directives().find("upload_dir")->second.front();
 	if (mloc)
 	{
 		if (mloc->get_params().find("upload_dir") != mloc->get_params().end())
+		{
 			up_dir = mloc->get_params().find("upload_dir")->second.front();
+		}
 	}
-	else if (inf.get_directives().find("upload_dir") != inf.get_directives().end())
-		up_dir = inf.get_directives().find("upload_dir")->second.front();
-
 	return up_dir;
 }
 
