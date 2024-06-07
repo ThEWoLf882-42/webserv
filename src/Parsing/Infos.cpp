@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/07 11:13:13 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:57:14 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ void wbs::Infos::port_host_set()
 		host = stip(it->second[0]);
 	else
 		host = INADDR_ANY;
-	// std::cout << "host: " << host << std::endl;
 
 	it = directives.find("listen");
 	if (it != directives.end())
@@ -152,10 +151,13 @@ void wbs::Infos::port_host_set()
 		for (std::vector<std::string>::iterator itv = d.begin(); itv != d.end() - 1; itv++)
 		{
 			unsigned int por;
+			long long p;
 			std::stringstream s(*itv);
 
-			s >> por;
-			// std::cout << "	port: " << por << std::endl;
+			s >> p;
+			if (p < 0)
+				throw std::invalid_argument("Ports must be POSITIVE!!!");
+			por = p;
 			ports.push_back(por);
 		}
 	}
