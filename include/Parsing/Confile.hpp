@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:14 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/07 11:11:54 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:38:11 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,7 @@ namespace wbs
 		void	key_duplicated(std::vector<std::string>&, const std::string&);
 		void	key_invalid(const std::string&);
 		void	directives_arguments(const std::vector<std::string>& value);
+		void	check_locations(std::vector<std::string>& locs_path, const std::string& path);
+		void	check_return(std::map<std::string, std::vector<std::string> >&);
 	};
 }

@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/07 10:52:21 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:52:47 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void wbs::Confile::parse()
 		{
 			take_path(input, key);
 			Infos object;
+			std::vector<std::string> locs_path;
 			std::getline(infile, input);
 			while (std::getline(infile, input))
 			{
@@ -145,6 +146,7 @@ void wbs::Confile::parse()
 				{
 					Location ob_location;
 					ob_location.set_path(take_path(input, key));
+					check_locations(locs_path, ob_location.get_path());
 					std::getline(infile, input);
 					while (std::getline(infile, input))
 					{
@@ -154,6 +156,7 @@ void wbs::Confile::parse()
 						ss >> key;
 						if (key == "}")
 						{
+							check_return(ob_location.get_params());
 							object.set_locations(ob_location);
 							break;
 						}
@@ -170,6 +173,7 @@ void wbs::Confile::parse()
 				else if (key == "}")
 				{
 					servers.push_back(object);
+					locs_path.clear();
 					break;
 				}
 			}
@@ -316,7 +320,7 @@ void	wbs::Confile::key_duplicated(std::vector<std::string>& all_keys, const std:
 	all_keys.push_back(value);
 }
 
-void	wbs::Confile::key_invalid(const std::string& value) // SEE WHAT U CAN ADD
+void	wbs::Confile::key_invalid(const std::string& value)
 {
 	std::vector<std::string> valid;
 	valid.push_back("listen");
@@ -342,4 +346,29 @@ void	wbs::Confile::directives_arguments(const std::vector<std::string>& value)
 {
 	if (value.size() < 2)
 		throw std::runtime_error("Invalid number of arguments");
+}
+
+void	wbs::Confile::check_locations(std::vector<std::string>& locs_path, const std::string& path)
+{
+	if (std::find(locs_path.begin(), locs_path.end(), path) != locs_path.end())
+		throw std::runtime_error("Location's path is duplicated");
+	locs_path.push_back(path);
+}
+
+void	wbs::Confile::check_return(std::map<std::string, std::vector<std::string> >& params)
+{
+	std::map<std::string, std::vector<std::string> >::iterator it = params.find("return");
+	if (it != params.end())
+	{
+		if (it->second.size() != 3)
+			throw std::runtime_error("return should have only 2 args");
+
+		char *p;
+		int num = std::strtod(it->second[0].c_str(), &p);
+		if (p[0] != '\0')
+			throw std::runtime_error("return code error");
+		if (num != 301)
+			throw std::runtime_error("return code error");
+
+	}
 }
