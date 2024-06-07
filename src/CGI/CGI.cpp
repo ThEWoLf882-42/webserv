@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/05 13:11:14 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/06 11:55:44 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ void wbs::CGI::execution()
 				throw std::runtime_error("Child process timed out");
 			}
 		}
-		close(std_in);
-		close(std_out);
 		if (!(WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS))
 			throw std::runtime_error("Child process exited with error");
 	}
