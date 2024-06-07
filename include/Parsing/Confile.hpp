@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:14 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/06 14:09:04 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:11:54 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ namespace wbs
 		void check_semicolon();
 		void count_semicolons(const std::string &, int);
 
-		void the_list();
+		void	the_list();
 		void	key_duplicated(std::vector<std::string>&, const std::string&);
 		void	key_invalid(const std::string&);
+		void	directives_arguments(const std::vector<std::string>& value);
 	};
 }

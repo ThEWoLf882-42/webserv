@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/05 11:49:47 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/07 11:13:13 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,8 +210,8 @@ unsigned int &wbs::Infos::get_host()
 
 void wbs::Infos::set_error_pages(std::istream &ss)
 {
-	std::string test, key;
-	char *ptr;
+	std::string	test, key;
+	char		*ptr;
 	int count = 0, num;
 
 	ss >> key;
@@ -227,8 +227,10 @@ void wbs::Infos::set_error_pages(std::istream &ss)
 	{
 		count++;
 	}
-	if ((count != 1 || count == 1) && test != ";")
+	if (count != 1 || test != ";")
 		throw std::runtime_error("Error Pages");
+	if (!(num >= 100 && num <= 599))
+		throw std::runtime_error("Invalid status code, it should be: (100-599)");
 	error_pages[num] = value;
 	duplicated.push_back(num);
 }

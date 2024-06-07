@@ -6,7 +6,7 @@
 /*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/04 13:36:13 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:52:21 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,14 @@ void wbs::Confile::parse()
 				if (key != "location" && key != "}" && key != ";")
 				{
 					if (key == "error_pages" || key == "error_page")
-						object.set_error_pages(ss);			
+						object.set_error_pages(ss);
 					else
 					{
 						while (ss >> value)
 						{
 							values.push_back(value);
 						}
+						directives_arguments(values);
 						object.set_directives(key, values);
 					}
 					values.clear();
@@ -160,6 +161,7 @@ void wbs::Confile::parse()
 						{
 							values.push_back(value);
 						}
+						directives_arguments(values);
 						ob_location.insert(std::make_pair(key, values));
 						values.clear();
 						ss.clear();
@@ -168,8 +170,6 @@ void wbs::Confile::parse()
 				else if (key == "}")
 				{
 					servers.push_back(object);
-					// object.print_directives();
-					// object.print_error_pages();
 					break;
 				}
 			}
@@ -236,8 +236,6 @@ void wbs::Confile::syntax_error()
 				{
 					if (key != "error_page" && key != "error_pages")
 						key_duplicated(all_keys, key);
-					// CHECK WECH DUPLICATED
-					// CHECK WECH NOT VALID
 					count_semicolons(input, 1);
 					key_invalid(key);
 				}
@@ -338,4 +336,10 @@ void	wbs::Confile::key_invalid(const std::string& value) // SEE WHAT U CAN ADD
 	std::vector<std::string>::iterator it = find(valid.begin(), valid.end(), value);
 	if (it == valid.end())
 		throw std::runtime_error("Invalid key");
+}
+
+void	wbs::Confile::directives_arguments(const std::vector<std::string>& value)
+{
+	if (value.size() < 2)
+		throw std::runtime_error("Invalid number of arguments");
 }
