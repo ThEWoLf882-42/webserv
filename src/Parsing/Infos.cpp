@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/07 16:41:08 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/07 16:41:51 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ void wbs::Infos::port_host_set()
 		host = stip(it->second[0]);
 	else
 		host = INADDR_ANY;
-	// std::cout << "host: " << host << std::endl;
 
 	it = directives.find("listen");
 	if (it != directives.end())
