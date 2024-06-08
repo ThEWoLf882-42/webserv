@@ -6,7 +6,7 @@
 /*   By: fbelahse <fbelahse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:21:15 by fbelahse          #+#    #+#             */
-/*   Updated: 2024/06/06 11:58:18 by fbelahse         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:59:50 by fbelahse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -389,102 +389,6 @@ std::string wbs::Response::delete_method(std::string &loc)
 		generate_body(cgi.get_content(), 4, 204);
 		generate_response(204, " No Content");
 		return "";
-	}
-	return "";
-}
-
-void wbs::Response::delete_all_content(std::string &loc)
-{
-	DIR *dir = opendir(loc.c_str());
-	if (dir == NULL)
-	{
-		generate_body(loc, 2, 500);
-		generate_response(500, " Internal Server Error");
-		return;
-	}
-
-	struct dirent *entry;
-	while ((entry = readdir(dir)) != NULL)
-	{
-		std::string f_name = entry->d_name;
-		if (f_name != "." && f_name != "..")
-		{
-			std::string f_path = loc + f_name;
-			if (remove(f_path.c_str()) != 0)
-			{
-				generate_body(loc, 2, 500);
-				generate_response(500, " Internal Server Error");
-				closedir(dir);
-				return;
-			}
-		}
-	}
-	closedir(dir);
-
-	int count = 0;
-	dir = opendir(loc.c_str());
-	struct dirent *ent;
-	while ((ent = readdir(dir)) != NULL)
-	{
-		std::string f_name = ent->d_name;
-		if (f_name != "." && f_name != "..")
-		{
-			count++;
-		}
-	}
-	closedir(dir);
-
-	if (count == 0)
-	{
-		generate_body(loc, 1, 204);
-		generate_response(204, " No Content");
-		return;
-	}
-	else
-	{
-		if (access(path.c_str(), W_OK) != 0 || access(path.c_str(), X_OK) != 0)
-		{
-			generate_body(loc, 2, 403);
-			generate_response(403, " Forbidden");
-			return;
-		}
-		else
-		{
-			generate_body(loc, 2, 500);
-			generate_response(500, "Internal Server Error");
-			return;
-		}
-	}
-	return;
-}
-
-void wbs::Response::delete_file(std::string &file)
-{
-	if (!remove(file.c_str()))
-	{
-		generate_body(file, 2, 500);
-		generate_response(500, " Internal Server Error");
-		return;
-	}
-	generate_body(path, 1, 204);
-	generate_response(204, " No Content");
-}
-
-std::string wbs::Response::get_cgi_path()
-{
-	DIR *dir = opendir("./cgi-bin/");
-	if (dir != NULL)
-	{
-		struct dirent *entry;
-		while ((entry = readdir(dir)) != NULL)
-		{
-			if (entry->d_type == DT_REG)
-			{
-				std::string f_name = entry->d_name;
-				std::string cgi_path = "./cgi-bin/" + f_name;
-				return (cgi_path);
-			}
-		}
 	}
 	return "";
 }
