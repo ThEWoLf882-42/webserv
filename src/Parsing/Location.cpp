@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 13:18:32 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/01 10:48:20 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/09 11:54:44 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 wbs::Location::Location()
 {
+	path = "";
+	root = "";
 }
 
 wbs::Location::~Location()

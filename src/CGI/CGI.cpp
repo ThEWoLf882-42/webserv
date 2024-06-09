@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/06 11:55:44 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/09 11:56:02 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::CGI::CGI(const CGI &ob) : _response(ob._response)
+wbs::CGI::CGI(const CGI &ob) 
+: _response(ob._response)
 {
 	*this = ob;
 }
@@ -21,11 +22,19 @@ wbs::CGI &wbs::CGI::operator=(const CGI &ob)
 {
 	if (this != &ob)
 	{
+		_path = ob._path;
+		_binary_path = ob._binary_path;
+		content = ob.content;
+		pid = ob.pid;
+		std_out = ob.std_out;
+		std_in = ob.std_in;
 	}
 	return (*this);
 }
 
-wbs::CGI::CGI(wbs::Response &response) : _response(response)
+wbs::CGI::CGI(wbs::Response &response) 
+: _response(response), _binary_path(""), content(""),
+pid(-1), std_out(-1), std_in(-1)
 {
 	_path = response.get_path();
 	try
@@ -58,12 +67,6 @@ void wbs::CGI::valid_extension()
 void wbs::CGI::binary_path()
 {
 	_binary_path = "/usr/bin/python3";
-
-	struct stat sb;
-	if (stat(_binary_path.c_str(), &sb) == -1)
-		throw std::runtime_error("No such binary file");
-	if (S_ISDIR(sb.st_mode))
-		throw std::runtime_error("It's a directory");
 	if (access(_binary_path.c_str(), X_OK) == -1)
 		throw std::runtime_error("Binary file is not executable");
 }
@@ -80,8 +83,11 @@ void wbs::CGI::execution()
 			_exit(EXIT_FAILURE);
 		if (dup2(std_out, STDOUT_FILENO) == -1)
 			_exit(EXIT_FAILURE);
-		char *argv[] = {strdup(_binary_path.c_str()), strdup(_path.c_str()), NULL};
-		if (execve(argv[0], argv, _response.get_envi_var()) == -1)
+		const char* args[3];
+		args[0] = _binary_path.c_str();
+		args[1] = _path.c_str();
+		args[2] = NULL;
+		if (execve(args[0], (char* const*)args, _response.get_envi_var()) == -1)
 			_exit(EXIT_FAILURE);
 	}
 	else
@@ -106,20 +112,20 @@ void wbs::CGI::execution()
 
 void wbs::CGI::take_output()
 {
-	lseek(std_out, 0, SEEK_SET);
-
-	char buffer[4096];
-	ssize_t bytesRead;
-	while ((bytesRead = read(std_out, buffer, sizeof(buffer))) > 0)
+	if (lseek(std_out, 0, SEEK_SET) == -1)
+		std::runtime_error("lseek error");
+	char	buffer[1024];
+	int		r  = 1;
+	while (r > 0)
 	{
-		content.append(buffer, bytesRead);
-	}
-	if (bytesRead == -1)
-	{
-		close(std_out);
-		content.clear();
-		perror("Error while reading from the pipe");
-		throw std::runtime_error("Error while reading from the pipe");
+		r = read(std_out, buffer, 1024);
+		if (r == -1)
+		{
+			close(std_out);
+			content.clear();
+			throw std::runtime_error("Error while reading from the file");
+		}
+		content.append(buffer, r);
 	}
 	close(std_out);
 }
@@ -137,12 +143,15 @@ void wbs::CGI::setup_files()
 {
 	std_in = fileno(tmpfile());
 	if (std_in == -1)
-		throw std::runtime_error("Creating stdin file");
-	write(std_in, _response.get_req().get_body().c_str(), _response.get_req().get_body().size());
-	lseek(std_in, 0, SEEK_SET);
+		throw std::runtime_error("Error while creating stdin file");
 	std_out = fileno(tmpfile());
 	if (std_out == -1)
-		throw std::runtime_error("Creating a stdout file");
+		throw std::runtime_error("Error while creating a stdout file");
+
+	if (write(std_in, _response.get_req().get_body().c_str(), _response.get_req().get_body().size()) == -1)
+		throw std::runtime_error("Error in write");
+	if (lseek(std_in, 0, SEEK_SET) == -1)
+		throw std::runtime_error("Error in lseek");
 }
 
 std::string &wbs::CGI::get_content()

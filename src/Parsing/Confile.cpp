@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/07 17:52:47 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/09 11:51:57 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ void wbs::Confile::parse()
 							values.push_back(value);
 						}
 						directives_arguments(values);
+						check_cgi_extension(key, values);
 						ob_location.insert(std::make_pair(key, values));
 						values.clear();
 						ss.clear();
@@ -331,7 +332,6 @@ void	wbs::Confile::key_invalid(const std::string& value)
 	valid.push_back("root");
 	valid.push_back("autoindex");
 	valid.push_back("cgi_extention");
-	valid.push_back("cgi_bin");
 	valid.push_back("methods");
 	valid.push_back("return");
 	valid.push_back("default_file");
@@ -370,5 +370,14 @@ void	wbs::Confile::check_return(std::map<std::string, std::vector<std::string> >
 		if (num != 301)
 			throw std::runtime_error("return code error");
 
+	}
+}
+
+void	wbs::Confile::check_cgi_extension(const std::string& str, std::vector<std::string>& values)
+{
+	if (str == "cgi_extention")
+	{
+		if (values.size() != 2 || values[0] != ".py")
+			throw std::runtime_error("cgi_extension issue");
 	}
 }

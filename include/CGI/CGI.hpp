@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:57 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/05 13:08:35 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/09 11:57:49 by mel-moun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,30 @@
 namespace wbs
 {
 	class Response;
-	
 	class CGI
 	{
 		private:
-			std::string	_path;
-			std::string	_binary_path;
-		
-			int pid;
-			std::string content;
-			wbs::Response& _response;
+			wbs::Response&	_response;
+			std::string		_path;
+			std::string		_binary_path;
+			std::string		content;
+			int				pid;
+			int				std_out;
+			int 			std_in;
 
-			int	std_out;
-			int std_in;
-
-		public:
 			CGI(const CGI &ob);
 			CGI &operator=(const CGI &ob);
+
+		public:
+			CGI(Response&);
 			~CGI();
 
-			void valid_extension();
-			void binary_path();
-			void execution();
-			void take_output();
-
-			void	execute_cgi();
-			
-			CGI(Response&);
-
-			void	setup_files();
-
-			std::string &get_content();
+			void		valid_extension();
+			void		binary_path();
+			void		execution();
+			void		take_output();
+			void		execute_cgi();
+			void		setup_files();
+			std::string	&get_content();
 	};
 }
-
-//check duplicate location's path
