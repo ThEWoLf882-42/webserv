@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Confile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:35:17 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/09 11:51:57 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:18:08 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,6 +325,7 @@ void	wbs::Confile::key_invalid(const std::string& value)
 {
 	std::vector<std::string> valid;
 	valid.push_back("listen");
+	valid.push_back("host");
 	valid.push_back("server_name");
 	valid.push_back("error_page");
 	valid.push_back("error_pages");
