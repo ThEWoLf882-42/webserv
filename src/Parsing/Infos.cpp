@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Infos.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/09 11:11:27 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/10 12:44:25 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 wbs::Infos::Infos()
 {
 	error_pages[301] = "./extra/301.html";
+	error_pages[400] = "./extra/400.html";
 	error_pages[403] = "./extra/403.html";
 	error_pages[404] = "./extra/404.html";
 	error_pages[405] = "./extra/405.html";
