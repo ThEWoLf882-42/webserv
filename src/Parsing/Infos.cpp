@@ -6,7 +6,7 @@
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:37:01 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/10 12:44:25 by agimi            ###   ########.fr       */
+/*   Updated: 2024/06/10 13:04:43 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ wbs::Infos::Infos()
 	error_pages[405] = "./extra/405.html";
 	error_pages[409] = "./extra/409.html";
 	error_pages[413] = "./extra/413.html";
+	error_pages[414] = "./extra/414.html";
 	error_pages[500] = "./extra/500.html";
 	error_pages[501] = "./extra/501.html";
 }
