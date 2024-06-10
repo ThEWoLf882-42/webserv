@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-moun <mel-moun@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:00:59 by mel-moun          #+#    #+#             */
-/*   Updated: 2024/06/09 11:56:02 by mel-moun         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:07:49 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <webserv.hpp>
 
-wbs::CGI::CGI(const CGI &ob) 
-: _response(ob._response)
+wbs::CGI::CGI(const CGI &ob)
+	: _response(ob._response)
 {
 	*this = ob;
 }
@@ -32,9 +32,9 @@ wbs::CGI &wbs::CGI::operator=(const CGI &ob)
 	return (*this);
 }
 
-wbs::CGI::CGI(wbs::Response &response) 
-: _response(response), _binary_path(""), content(""),
-pid(-1), std_out(-1), std_in(-1)
+wbs::CGI::CGI(wbs::Response &response)
+	: _response(response), _binary_path(""), content(""),
+	  pid(-1), std_out(-1), std_in(-1)
 {
 	_path = response.get_path();
 	try
@@ -83,11 +83,11 @@ void wbs::CGI::execution()
 			_exit(EXIT_FAILURE);
 		if (dup2(std_out, STDOUT_FILENO) == -1)
 			_exit(EXIT_FAILURE);
-		const char* args[3];
+		const char *args[3];
 		args[0] = _binary_path.c_str();
 		args[1] = _path.c_str();
 		args[2] = NULL;
-		if (execve(args[0], (char* const*)args, _response.get_envi_var()) == -1)
+		if (execve(args[0], (char *const *)args, _response.get_envi_var()) == -1)
 			_exit(EXIT_FAILURE);
 	}
 	else
@@ -114,8 +114,8 @@ void wbs::CGI::take_output()
 {
 	if (lseek(std_out, 0, SEEK_SET) == -1)
 		std::runtime_error("lseek error");
-	char	buffer[1024];
-	int		r  = 1;
+	char buffer[1024];
+	int r = 1;
 	while (r > 0)
 	{
 		r = read(std_out, buffer, 1024);
